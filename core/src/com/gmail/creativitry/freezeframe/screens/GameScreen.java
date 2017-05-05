@@ -12,6 +12,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.RandomXS128;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
+import com.gmail.creativitry.freezeframe.MoveableManager;
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.bullet.BulletSprayer;
 
@@ -21,8 +22,10 @@ public class GameScreen extends AbstractScreen
 	public static final float GAME_HEIGHT = SCREEN_HEIGHT / 2;
 	private RandomXS128 random;
 	
+	
 	private Player player;
 	private BulletSprayer sprayer;
+	private MoveableManager moveableManager;
 	
 	/**
 	 * Constructs a new game screen with the given game instance and the random number generator
@@ -36,6 +39,7 @@ public class GameScreen extends AbstractScreen
 		this.random = random;
 		player = new Player();
 		addInputProcessor(player);
+		moveableManager = new MoveableManager(player);
 	}
 	
 	/**

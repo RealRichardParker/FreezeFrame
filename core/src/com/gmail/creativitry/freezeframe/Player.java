@@ -36,6 +36,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 		return health;
 	}
 	
+	public Vector2 getPosition()
+	{
+		return position;
+	}
+	
 	public float getRadius()
 	{
 		return radius;
