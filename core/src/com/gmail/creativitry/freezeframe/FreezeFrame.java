@@ -1,33 +1,45 @@
+/**
+ * FreezeFrame.java
+ * Description
+ *
+ * @author Gahwon Lee
+ * Period: 3
+ * Date: 5/4/2017
+ */
+
 package com.gmail.creativitry.freezeframe;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.Game;
+import com.badlogic.gdx.assets.AssetManager;
+import com.gmail.creativitry.freezeframe.screens.AbstractScreen;
+import com.gmail.creativitry.freezeframe.screens.MainMenuScreen;
 
-public class FreezeFrame extends ApplicationAdapter {
-	SpriteBatch batch;
-	Texture img;
+import java.lang.reflect.InvocationTargetException;
+
+public class FreezeFrame extends Game
+{
+	private AssetManager assetManager;
 	
+	/**
+	 * Called when the Application is first created.
+	 */
 	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		img = new Texture("badlogic.jpg");
-	}
-
-	@Override
-	public void render () {
-		Gdx.gl.glClearColor(1, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(img, 0, 0);
-		batch.end();
+	public void create()
+	{
+		assetManager = new AssetManager();
+		
+		setScreen(new MainMenuScreen(this));
 	}
 	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		img.dispose();
+	public AssetManager getAssetManager()
+	{
+		return assetManager;
+	}
+	
+	public void setScreen(AbstractScreen screen)
+	{
+		screen.load(assetManager);
+		assetManager.finishLoading();
+		super.setScreen(screen);
 	}
 }
