@@ -8,8 +8,8 @@
  */
 package com.gmail.creativitry.freezeframe.screens;
 
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
+import com.gmail.creativitry.freezeframe.InputManager;
 
 public class MainMenuScreen extends AbstractScreen
 {
@@ -29,18 +30,23 @@ public class MainMenuScreen extends AbstractScreen
 	private TextButton startButton;
 	private TextField seedText;
 	
+	private boolean moveToGame;
+	
 	public MainMenuScreen(FreezeFrame freezeFrame)
 	{
-		super(freezeFrame);
+		super(freezeFrame, SCREEN_WIDTH, SCREEN_HEIGHT);
+		
+		moveToGame = false;
 		
 		getUiStage().addListener(new InputListener()
 		{
 			@Override
 			public boolean keyUp(InputEvent event, int keycode)
 			{
-				if (keycode == Input.Keys.ENTER)
+				if (InputManager.keyUp(keycode, InputManager.CONFIRM))
 				{
-					startGame();
+					// avoids destruction of listener before true is returned
+					moveToGame = true;
 					return true;
 				}
 				return false;
@@ -56,13 +62,24 @@ public class MainMenuScreen extends AbstractScreen
 	@Override
 	public void load(AssetManager manager)
 	{
-		super.load(manager);
+	
 	}
 	
+	@Override
+	public void dispose(AssetManager manager)
+	{
+	
+	}
+	
+	/**
+	 * Called when this screen becomes the current screen for a {@link Game}.
+	 */
 	@Override
 	public void show()
 	{
 		super.show();
+		
+		renderer = new ShapeRenderer();
 		
 		Stack stack = new Stack();
 		stack.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -116,7 +133,6 @@ public class MainMenuScreen extends AbstractScreen
 	@Override
 	public void render(SpriteBatch batch, float delta)
 	{
-		renderer = new ShapeRenderer();
 		renderer.setProjectionMatrix(getCamera().combined);
 		renderer.setAutoShapeType(true);
 		renderer.begin();
@@ -132,6 +148,9 @@ public class MainMenuScreen extends AbstractScreen
 			TOP_COLOR
 		);
 		renderer.end();
+		
+		if (moveToGame)
+			startGame();
 	}
 	
 	private RandomXS128 getSeed()
@@ -145,7 +164,7 @@ public class MainMenuScreen extends AbstractScreen
 	private void startGame()
 	{
 		RandomXS128 random = getSeed();
-		//todo: move to game screen
+		getFreezeFrame().setScreen(new GameScreen(getFreezeFrame(), random));
 		Gdx.app.log(this.getClass().getSimpleName(), "" + seedText.getText().hashCode());
 	}
 }

@@ -18,4 +18,6 @@ public interface Loadable
 	 * @param manager AssetManager to load assets from
 	 */
 	void load(AssetManager manager);
+	
+	void dispose(AssetManager manager);
 }

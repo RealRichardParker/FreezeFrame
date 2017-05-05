@@ -12,7 +12,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -37,11 +36,11 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	private Skin skin;
 	private InputMultiplexer inputs;
 	
-	public AbstractScreen(FreezeFrame freezeFrame)
+	public AbstractScreen(FreezeFrame freezeFrame, float screenWidth, float screenHeight)
 	{
 		this.freezeFrame = freezeFrame;
 		camera = new OrthographicCamera();
-		viewport = new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT, camera);
+		viewport = new FitViewport(screenWidth, screenHeight, camera);
 		uiStage = new Stage(new FitViewport(SCREEN_WIDTH, SCREEN_HEIGHT));
 		batch = new SpriteBatch();
 		
@@ -155,6 +154,7 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	@Override
 	public void dispose()
 	{
+		Gdx.app.log(this.getClass().getSimpleName(), "disposing");
 		uiStage.dispose();
 		batch.dispose();
 	}
@@ -166,15 +166,4 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	 * @param delta The time in seconds since the last render.
 	 */
 	public abstract void render(SpriteBatch batch, float delta);
-	
-	/**
-	 * Loads all resources necessary for this object.
-	 *
-	 * @param manager AssetManager to load assets from
-	 */
-	@Override
-	public void load(AssetManager manager)
-	{
-		manager.load("ui/neon-ui.json", Skin.class);
-	}
 }

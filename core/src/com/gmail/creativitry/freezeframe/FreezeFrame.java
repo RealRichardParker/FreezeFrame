@@ -10,7 +10,9 @@
 package com.gmail.creativitry.freezeframe;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.gmail.creativitry.freezeframe.screens.AbstractScreen;
 import com.gmail.creativitry.freezeframe.screens.MainMenuScreen;
 
@@ -28,6 +30,8 @@ public class FreezeFrame extends Game
 	{
 		assetManager = new AssetManager();
 		
+		assetManager.load("ui/neon-ui.json", Skin.class);
+		
 		setScreen(new MainMenuScreen(this));
 	}
 	
@@ -40,6 +44,18 @@ public class FreezeFrame extends Game
 	{
 		screen.load(assetManager);
 		assetManager.finishLoading();
-		super.setScreen(screen);
+		
+		if (getScreen() == null)
+		{
+			super.setScreen(screen);
+		}
+		else
+		{
+			AbstractScreen oldScreen = (AbstractScreen) getScreen();
+			oldScreen.dispose(assetManager);
+			super.setScreen(screen);
+		}
+		
+		
 	}
 }
