@@ -1,6 +1,6 @@
 /**
  * Renderable.java
- * Description
+ * An object that can be updated or rendered
  *
  * @author Gahwon Lee
  * Period: 3

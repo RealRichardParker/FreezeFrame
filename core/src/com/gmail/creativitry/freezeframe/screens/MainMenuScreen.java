@@ -1,6 +1,6 @@
 /**
  * MainMenuScreen.java
- * Description
+ * Load a random or specific level for GameScreen
  *
  * @author Gahwon Lee
  * Period: 3
@@ -32,6 +32,10 @@ public class MainMenuScreen extends AbstractScreen
 	
 	private boolean moveToGame;
 	
+	/**
+	 * Constructs a new main menu screen with the given game instance
+	 * @param freezeFrame game instance that shows this screen
+	 */
 	public MainMenuScreen(FreezeFrame freezeFrame)
 	{
 		super(freezeFrame, SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -40,6 +44,9 @@ public class MainMenuScreen extends AbstractScreen
 		
 		getUiStage().addListener(new InputListener()
 		{
+			/**
+			 *  Called when a key goes up. When true is returned, the event is {@link Event#handle() handled}.
+			 */
 			@Override
 			public boolean keyUp(InputEvent event, int keycode)
 			{
@@ -65,6 +72,11 @@ public class MainMenuScreen extends AbstractScreen
 	
 	}
 	
+	/**
+	 * Disposes all resources loaded by this object.
+	 *
+	 * @param manager AssetManager to dispose assets from
+	 */
 	@Override
 	public void dispose(AssetManager manager)
 	{
@@ -153,6 +165,11 @@ public class MainMenuScreen extends AbstractScreen
 			startGame();
 	}
 	
+	/**
+	 * Creates a new random number generator from the seed user entered.
+	 * A random seed is used if the user did not enter a seed
+	 * @return random number generator
+	 */
 	private RandomXS128 getSeed()
 	{
 		if (seedText.getText().isEmpty())
@@ -161,6 +178,9 @@ public class MainMenuScreen extends AbstractScreen
 		return new RandomXS128(seedText.getText().hashCode());
 	}
 	
+	/**
+	 * Moves to the main game screen with the given seed for the random number generator
+	 */
 	private void startGame()
 	{
 		RandomXS128 random = getSeed();

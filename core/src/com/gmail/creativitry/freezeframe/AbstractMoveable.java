@@ -1,7 +1,8 @@
 /**
  * AbstractMoveable.java
  * Describes an object that moves and can collide with the Player
- * @author Tiger
+ * @author Tiger Zhang
+ * Period: 3
  * Date: 5/2/2017.
  */
 package com.gmail.creativitry.freezeframe;

@@ -1,6 +1,6 @@
 /**
  * FreezeFrame.java
- * Description
+ * Loads the skin and switches between screens of the game
  *
  * @author Gahwon Lee
  * Period: 3
@@ -10,13 +10,10 @@
 package com.gmail.creativitry.freezeframe;
 
 import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.gmail.creativitry.freezeframe.screens.AbstractScreen;
 import com.gmail.creativitry.freezeframe.screens.MainMenuScreen;
-
-import java.lang.reflect.InvocationTargetException;
 
 public class FreezeFrame extends Game
 {

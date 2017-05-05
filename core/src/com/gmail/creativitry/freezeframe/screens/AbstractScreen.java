@@ -1,6 +1,6 @@
 /**
  * AbstractScreen.java
- * Description
+ * Render self on the screen
  *
  * @author Gahwon Lee
  * Period: 3
@@ -8,10 +8,7 @@
  */
 package com.gmail.creativitry.freezeframe.screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,6 +33,13 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	private Skin skin;
 	private InputMultiplexer inputs;
 	
+	/**
+	 * Constructs a new screen with the given game instance and size
+	 *
+	 * @param freezeFrame  game instance that shows this screen
+	 * @param screenWidth  width of the screen
+	 * @param screenHeight height of the screen
+	 */
 	public AbstractScreen(FreezeFrame freezeFrame, float screenWidth, float screenHeight)
 	{
 		this.freezeFrame = freezeFrame;
@@ -95,12 +99,22 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 		return inputs;
 	}
 	
+	/**
+	 * Called when this screen becomes the current screen for a {@link Game}.
+	 * Loads the skin for the ui
+	 */
 	@Override
 	public void show()
 	{
 		skin = getFreezeFrame().getAssetManager().get("ui/neon-ui.json");
 	}
 	
+	/**
+	 * Called when the screen should render itself.
+	 * Calls the main render method first before drawing the ui.
+	 *
+	 * @param delta The time in seconds since the last render.
+	 */
 	@Override
 	public final void render(float delta)
 	{
@@ -131,11 +145,18 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 		viewport.update(width, height, true);
 	}
 	
+	/**
+	 * Called when the {@link Application} is paused, usually when it's not active or visible on screen. An Application is also
+	 * paused before it is destroyed.
+	 */
 	@Override
 	public void pause()
 	{
 	}
 	
+	/**
+	 * Called when the {@link Application} is resumed from a paused state, usually when it regains focus.
+	 */
 	@Override
 	public void resume()
 	{
@@ -151,6 +172,9 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 		dispose();
 	}
 	
+	/**
+	 * Called when this screen should release all resources.
+	 */
 	@Override
 	public void dispose()
 	{

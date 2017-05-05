@@ -1,8 +1,9 @@
 /**
  * Player.java
- * Description
+ * Move around the screen, control time, and dodge bullets
  *
- * @author Tiger
+ * @author Tiger Zhang, Gahwon Lee
+ * Period: 3
  * Date: 5/2/2017.
  */
 package com.gmail.creativitry.freezeframe;
@@ -253,6 +254,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 		velocityDir = new Vector2(0, 0);
 	}
 	
+	/**
+	 * Disposes all resources loaded by this object.
+	 *
+	 * @param manager AssetManager to dispose assets from
+	 */
 	@Override
 	public void dispose(AssetManager manager)
 	{

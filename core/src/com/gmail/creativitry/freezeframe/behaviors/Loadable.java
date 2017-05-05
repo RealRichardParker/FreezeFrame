@@ -19,5 +19,10 @@ public interface Loadable
 	 */
 	void load(AssetManager manager);
 	
+	/**
+	 * Disposes all resources loaded by this object.
+	 *
+	 * @param manager AssetManager to dispose assets from
+	 */
 	void dispose(AssetManager manager);
 }

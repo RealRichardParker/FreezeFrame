@@ -1,8 +1,8 @@
 /**
  * GameScreen.java
- * Description
+ * Let the player play the game
  *
- * @author creativitRy
+ * @author Gahwon Lee
  * Period: 3
  * Date: 5/4/2017
  */
@@ -24,6 +24,11 @@ public class GameScreen extends AbstractScreen
 	private Player player;
 	private BulletSprayer sprayer;
 	
+	/**
+	 * Constructs a new game screen with the given game instance and the random number generator
+	 * @param freezeFrame game instance that shows this screen
+	 * @param random random number generator
+	 */
 	public GameScreen(FreezeFrame freezeFrame, RandomXS128 random)
 	{
 		super(freezeFrame, GAME_WIDTH, GAME_HEIGHT);
@@ -44,6 +49,11 @@ public class GameScreen extends AbstractScreen
 		player.load(manager);
 	}
 	
+	/**
+	 * Disposes all resources loaded by this object.
+	 *
+	 * @param manager AssetManager to dispose assets from
+	 */
 	@Override
 	public void dispose(AssetManager manager)
 	{
