@@ -19,7 +19,7 @@ import com.gmail.creativitry.freezeframe.screens.GameScreen;
 
 public class Player implements InputProcessor, Loadable, Renderable
 {
-	private static final float SPEED = 500;
+	private static final float SPEED = 300;
 	private static final float FOCUS_SPEED_MODIFIER = 0.5f;
 	private static final int SPRITE_HALF_SIZE = 16;
 	

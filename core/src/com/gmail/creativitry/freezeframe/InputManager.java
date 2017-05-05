@@ -46,7 +46,7 @@ public class InputManager
 	{
 		for (int key : keys)
 		{
-			if (Gdx.input.isButtonPressed(key))
+			if (Gdx.input.isKeyPressed(key))
 				return true;
 		}
 		return false;
