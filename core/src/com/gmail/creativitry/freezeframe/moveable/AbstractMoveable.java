@@ -5,11 +5,12 @@
  * Period: 3
  * Date: 5/2/2017.
  */
-package com.gmail.creativitry.freezeframe;
+package com.gmail.creativitry.freezeframe.moveable;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.gmail.creativitry.freezeframe.Player;
 
 public abstract class AbstractMoveable
 {

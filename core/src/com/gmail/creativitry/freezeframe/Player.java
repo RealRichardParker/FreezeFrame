@@ -28,11 +28,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private Vector2 position;
 	private Vector2 velocityDir;
 	
-	private float health;
+	private int health;
 	private float radius;
 	private boolean isFocus;
 	
-	public float getHealth()
+	public int getHealth()
 	{
 		return health;
 	}
@@ -47,7 +47,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 		return radius;
 	}
 	
-	public void setHealth(float health)
+	/**
+	 *
+	 * @param health
+	 */
+	public void setHealth(int health)
 	{
 		this.health = health;
 	}
@@ -118,6 +122,15 @@ public class Player implements InputProcessor, Loadable, Renderable
 		
 		return false;
 	}
+	
+	/**
+	 * Decrements the life of the Player
+	 */
+	public void decrementLife()
+	{
+		health --;
+	}
+	
 	
 	/**
 	 * Called when a key was released

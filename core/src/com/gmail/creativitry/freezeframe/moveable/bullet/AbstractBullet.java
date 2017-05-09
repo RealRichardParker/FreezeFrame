@@ -6,9 +6,9 @@
  * Date: 5/4/2017
  * Period 3
  */
-package com.gmail.creativitry.freezeframe.bullet;
+package com.gmail.creativitry.freezeframe.moveable.bullet;
 
-import com.gmail.creativitry.freezeframe.AbstractMoveable;
+import com.gmail.creativitry.freezeframe.moveable.AbstractMoveable;
 import com.gmail.creativitry.freezeframe.Player;
 
 public abstract class AbstractBullet extends AbstractMoveable
@@ -22,7 +22,7 @@ public abstract class AbstractBullet extends AbstractMoveable
 	@Override
 	public void onCollision(Player player)
 	{
-		player.setHealth(player.getHealth() - 1.0f);
+		player.decrementLife();
 	}
 	
 	

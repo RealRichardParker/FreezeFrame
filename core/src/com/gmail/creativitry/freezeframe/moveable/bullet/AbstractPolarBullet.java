@@ -6,7 +6,7 @@
  * Date: 5/4/2017
  * Period 3
  */
-package com.gmail.creativitry.freezeframe.bullet;
+package com.gmail.creativitry.freezeframe.moveable.bullet;
 
 public class AbstractPolarBullet extends AbstractBullet
 {

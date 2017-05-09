@@ -12,9 +12,9 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.RandomXS128;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
-import com.gmail.creativitry.freezeframe.MoveableManager;
+import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
 import com.gmail.creativitry.freezeframe.Player;
-import com.gmail.creativitry.freezeframe.bullet.BulletSprayer;
+import com.gmail.creativitry.freezeframe.moveable.bullet.BulletSprayer;
 
 public class GameScreen extends AbstractScreen
 {

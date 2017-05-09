@@ -8,13 +8,14 @@
  * Date: 5/5/2017
  *
  */
-package com.gmail.creativitry.freezeframe;
+package com.gmail.creativitry.freezeframe.moveable;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
+import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
-import com.gmail.creativitry.freezeframe.bullet.AbstractBullet;
+import com.gmail.creativitry.freezeframe.moveable.bullet.AbstractBullet;
 
 import java.util.Iterator;
 
