@@ -1,9 +1,10 @@
 /**
  * AbstractPolarBullet.java
- * Description
+ * Describes a bullet with circular movement
  *
- * @author Tiger
- * Date: 5/4/2017.
+ * @author Tiger Zhang
+ * Date: 5/4/2017
+ * Period 3
  */
 package com.gmail.creativitry.freezeframe.bullet;
 

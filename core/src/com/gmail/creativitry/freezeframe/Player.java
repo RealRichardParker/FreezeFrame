@@ -47,6 +47,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 		return radius;
 	}
 	
+	public void setHealth(float health)
+	{
+		this.health = health;
+	}
+	
 	/**
 	 * Called when a key was pressed
 	 *
