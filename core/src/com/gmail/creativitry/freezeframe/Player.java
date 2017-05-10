@@ -47,13 +47,14 @@ public class Player implements InputProcessor, Loadable, Renderable
 		return radius;
 	}
 	
-	/**
-	 *
-	 * @param health
-	 */
 	public void setHealth(int health)
 	{
 		this.health = health;
+	}
+	
+	public void setFocus(boolean focus)
+	{
+		isFocus = focus;
 	}
 	
 	/**
@@ -69,8 +70,6 @@ public class Player implements InputProcessor, Loadable, Renderable
 		{
 			if (InputManager.isPressed(InputManager.DOWN))
 				velocityDir.y = 0;
-			else if(isFocus)
-				velocityDir.y = 1 * FOCUS_SPEED_MODIFIER;
 			else
 				velocityDir.y = 1;
 			return true;
@@ -79,8 +78,6 @@ public class Player implements InputProcessor, Loadable, Renderable
 		{
 			if (InputManager.isPressed(InputManager.UP))
 				velocityDir.y = 0;
-			else if(isFocus)
-				velocityDir.y = -1 * FOCUS_SPEED_MODIFIER;
 			else
 				velocityDir.y = -1;
 			return true;
@@ -89,8 +86,6 @@ public class Player implements InputProcessor, Loadable, Renderable
 		{
 			if (InputManager.isPressed(InputManager.RIGHT))
 				velocityDir.x = 0;
-			else if(isFocus)
-				velocityDir.x = -1 * FOCUS_SPEED_MODIFIER;
 			else
 				velocityDir.x = -1;
 			return true;
@@ -99,27 +94,15 @@ public class Player implements InputProcessor, Loadable, Renderable
 		{
 			if (InputManager.isPressed(InputManager.LEFT))
 				velocityDir.x = 0;
-			else if(isFocus)
-				velocityDir.x = 1 * FOCUS_SPEED_MODIFIER;
 			else
 				velocityDir.x = 1;
 			return true;
 		}
-		
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
-		{
-			isFocus = true;
-			if(velocityDir.x > 0)
-				velocityDir.x = 1 * FOCUS_SPEED_MODIFIER;
-			if(velocityDir.x < 0)
-				velocityDir.x = -1 * FOCUS_SPEED_MODIFIER;
-			if(velocityDir.y > 0)
-				velocityDir.y = 1 * FOCUS_SPEED_MODIFIER;
-			if(velocityDir.y < 0)
-				velocityDir.y = -1 * FOCUS_SPEED_MODIFIER;
+ +		{
+ 			setFocus(true);
 			return true;
-		}
-		
+ 		}
 		return false;
 	}
 	
@@ -143,9 +126,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	{
 		if (InputManager.keyUp(keycode, InputManager.UP))
 		{
-			if (InputManager.isPressed(InputManager.DOWN) && isFocus)
-				velocityDir.y = -1 * FOCUS_SPEED_MODIFIER;
-			else if(InputManager.isPressed(InputManager.DOWN))
+			if (InputManager.isPressed(InputManager.DOWN))
 				velocityDir.y = -1;
 			else
 				velocityDir.y = 0;
@@ -153,9 +134,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 		else if (InputManager.keyUp(keycode, InputManager.DOWN))
 		{
-			if (InputManager.isPressed(InputManager.UP) && isFocus)
-				velocityDir.y = 1 * FOCUS_SPEED_MODIFIER;
-			else if(InputManager.isPressed(InputManager.UP))
+			if(InputManager.isPressed(InputManager.UP))
 				velocityDir.y = 1;
 			else
 				velocityDir.y = 0;
@@ -163,9 +142,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 		else if (InputManager.keyUp(keycode, InputManager.LEFT))
 		{
-			if (InputManager.isPressed(InputManager.RIGHT) && isFocus)
-				velocityDir.x = 1 * FOCUS_SPEED_MODIFIER;
-			else if(InputManager.isPressed(InputManager.RIGHT))
+			if(InputManager.isPressed(InputManager.RIGHT))
 				velocityDir.x = 1;
 			else
 				velocityDir.x = 0;
@@ -173,27 +150,17 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 		else if (InputManager.keyUp(keycode, InputManager.RIGHT))
 		{
-			if (InputManager.isPressed(InputManager.LEFT) && isFocus)
-				velocityDir.x = -1 * FOCUS_SPEED_MODIFIER;
-			else if(InputManager.isPressed(InputManager.LEFT))
+			if(InputManager.isPressed(InputManager.LEFT))
 				velocityDir.x = -1;
 			else
 				velocityDir.x = 0;
 			return true;
 		}
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
-		{
-			isFocus = false;
-			if(velocityDir.x > 0)
-				velocityDir.x = 1;
-			if(velocityDir.x < 0)
-				velocityDir.x = -1;
-			if(velocityDir.y > 0)
-				velocityDir.y = 1;
-			if(velocityDir.y < 0)
-				velocityDir.y = -1;
+ +		{
+ 			setFocus(false);
 			return true;
-		}
+ 		}
 		return false;
 	}
 	
@@ -286,6 +253,8 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public void render(SpriteBatch batch, float delta)
 	{
 		float scalar = delta * SPEED;
+		if (isFocus)
+			scalar *= FOCUS_SPEED_MODIFIER;
 		
 		position.x += velocityDir.x * scalar;
 		if (position.x - SPRITE_HALF_SIZE < 0)
