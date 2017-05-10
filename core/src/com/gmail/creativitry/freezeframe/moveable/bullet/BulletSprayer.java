@@ -9,14 +9,11 @@ package com.gmail.creativitry.freezeframe.moveable.bullet;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.RandomXS128;
-import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.FloatArray;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
 import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
-
-import java.util.Random;
 
 public class BulletSprayer implements Loadable, Renderable
 {
@@ -52,9 +49,16 @@ public class BulletSprayer implements Loadable, Renderable
 	private float currFireRateTime;
 	private int currFireRateIndex;
 	
+	// the current time using the current fireRate
+	private float currFireTime;
+	
 	//the BulletSprayer's time, will increment from 0 to currRotTIme and then reset to 0
 	private float currRotTime;
-	private int currRotTimeINdex;
+	private int currRotTimeIndex;
+	
+	//the current rotation
+	private float currRotation;
+	
 	
 	//TODO: things
 	
@@ -108,6 +112,49 @@ public class BulletSprayer implements Loadable, Renderable
 	@Override
 	public void render(SpriteBatch batch, float delta)
 	{
+		currFireRateTime += delta;
+		while (currFireRateTime >= fireRates[currFireRateIndex])
+		{
+			currFireRateTime -= fireRates[currFireRateIndex];
+			for (int subsprayer = 0; subsprayer < numSubsprayers; subsprayer++)
+			{
+				for (int bullet = 0; bullet < bulletsPerSubsprayer; bullet++)
+				{
+					float angle = (currRotation + (360f / numSubsprayers) *
+						subsprayer + angleBetweenBullets * bullet + 360) % 360;
+					float angleX = MathUtils.cosDeg(angle);
+					float angleY = MathUtils.sinDeg(angle);
+					
+					moveableManager.add(bulletTemplete.spawnBullet(x + angleX
+						* radiusOffset, y + angleY * radiusOffset, angle));
+					
+				}
+			}
+		}
+		currFireTime += delta;
+		while (currFireTime >= fireTimes[currFireRateIndex])
+		{
+			currFireTime -= fireTimes[currFireRateIndex];
+			currFireRateIndex++;
+			if(currFireRateIndex >= fireTimes.length)
+				currFireRateIndex = 0;
+		}
+		
+		if (angVels.length != 0)
+		{
+			currRotation += delta * angVels[currRotTimeIndex];
+			while(currRotation > 360)
+				currRotation -= 360;
+			currRotTime += delta;
+			while(currRotTime > angTime[currRotTimeIndex])
+			{
+				currRotTime -= angTime[currRotTimeIndex];
+				currRotTimeIndex++;
+				if(currRotTimeIndex >= angTime.length)
+					currRotTimeIndex = 0;
+				
+			}
+		}
 		
 	}
 }

@@ -30,6 +30,12 @@ public class MoveableManager implements Renderable
 		this.player = player;
 	}
 	
+	//TODO: implement
+	public void add(AbstractMoveable moveable)
+	{
+		
+	}
+	
 	/**
 	 * Renders, updates and checks collisions for all AbstractMoveable objects on the
 	 * GameScreen

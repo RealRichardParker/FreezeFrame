@@ -99,7 +99,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 			return true;
 		}
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
- +		{
+ 		{
  			setFocus(true);
 			return true;
  		}
@@ -157,7 +157,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 			return true;
 		}
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
- +		{
+ 		{
  			setFocus(false);
 			return true;
  		}
