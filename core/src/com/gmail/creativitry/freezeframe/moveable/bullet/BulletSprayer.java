@@ -26,7 +26,7 @@ public class BulletSprayer implements Loadable, Renderable
 	private float radiusOffset;
 	
 	//how bullets should function
-	private BulletTemplate bulletTemplete;
+	private BulletTemplate bulletTemplate;
 	
 	//how much time between bullet spawns
 	private float[] fireRates;
@@ -62,23 +62,40 @@ public class BulletSprayer implements Loadable, Renderable
 	
 	//TODO: things
 	
-	public BulletSprayer(MoveableManager moveableManager, RandomXS128 random)
+	public BulletSprayer(MoveableManager moveableManager, RandomXS128 random, float x, float y)
 	{
 		this.moveableManager = moveableManager;
-		
-		//TODO: randomize
 		this.x = x;
 		this.y = y;
-		this.radiusOffset = radiusOffset;
-		this.bulletTemplete = bulletTemplete;
-		this.fireRates = fireRates;
-		this.fireTimes = fireTimes;
-		this.bulletsPerSubsprayer = bulletsPerSubsprayer;
-		this.angleBetweenBullets = angleBetweenBullets;
-		this.numSubsprayers = numSubsprayers;
-		this.startingAngle = startingAngle;
-		this.angVels = angVels;
-		this.angTime = angTime;
+		this.radiusOffset = rand(random, -4f, 4f);
+		this.bulletTemplate = new BulletTemplate(random);
+		int randSize = random.nextInt(2) + 1;
+		this.fireRates = getRandFloatArr(random, randSize, .1f, .8f);
+		this.fireTimes = getRandFloatArr(random, randSize, 1f, 15f);
+		this.bulletsPerSubsprayer = random.nextInt(3) + 1;
+		this.numSubsprayers = random.nextInt(4) + 1;
+		this.angleBetweenBullets = rand(random, 15f, 360f / numSubsprayers);
+		this.startingAngle = rand(random, 0f, 360f);
+		randSize = random.nextInt(2) + 1;
+		this.angVels = getRandFloatArr(random, randSize, -4f, 4f);
+		this.angTime = getRandFloatArr(random, randSize, 1f, 15f);
+	}
+	
+	private static float rand(RandomXS128 random, float lower, float higher)
+	{
+		return random.nextFloat() * (higher - lower) + lower;
+	}
+	
+	private static float[] getRandFloatArr(RandomXS128 random, int size, float lower, float higher)
+	{
+		float[] arr = new float[size];
+		
+		for (int i = 0; i < arr.length; i++)
+		{
+			arr[i] = rand(random, lower, higher);
+		}
+		
+		return arr;
 	}
 	
 	/**
@@ -89,7 +106,7 @@ public class BulletSprayer implements Loadable, Renderable
 	@Override
 	public void load(AssetManager manager)
 	{
-		
+		bulletTemplate.load(manager);
 	}
 	
 	/**
@@ -100,7 +117,7 @@ public class BulletSprayer implements Loadable, Renderable
 	@Override
 	public void dispose(AssetManager manager)
 	{
-		
+		bulletTemplate.dispose(manager);
 	}
 	
 	/**
@@ -125,7 +142,7 @@ public class BulletSprayer implements Loadable, Renderable
 					float angleX = MathUtils.cosDeg(angle);
 					float angleY = MathUtils.sinDeg(angle);
 					
-					moveableManager.add(bulletTemplete.spawnBullet(x + angleX
+					moveableManager.add(bulletTemplate.spawnBullet(x + angleX
 						* radiusOffset, y + angleY * radiusOffset, angle));
 					
 				}

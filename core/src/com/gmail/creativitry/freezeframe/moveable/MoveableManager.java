@@ -15,6 +15,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
+import com.gmail.creativitry.freezeframe.moveable.item.AbstractItem;
 import com.gmail.creativitry.freezeframe.moveable.bullet.AbstractBullet;
 
 import java.util.Iterator;
@@ -33,7 +34,14 @@ public class MoveableManager implements Renderable
 	//TODO: implement
 	public void add(AbstractMoveable moveable)
 	{
-		
+		if(moveable instanceof AbstractItem)
+		{
+			//TODO: finish
+		}
+		else
+		{
+			//if(poo)
+		}
 	}
 	
 	/**
