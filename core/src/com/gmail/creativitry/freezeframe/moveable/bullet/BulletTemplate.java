@@ -21,7 +21,7 @@ public class BulletTemplate implements Loadable
 	}
 	
 	
-	public AbstractBullet spawnBullet(float x, float y, float angle)
+	public AbstractBullet spawnBullet()
 	{
 		//TODO: rest of the class
 		return null;
@@ -47,5 +47,11 @@ public class BulletTemplate implements Loadable
 	public void dispose(AssetManager manager)
 	{
 		
+	}
+	
+	public Class<? extends AbstractBullet> getBulletClass()
+	{
+		//todo
+		return null;
 	}
 }

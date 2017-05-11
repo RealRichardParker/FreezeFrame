@@ -142,8 +142,8 @@ public class BulletSprayer implements Loadable, Renderable
 					float angleX = MathUtils.cosDeg(angle);
 					float angleY = MathUtils.sinDeg(angle);
 					
-					moveableManager.add(bulletTemplate.spawnBullet(x + angleX
-						* radiusOffset, y + angleY * radiusOffset, angle));
+					moveableManager.addBullet(bulletTemplate, x + angleX
+						* radiusOffset, y + angleY * radiusOffset, angle);
 					
 				}
 			}

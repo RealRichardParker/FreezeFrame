@@ -6,7 +6,6 @@
  * @author Tiger Zhang
  * Period: 3
  * Date: 5/5/2017
- *
  */
 package com.gmail.creativitry.freezeframe.moveable;
 
@@ -15,15 +14,16 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ObjectMap;
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
-import com.gmail.creativitry.freezeframe.moveable.item.AbstractItem;
+import com.gmail.creativitry.freezeframe.moveable.bullet.BulletTemplate;
 import com.gmail.creativitry.freezeframe.moveable.bullet.AbstractBullet;
+import com.gmail.creativitry.freezeframe.moveable.item.AbstractItem;
 
 import java.util.Iterator;
 
 public class MoveableManager implements Renderable
 {
 	private ObjectMap<Class<? extends AbstractBullet>, Array<AbstractBullet>> pool;
-	private Array<? extends AbstractMoveable> moveables;
+	private Array<AbstractMoveable> moveables;
 	private Player player;
 	
 	public MoveableManager(Player player)
@@ -31,18 +31,28 @@ public class MoveableManager implements Renderable
 		this.player = player;
 	}
 	
-	//TODO: implement
-	public void add(AbstractMoveable moveable)
+	public void addBullet(BulletTemplate template, float x, float y, float angle)
 	{
-		if(moveable instanceof AbstractItem)
+		Class<? extends AbstractBullet> clazz = template.getBulletClass();
+		if (pool.containsKey(clazz) && pool.get(clazz).size != 0)
 		{
-			//TODO: finish
+			AbstractBullet bullet = pool.get(clazz).removeIndex(pool.get(clazz).size - 1);
+			bullet.init(template);
+			moveables.add(bullet);
 		}
 		else
 		{
-			//if(poo)
+			AbstractBullet bullet = template.spawnBullet();
+			bullet.init(template);
+			moveables.add(bullet);
 		}
 	}
+	
+	public void addItem(AbstractItem item)
+	{
+		moveables.add(item);
+	}
+	
 	
 	/**
 	 * Renders, updates and checks collisions for all AbstractMoveable objects on the

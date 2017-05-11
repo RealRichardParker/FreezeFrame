@@ -25,5 +25,5 @@ public abstract class AbstractBullet extends AbstractMoveable
 		player.decrementLife();
 	}
 	
-	
+	public abstract void init(BulletTemplate template);
 }
