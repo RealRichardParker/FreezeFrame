@@ -37,13 +37,13 @@ public class MoveableManager implements Renderable
 		if (pool.containsKey(clazz) && pool.get(clazz).size != 0)
 		{
 			AbstractBullet bullet = pool.get(clazz).removeIndex(pool.get(clazz).size - 1);
-			bullet.init(template);
+			bullet.init(template, x, y, angle);
 			moveables.add(bullet);
 		}
 		else
 		{
 			AbstractBullet bullet = template.spawnBullet();
-			bullet.init(template);
+			bullet.init(template, x, y, angle);
 			moveables.add(bullet);
 		}
 	}
