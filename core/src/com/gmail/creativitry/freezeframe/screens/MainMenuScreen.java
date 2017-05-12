@@ -14,8 +14,12 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.RandomXS128;
-import com.badlogic.gdx.scenes.scene2d.*;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Event;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
@@ -34,6 +38,7 @@ public class MainMenuScreen extends AbstractScreen
 	
 	/**
 	 * Constructs a new main menu screen with the given game instance
+	 *
 	 * @param freezeFrame game instance that shows this screen
 	 */
 	public MainMenuScreen(FreezeFrame freezeFrame)
@@ -168,14 +173,45 @@ public class MainMenuScreen extends AbstractScreen
 	/**
 	 * Creates a new random number generator from the seed user entered.
 	 * A random seed is used if the user did not enter a seed
+	 *
 	 * @return random number generator
 	 */
 	private RandomXS128 getSeed()
 	{
 		if (seedText.getText().isEmpty())
-			return new RandomXS128();
+			return new RandomXS128(getRandomSeed().hashCode());
 		
 		return new RandomXS128(seedText.getText().hashCode());
+	}
+	
+	private String getRandomSeed()
+	{
+		StringBuilder str = new StringBuilder();
+		
+		int randSize = MathUtils.random(5, 15);
+		for (int i = 0; i < randSize; i++)
+		{
+			str.append(getRandomChar());
+		}
+		
+		return str.toString();
+	}
+	
+	private char getRandomChar()
+	{
+		int charType = MathUtils.random(2);
+		
+		switch (charType)
+		{
+			case 0:
+				return (char) MathUtils.random('A', 'Z');
+			case 1:
+				return (char) MathUtils.random('a', 'z');
+			case 2:
+				return (char) MathUtils.random('0', '9');
+		}
+		
+		return '0';
 	}
 	
 	/**

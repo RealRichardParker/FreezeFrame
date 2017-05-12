@@ -8,8 +8,8 @@
  */
 package com.gmail.creativitry.freezeframe.moveable.bullet;
 
-import com.gmail.creativitry.freezeframe.moveable.AbstractMoveable;
 import com.gmail.creativitry.freezeframe.Player;
+import com.gmail.creativitry.freezeframe.moveable.AbstractMoveable;
 
 public abstract class AbstractBullet extends AbstractMoveable
 {
@@ -26,4 +26,6 @@ public abstract class AbstractBullet extends AbstractMoveable
 	}
 	
 	public abstract void init(BulletTemplate template, float x, float y, float angle);
+	
+	public abstract AbstractBullet newInstance();
 }

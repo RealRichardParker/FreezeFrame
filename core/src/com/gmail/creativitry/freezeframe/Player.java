@@ -22,6 +22,8 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private static final float SPEED = 300;
 	private static final float FOCUS_SPEED_MODIFIER = 0.5f;
 	private static final int SPRITE_HALF_SIZE = 16;
+	public static final int HEALTH = 3;
+	public static final int RADIUS = 4;
 	
 	private Texture texture;
 	
@@ -31,6 +33,15 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private int health;
 	private float radius;
 	private boolean isFocus;
+	
+	public Player(float x, float y)
+	{
+		position = new Vector2(x, y);
+		velocityDir = new Vector2(0, 0);
+		
+		health = HEALTH;
+		radius = RADIUS;
+	}
 	
 	public int getHealth()
 	{
@@ -55,6 +66,75 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public void setFocus(boolean focus)
 	{
 		isFocus = focus;
+	}
+	
+	public Vector2 getVelocityDir()
+	{
+		return velocityDir;
+	}
+	
+	/**
+	 * Decrements the life of the Player
+	 */
+	public void decrementLife()
+	{
+		System.out.println(health);
+		health--;
+	}
+	
+	
+	/**
+	 * Renders this object
+	 *
+	 * @param batch Batch to render to
+	 * @param delta time in seconds since last tick
+	 */
+	@Override
+	public void render(SpriteBatch batch, float delta)
+	{
+		float scalar = delta * SPEED;
+		if (isFocus)
+			scalar *= FOCUS_SPEED_MODIFIER;
+		
+		position.x += velocityDir.x * scalar;
+		if (position.x - SPRITE_HALF_SIZE < 0)
+			position.x = SPRITE_HALF_SIZE;
+		else if (position.x + SPRITE_HALF_SIZE > GameScreen.GAME_WIDTH)
+			position.x = GameScreen.GAME_WIDTH - SPRITE_HALF_SIZE;
+		
+		position.y += velocityDir.y * scalar;
+		if (position.y - SPRITE_HALF_SIZE < 0)
+			position.y = SPRITE_HALF_SIZE;
+		else if (position.y + SPRITE_HALF_SIZE > GameScreen.GAME_HEIGHT)
+			position.y = GameScreen.GAME_HEIGHT - SPRITE_HALF_SIZE;
+		
+		batch.draw(texture, position.x - SPRITE_HALF_SIZE, position.y - SPRITE_HALF_SIZE);
+	}
+	
+	/**
+	 * Loads all resources necessary for this object.
+	 *
+	 * @param manager AssetManager to load assets from
+	 */
+	@Override
+	public void load(AssetManager manager)
+	{
+		final String fileName = "player.png";
+		
+		manager.load(fileName, Texture.class);
+		manager.finishLoadingAsset(fileName);
+		texture = manager.get(fileName);
+	}
+	
+	/**
+	 * Disposes all resources loaded by this object.
+	 *
+	 * @param manager AssetManager to dispose assets from
+	 */
+	@Override
+	public void dispose(AssetManager manager)
+	{
+		manager.unload("player.png");
 	}
 	
 	/**
@@ -99,21 +179,12 @@ public class Player implements InputProcessor, Loadable, Renderable
 			return true;
 		}
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
- 		{
- 			setFocus(true);
+		{
+			setFocus(true);
 			return true;
- 		}
+		}
 		return false;
 	}
-	
-	/**
-	 * Decrements the life of the Player
-	 */
-	public void decrementLife()
-	{
-		health --;
-	}
-	
 	
 	/**
 	 * Called when a key was released
@@ -134,7 +205,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 		else if (InputManager.keyUp(keycode, InputManager.DOWN))
 		{
-			if(InputManager.isPressed(InputManager.UP))
+			if (InputManager.isPressed(InputManager.UP))
 				velocityDir.y = 1;
 			else
 				velocityDir.y = 0;
@@ -142,7 +213,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 		else if (InputManager.keyUp(keycode, InputManager.LEFT))
 		{
-			if(InputManager.isPressed(InputManager.RIGHT))
+			if (InputManager.isPressed(InputManager.RIGHT))
 				velocityDir.x = 1;
 			else
 				velocityDir.x = 0;
@@ -150,17 +221,17 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 		else if (InputManager.keyUp(keycode, InputManager.RIGHT))
 		{
-			if(InputManager.isPressed(InputManager.LEFT))
+			if (InputManager.isPressed(InputManager.LEFT))
 				velocityDir.x = -1;
 			else
 				velocityDir.x = 0;
 			return true;
 		}
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
- 		{
- 			setFocus(false);
+		{
+			setFocus(false);
 			return true;
- 		}
+		}
 		return false;
 	}
 	
@@ -241,62 +312,5 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public boolean scrolled(int amount)
 	{
 		return false;
-	}
-	
-	/**
-	 * Renders this object
-	 *
-	 * @param batch Batch to render to
-	 * @param delta time in seconds since last tick
-	 */
-	@Override
-	public void render(SpriteBatch batch, float delta)
-	{
-		float scalar = delta * SPEED;
-		if (isFocus)
-			scalar *= FOCUS_SPEED_MODIFIER;
-		
-		position.x += velocityDir.x * scalar;
-		if (position.x - SPRITE_HALF_SIZE < 0)
-			position.x = SPRITE_HALF_SIZE;
-		else if (position.x + SPRITE_HALF_SIZE > GameScreen.GAME_WIDTH)
-			position.x = GameScreen.GAME_WIDTH - SPRITE_HALF_SIZE;
-		
-		position.y += velocityDir.y * scalar;
-		if (position.y - SPRITE_HALF_SIZE < 0)
-			position.y = SPRITE_HALF_SIZE;
-		else if (position.y + SPRITE_HALF_SIZE > GameScreen.GAME_HEIGHT)
-			position.y = GameScreen.GAME_HEIGHT - SPRITE_HALF_SIZE;
-		
-		batch.draw(texture, position.x - SPRITE_HALF_SIZE, position.y - SPRITE_HALF_SIZE);
-	}
-	
-	/**
-	 * Loads all resources necessary for this object.
-	 *
-	 * @param manager AssetManager to load assets from
-	 */
-	@Override
-	public void load(AssetManager manager)
-	{
-		final String fileName = "player.png";
-		
-		manager.load(fileName, Texture.class);
-		manager.finishLoadingAsset(fileName);
-		texture = manager.get(fileName);
-		
-		position = new Vector2(0, 0);
-		velocityDir = new Vector2(0, 0);
-	}
-	
-	/**
-	 * Disposes all resources loaded by this object.
-	 *
-	 * @param manager AssetManager to dispose assets from
-	 */
-	@Override
-	public void dispose(AssetManager manager)
-	{
-		manager.unload("player.png");
 	}
 }

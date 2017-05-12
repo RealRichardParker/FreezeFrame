@@ -67,18 +67,18 @@ public class BulletSprayer implements Loadable, Renderable
 		this.moveableManager = moveableManager;
 		this.x = x;
 		this.y = y;
-		this.radiusOffset = rand(random, -4f, 4f);
+		this.radiusOffset = rand(random, -40f, 40f);
 		this.bulletTemplate = new BulletTemplate(random);
-		int randSize = random.nextInt(2) + 1;
-		this.fireRates = getRandFloatArr(random, randSize, .1f, .8f);
-		this.fireTimes = getRandFloatArr(random, randSize, 1f, 15f);
+		int randSize = random.nextInt(5) + 2;
+		this.fireRates = getRandFloatArr(random, randSize, .05f, .3f);
+		this.fireTimes = getRandFloatArr(random, randSize, 2f, 7f);
 		this.bulletsPerSubsprayer = random.nextInt(3) + 1;
-		this.numSubsprayers = random.nextInt(4) + 1;
+		this.numSubsprayers = random.nextInt(2) + 3;
 		this.angleBetweenBullets = rand(random, 15f, 360f / numSubsprayers);
 		this.startingAngle = rand(random, 0f, 360f);
-		randSize = random.nextInt(2) + 1;
-		this.angVels = getRandFloatArr(random, randSize, -4f, 4f);
-		this.angTime = getRandFloatArr(random, randSize, 1f, 15f);
+		randSize = random.nextInt(5) + 2;
+		this.angVels = getRandFloatArr(random, randSize, -400f, 400f);
+		this.angTime = getRandFloatArr(random, randSize, 2f, 7f);
 	}
 	
 	private static float rand(RandomXS128 random, float lower, float higher)

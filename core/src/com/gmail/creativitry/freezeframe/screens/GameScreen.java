@@ -12,19 +12,20 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.RandomXS128;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
-import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
 import com.gmail.creativitry.freezeframe.Player;
+import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
 import com.gmail.creativitry.freezeframe.moveable.bullet.BulletSprayer;
 
 public class GameScreen extends AbstractScreen
 {
 	public static final float GAME_WIDTH = SCREEN_WIDTH / 2;
 	public static final float GAME_HEIGHT = SCREEN_HEIGHT / 2;
+	public static final int VERTICAL_PAD = 70;
 	private RandomXS128 random;
 	
 	
 	private Player player;
-	private BulletSprayer sprayer;
+	private BulletSprayer bulletSprayer;
 	private MoveableManager moveableManager;
 	
 	/**
@@ -37,9 +38,10 @@ public class GameScreen extends AbstractScreen
 		super(freezeFrame, GAME_WIDTH, GAME_HEIGHT);
 		
 		this.random = random;
-		player = new Player();
+		player = new Player(GAME_WIDTH / 2, VERTICAL_PAD);
 		addInputProcessor(player);
 		moveableManager = new MoveableManager(player);
+		bulletSprayer = new BulletSprayer(moveableManager, random, GAME_WIDTH / 2, GAME_HEIGHT - VERTICAL_PAD);
 	}
 	
 	/**
@@ -51,6 +53,7 @@ public class GameScreen extends AbstractScreen
 	public void load(AssetManager manager)
 	{
 		player.load(manager);
+		bulletSprayer.load(manager);
 	}
 	
 	/**
@@ -62,6 +65,7 @@ public class GameScreen extends AbstractScreen
 	public void dispose(AssetManager manager)
 	{
 		player.dispose(manager);
+		bulletSprayer.dispose(manager);
 	}
 	
 	/**
@@ -75,6 +79,14 @@ public class GameScreen extends AbstractScreen
 	{
 		batch.begin();
 		player.render(batch, delta);
+		
+		float scalar = delta;
+		if (player.getVelocityDir().x == 0 && player.getVelocityDir().y == 0)
+			scalar = 0;
+		
+		moveableManager.render(batch, scalar);
+		bulletSprayer.render(batch, scalar);
+		
 		batch.end();
 	}
 }

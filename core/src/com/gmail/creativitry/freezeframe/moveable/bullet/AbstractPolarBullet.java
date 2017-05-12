@@ -8,7 +8,7 @@
  */
 package com.gmail.creativitry.freezeframe.moveable.bullet;
 
-public class AbstractPolarBullet extends AbstractBullet
+public abstract class AbstractPolarBullet extends AbstractBullet
 {
 	/**
 	 * Updates position and velocity every frame

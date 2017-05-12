@@ -1,25 +1,23 @@
 /**
  * AbstractMoveable.java
  * Describes an object that moves and can collide with the Player
- * @author Tiger Zhang
+ * @author Tiger Zhang, Gahwon Lee
  * Period: 3
  * Date: 5/2/2017.
  */
 package com.gmail.creativitry.freezeframe.moveable;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.gmail.creativitry.freezeframe.Player;
 
 public abstract class AbstractMoveable
 {
-	private float posX;
-	private float posY;
+	private float x;
+	private float y;
 	private float velY;
 	private float velX;
-	private Texture texture;
-	private float radius;
+	private MoveableTexture texture;
 	private float life;
 	
 	/**
@@ -37,47 +35,75 @@ public abstract class AbstractMoveable
 	 * Updates position and velocity every frame
 	 * @param delta
 	 */
-	public abstract void update(float delta);
-	
-	/**
-	 * @param batch
-	 */
-	//creativitRy writes later
-	public void render(SpriteBatch batch)
+	public void update(float delta)
 	{
-		
+		x += velX * delta;
+		y += velY * delta;
 	}
 	
-	/**
-	 * @return the Y velocity of this object
-	 */
+	public void render(SpriteBatch batch)
+	{
+		batch.draw(texture.getTexture(), x - texture.getHalfSize(), y - texture.getHalfSize());
+	}
+	
+	public float getX()
+	{
+		return x;
+	}
+	
+	public void setX(float x)
+	{
+		this.x = x;
+	}
+	
+	public float getY()
+	{
+		return y;
+	}
+	
+	public void setY(float y)
+	{
+		this.y = y;
+	}
+	
 	public float getVelY()
 	{
 		return velY;
 	}
 	
-	/**
-	 * @return the X velocity of this object
-	 */
+	public void setVelY(float velY)
+	{
+		this.velY = velY;
+	}
+	
 	public float getVelX()
 	{
 		return velX;
 	}
 	
-	/**
-	 * @return the X position of this object
-	 */
-	public float getPosX()
+	public void setVelX(float velX)
 	{
-		return posX;
+		this.velX = velX;
 	}
 	
-	/**
-	 * @return the Y position of this object
-	 */
-	public float getPosY()
+	public float getLife()
 	{
-		return posY;
+		return life;
+	}
+	
+	public void setLife(float life)
+	{
+		this.life = life;
+	}
+	
+	public MoveableTexture getTexture()
+	{
+		return texture;
+	}
+	
+	public void setTexture(MoveableTexture texture)
+	{
+		this.texture = texture;
 	}
 	
 	/**
@@ -88,7 +114,7 @@ public abstract class AbstractMoveable
 	 */
 	public boolean isColliding(Vector2 position, float radius)
 	{
-		if (Math.hypot(position.x - posX, position.y - posY) > radius + this.radius)
+		if (Math.hypot(position.x - x, position.y - y) > radius + texture.getRadius())
 			return false;
 		else
 			return true;
