@@ -1,6 +1,5 @@
 /**
- * FreezeFrame.java
- * Loads the skin and switches between screens of the game
+ * The FreezeFrame.java class loads the skin and switches between screens of the game
  *
  * @author Gahwon Lee
  * Period: 3
@@ -32,6 +31,10 @@ public class FreezeFrame extends Game
 		setScreen(new MainMenuScreen(this));
 	}
 	
+	/**
+	* Calls the assetManager to be used by something else
+	* @return the assetManager
+	*/
 	public AssetManager getAssetManager()
 	{
 		return assetManager;
