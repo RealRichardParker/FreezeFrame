@@ -19,6 +19,7 @@ public class InputManager
 	public static int[] RIGHT = {Keys.RIGHT, Keys.D, Keys.NUMPAD_6};
 	public static int[] FOCUS = {Keys.SHIFT_LEFT, Keys.SHIFT_RIGHT};
 	public static int[] CONFIRM = {Keys.ENTER};
+	public static int[] MOVE_TIME = {Keys.SPACE};
 	
 	/**
 	 * Checks whether the given key is in the given array of keys

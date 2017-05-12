@@ -83,6 +83,8 @@ public class GameScreen extends AbstractScreen
 		float scalar = delta;
 		if (player.getVelocityDir().x == 0 && player.getVelocityDir().y == 0)
 			scalar = 0;
+		if(player.isTimeMove())
+			scalar = delta;
 		
 		moveableManager.render(batch, scalar);
 		bulletSprayer.render(batch, scalar);

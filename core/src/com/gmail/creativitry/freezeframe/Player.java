@@ -33,6 +33,12 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private int health;
 	private float radius;
 	private boolean isFocus;
+	private boolean timeMove;
+	
+	public boolean isTimeMove()
+	{
+		return timeMove;
+	}
 	
 	public Player(float x, float y)
 	{
@@ -63,8 +69,14 @@ public class Player implements InputProcessor, Loadable, Renderable
 		this.health = health;
 	}
 	
+	public void setTimeMove(boolean timeMove)
+	{
+		this.timeMove = timeMove;
+	}
+	
 	public void setFocus(boolean focus)
 	{
+	
 		isFocus = focus;
 	}
 	
@@ -187,6 +199,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 			setFocus(true);
 			return true;
 		}
+		else if (InputManager.keyUp(keycode, InputManager.MOVE_TIME))
+		{
+			setTimeMove(true);
+			return true;
+		}
 		return false;
 	}
 	
@@ -234,6 +251,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
 		{
 			setFocus(false);
+			return true;
+		}
+		else if (InputManager.keyUp(keycode, InputManager.MOVE_TIME))
+		{
+			setTimeMove(false);
 			return true;
 		}
 		return false;
