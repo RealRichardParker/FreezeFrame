@@ -98,7 +98,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 		gameScreen.updateHealth(health);
 		if(health == 0)
 		{
-			//TODO
+			gameScreen.gameOver();
 		}
 	}
 	

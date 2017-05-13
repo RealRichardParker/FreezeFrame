@@ -22,6 +22,7 @@ import com.gmail.creativitry.freezeframe.FreezeFrame;
 import com.gmail.creativitry.freezeframe.HealthBar;
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.RandomGenerator;
+import com.gmail.creativitry.freezeframe.database.ScoreData;
 import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
 import com.gmail.creativitry.freezeframe.moveable.bullet.BulletSprayer;
 
@@ -225,5 +226,10 @@ public class GameScreen extends AbstractScreen
 		timerStage.getBatch().setShader(timerShader);
 		timerStage.draw();
 		timerShader.end();
+	}
+	
+	public void gameOver()
+	{
+		getFreezeFrame().setScreen(new ScoreScreen(getFreezeFrame(), new ScoreData(random, score)));
 	}
 }

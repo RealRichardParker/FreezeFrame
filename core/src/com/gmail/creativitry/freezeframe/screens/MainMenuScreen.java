@@ -63,6 +63,7 @@ public class MainMenuScreen extends AbstractScreen
 				return false;
 			}
 		});
+		
 	}
 	
 	/**
@@ -190,6 +191,6 @@ public class MainMenuScreen extends AbstractScreen
 	{
 		RandomGenerator random = getRandom();
 		getFreezeFrame().setScreen(new GameScreen(getFreezeFrame(), random));
-		Gdx.app.log(this.getClass().getSimpleName(), "" + seedText.getText().hashCode());
+		Gdx.app.log(this.getClass().getSimpleName(), random.toString());
 	}
 }
