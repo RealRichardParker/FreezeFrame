@@ -9,9 +9,14 @@
 package com.gmail.creativitry.freezeframe.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.RandomXS128;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
@@ -27,6 +32,7 @@ public class GameScreen extends AbstractScreen
 	public static final int VERTICAL_PAD = 70;
 	public static final int SCORE_INCREASE_TIME = 6;
 	public static final int SCORE_GRAZE = 5;
+	private final ShaderProgram timerShader;
 	private RandomXS128 random;
 	
 	private HealthBar healthBar;
@@ -34,6 +40,10 @@ public class GameScreen extends AbstractScreen
 	private float score;
 	private int scoreMultiplyer;
 	private Label scoreLabel;
+	
+	private float timerVal;
+	private Image timer;
+	private Stage timerStage;
 	
 	private Player player;
 	private BulletSprayer bulletSprayer;
@@ -56,6 +66,11 @@ public class GameScreen extends AbstractScreen
 		bulletSprayer = new BulletSprayer(moveableManager, random, GAME_WIDTH / 2, GAME_HEIGHT - VERTICAL_PAD);
 		healthBar = new HealthBar(Player.STARTING_HEALTH);
 		scoreMultiplyer = 1;
+		
+		timerStage = new Stage(getUiStage().getViewport());
+		timerShader = new ShaderProgram(Gdx.files.internal("shaders/Timer.vert"), Gdx.files.internal("shaders/Timer.frag"));
+		
+		timerVal = 0.79f;
 	}
 	
 	/**
@@ -69,6 +84,11 @@ public class GameScreen extends AbstractScreen
 		player.load(manager);
 		bulletSprayer.load(manager);
 		healthBar.load(manager);
+		
+		final String path = "timer.png";
+		manager.load(path, Texture.class);
+		manager.finishLoadingAsset(path);
+		timer = new Image(manager.get(path, Texture.class));
 	}
 	
 	/**
@@ -82,6 +102,8 @@ public class GameScreen extends AbstractScreen
 		player.dispose(manager);
 		bulletSprayer.dispose(manager);
 		healthBar.dispose(manager);
+		
+		manager.unload("timer.png");
 	}
 	
 	/**
@@ -105,6 +127,8 @@ public class GameScreen extends AbstractScreen
 		table.add(scoreLabel);
 		
 		getUiStage().addActor(table);
+		
+		timerStage.addActor(timer);
 	}
 	
 	public void addScore(float score)
@@ -114,12 +138,9 @@ public class GameScreen extends AbstractScreen
 		scoreLabel.setText(String.format("%.0f", this.score));
 	}
 	
-	public void isGrazing(boolean isGrazing)
+	public void setGrazing()
 	{
-		if (isGrazing)
-		{
-			scoreMultiplyer = SCORE_GRAZE;
-		}
+		scoreMultiplyer = SCORE_GRAZE;
 	}
 	
 	/**
@@ -144,6 +165,27 @@ public class GameScreen extends AbstractScreen
 		scoreMultiplyer = 1;
 		
 		batch.end();
+	}
+	
+	/**
+	 * Called when the screen should render itself.
+	 * Calls the main render method first before drawing the ui.
+	 *
+	 * @param delta The time in seconds since the last render.
+	 */
+	@Override
+	public void render(float delta)
+	{
+		super.render(delta);
+		
+		timer.setPosition(player.getPosition().x * SCREEN_WIDTH / GAME_WIDTH - timer.getImageWidth() / 2,
+			player.getPosition().y * SCREEN_HEIGHT / GAME_HEIGHT - timer.getImageHeight() / 2);
+		timerStage.act();
+		timerShader.begin();
+		timerShader.setUniformf("u_timerVal", timerVal);
+		timerStage.getBatch().setShader(timerShader);
+		timerStage.draw();
+		timerShader.end();
 	}
 	
 	public void updateHealth(int newHealth)

@@ -90,9 +90,9 @@ public class MoveableManager implements Renderable
 			{
 				moveable.render(batch);
 				
-				if (moveable instanceof AbstractBullet)
+				if (moveable instanceof AbstractBullet && ((AbstractBullet) moveable).isGrazing(player.getPosition(), player.getRadius()))
 				{
-					gameScreen.isGrazing(((AbstractBullet) moveable).isGrazing(player.getPosition(), player.getRadius()));
+					gameScreen.setGrazing();
 				}
 			}
 		}
