@@ -114,10 +114,7 @@ public abstract class AbstractMoveable
 	 */
 	public boolean isColliding(Vector2 position, float radius)
 	{
-		if (Math.hypot(position.x - x, position.y - y) > radius + texture.getRadius())
-			return false;
-		else
-			return true;
+		return !(Math.hypot(position.x - x, position.y - y) > radius + texture.getRadius());
 	}
 	
 	/**

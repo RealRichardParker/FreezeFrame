@@ -22,8 +22,10 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private static final float SPEED = 200;
 	private static final float FOCUS_SPEED_MODIFIER = 0.5f;
 	private static final int SPRITE_HALF_SIZE = 16;
-	public static final int HEALTH = 3;
+	public static final int STARTING_HEALTH = 3;
 	public static final int RADIUS = 4;
+	
+	private GameScreen gameScreen;
 	
 	private Texture texture;
 	
@@ -35,18 +37,20 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private boolean isFocus;
 	private boolean timeMove;
 	
-	public boolean isTimeMove()
+	public Player(GameScreen screen, float x, float y)
 	{
-		return timeMove;
-	}
-	
-	public Player(float x, float y)
-	{
+		gameScreen = screen;
+		
 		position = new Vector2(x, y);
 		velocityDir = new Vector2(0, 0);
 		
-		health = HEALTH;
+		health = STARTING_HEALTH;
 		radius = RADIUS;
+	}
+	
+	public boolean isTimeMove()
+	{
+		return timeMove;
 	}
 	
 	public int getHealth()
@@ -90,8 +94,8 @@ public class Player implements InputProcessor, Loadable, Renderable
 	 */
 	public void decrementLife()
 	{
-		System.out.println(health);
 		health--;
+		gameScreen.updateHealth(health);
 		if(health == 0)
 		{
 			//TODO

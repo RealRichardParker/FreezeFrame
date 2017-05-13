@@ -115,7 +115,7 @@ public class MainMenuScreen extends AbstractScreen
 		titleTable.add(names).pad(10);
 		stack.add(titleTable);
 		
-		Table table = new Table();
+		Table table = new Table(getSkin());
 		table.setFillParent(true);
 		table.pad(100);
 		stack.add(table);

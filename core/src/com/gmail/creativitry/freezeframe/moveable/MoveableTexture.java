@@ -12,7 +12,6 @@ import com.badlogic.gdx.graphics.Texture;
 public class MoveableTexture
 {
 	private transient Texture texture;
-	private float size;
 	private float radius;
 	private float grazeRadius;
 	
@@ -40,6 +39,6 @@ public class MoveableTexture
 	
 	public float getHalfSize()
 	{
-		return size / 2f;
+		return texture.getWidth() / 2f;
 	}
 }

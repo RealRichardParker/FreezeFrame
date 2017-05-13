@@ -17,17 +17,20 @@ import com.gmail.creativitry.freezeframe.behaviors.Renderable;
 import com.gmail.creativitry.freezeframe.moveable.bullet.AbstractBullet;
 import com.gmail.creativitry.freezeframe.moveable.bullet.BulletTemplate;
 import com.gmail.creativitry.freezeframe.moveable.item.AbstractItem;
+import com.gmail.creativitry.freezeframe.screens.GameScreen;
 
 import java.util.Iterator;
 
 public class MoveableManager implements Renderable
 {
+	private GameScreen gameScreen;
 	private ObjectMap<Class<? extends AbstractBullet>, Array<AbstractBullet>> pool;
 	private Array<AbstractMoveable> moveables;
 	private Player player;
 	
-	public MoveableManager(Player player)
+	public MoveableManager(GameScreen gameScreen, Player player)
 	{
+		this.gameScreen = gameScreen;
 		this.player = player;
 		pool = new ObjectMap<>();
 		moveables = new Array<>();
@@ -73,6 +76,7 @@ public class MoveableManager implements Renderable
 		{
 			AbstractMoveable moveable = iter.next();
 			moveable.update(delta);
+			
 			if (moveable.isColliding(player.getPosition(), player.getRadius()))
 			{
 				moveable.onCollision(player);
@@ -83,7 +87,14 @@ public class MoveableManager implements Renderable
 				destroyMoveable(iter, moveable);
 			}
 			else
+			{
 				moveable.render(batch);
+				
+				if (moveable instanceof AbstractBullet)
+				{
+					gameScreen.isGrazing(((AbstractBullet) moveable).isGrazing(player.getPosition(), player.getRadius()));
+				}
+			}
 		}
 	}
 	
