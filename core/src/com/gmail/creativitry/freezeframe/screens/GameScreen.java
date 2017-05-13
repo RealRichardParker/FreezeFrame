@@ -27,11 +27,13 @@ import com.gmail.creativitry.freezeframe.moveable.bullet.BulletSprayer;
 
 public class GameScreen extends AbstractScreen
 {
-	public static final float GAME_WIDTH = SCREEN_WIDTH / 2;
-	public static final float GAME_HEIGHT = SCREEN_HEIGHT / 2;
+	public static final float GAME_WIDTH = SCREEN_WIDTH / 2f;
+	public static final float GAME_HEIGHT = SCREEN_HEIGHT / 2f;
 	public static final int VERTICAL_PAD = 70;
 	public static final int SCORE_INCREASE_TIME = 6;
 	public static final int SCORE_GRAZE = 5;
+	public static final float DIFFICULTY_MODIFIER = 0.002f;
+	public static final float STARTING_TIMER_RATE = 0.5f;
 	
 	private RandomGenerator random;
 	
@@ -45,6 +47,7 @@ public class GameScreen extends AbstractScreen
 	private Image timer;
 	private ShaderProgram timerShader;
 	private Stage timerStage;
+	private float timerRate;
 	
 	private Player player;
 	private BulletSprayer bulletSprayer;
@@ -71,7 +74,8 @@ public class GameScreen extends AbstractScreen
 		timerStage = new Stage(getUiStage().getViewport());
 		timerShader = new ShaderProgram(Gdx.files.internal("shaders/Timer.vert"), Gdx.files.internal("shaders/Timer.frag"));
 		
-		timerVal = 0.79f;
+		timerVal = 1;
+		timerRate = STARTING_TIMER_RATE;
 	}
 	
 	/**
@@ -144,6 +148,12 @@ public class GameScreen extends AbstractScreen
 		scoreMultiplier = SCORE_GRAZE;
 	}
 	
+	public void updateHealth(int newHealth)
+	{
+		healthBar.setHealth(newHealth);
+		System.out.println("health: " + newHealth);
+	}
+	
 	/**
 	 * Called when the screen should render itself.
 	 *
@@ -156,9 +166,35 @@ public class GameScreen extends AbstractScreen
 		batch.begin();
 		player.render(batch, delta);
 		
-		float scalar = delta;
+		float multiplier = 1;
 		if (player.getVelocityDir().x == 0 && player.getVelocityDir().y == 0 && !player.isTimeMove())
-			scalar = 0;
+		{
+			multiplier = 0;
+			if (timerVal <= 0)
+			{
+				timerVal = 0;
+				multiplier = 1;
+			}
+			else
+			{
+				timerVal -= delta * timerRate;
+			}
+		}
+		else
+		{
+			if (timerVal >= 1)
+			{
+				timerVal = 1;
+			}
+			else
+			{
+				timerVal += delta * STARTING_TIMER_RATE;
+			}
+		}
+		
+		float scalar = delta * multiplier;
+		
+		timerRate += scalar * DIFFICULTY_MODIFIER;
 		
 		moveableManager.render(batch, scalar);
 		bulletSprayer.render(batch, scalar);
@@ -189,11 +225,5 @@ public class GameScreen extends AbstractScreen
 		timerStage.getBatch().setShader(timerShader);
 		timerStage.draw();
 		timerShader.end();
-	}
-	
-	public void updateHealth(int newHealth)
-	{
-		healthBar.setHealth(newHealth);
-		System.out.println("health: " + newHealth);
 	}
 }

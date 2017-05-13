@@ -55,7 +55,5 @@ public class FreezeFrame extends Game
 			oldScreen.dispose(assetManager);
 			super.setScreen(screen);
 		}
-		
-		
 	}
 }
