@@ -8,24 +8,25 @@
 package com.gmail.creativitry.freezeframe.moveable.bullet;
 
 import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.math.RandomXS128;
+import com.gmail.creativitry.freezeframe.RandomGenerator;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
 import com.gmail.creativitry.freezeframe.moveable.TextureLoader;
 
 public class BulletTemplate implements Loadable
 {
-	public static final int NUM_BULLET_TEXTURES = 1;
+	private static final String[] BULLETS = {"Ball"};
 	private StringBuilder path;
 	private AbstractBullet bullet;
 	private float vel;
 	
-	public BulletTemplate(RandomXS128 random)
+	public BulletTemplate(RandomGenerator random)
 	{
 		bullet = new Bullet();
 		bullet.setLife(10);
 		vel = 100;
-		path = new StringBuilder("bullet/B");
-		path.append(random.nextInt(NUM_BULLET_TEXTURES));
+		
+		path = new StringBuilder("bullet/");
+		path.append(random.choose(BULLETS));
 	}
 	
 	

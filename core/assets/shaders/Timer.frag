@@ -1,3 +1,5 @@
+//FRAGMENT SHADER
+
 /**
  * Timer.frag
  * Renders the timer where the alpha channel defines how full the timer is
@@ -11,6 +13,8 @@
     precision mediump float;
 #endif
 
+const float alphaMultiplier = 0.5;
+
 varying vec4 v_color;
 varying vec2 v_texCoords;
 uniform sampler2D u_texture;
@@ -22,7 +26,7 @@ void main()
 {
         vec4 color = texture2D(u_texture, v_texCoords).rgba;
         vec3 final = color.rgb;
-        float alpha = sign(color.a) * (sign(color.a - (1 - u_timerVal)) + 1) / 2;
+        float alpha = sign(color.a) * ((sign(color.a - (1 - u_timerVal)) + 1) / 2) * alphaMultiplier;
 
         gl_FragColor = vec4(final, alpha);
 }

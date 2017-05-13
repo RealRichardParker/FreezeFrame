@@ -11,6 +11,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.RandomXS128;
+import com.gmail.creativitry.freezeframe.RandomGenerator;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
 import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
@@ -62,23 +63,23 @@ public class BulletSprayer implements Loadable, Renderable
 	
 	//TODO: things
 	
-	public BulletSprayer(MoveableManager moveableManager, RandomXS128 random, float x, float y)
+	public BulletSprayer(MoveableManager moveableManager, RandomGenerator random, float x, float y)
 	{
 		this.moveableManager = moveableManager;
 		this.x = x;
 		this.y = y;
-		this.radiusOffset = rand(random, -40f, 40f);
+		this.radiusOffset = random.nextFloat(-40f, 40f);
 		this.bulletTemplate = new BulletTemplate(random);
 		int randSize = random.nextInt(5) + 2;
-		this.fireRates = getRandFloatArr(random, randSize, .05f, .3f);
-		this.fireTimes = getRandFloatArr(random, randSize, 2f, 7f);
+		this.fireRates = random.getRandFloatArr(randSize, .05f, .3f);
+		this.fireTimes = random.getRandFloatArr(randSize, 2f, 7f);
 		this.bulletsPerSubsprayer = random.nextInt(3) + 1;
 		this.numSubsprayers = random.nextInt(2) + 3;
-		this.angleBetweenBullets = rand(random, 15f, 360f / numSubsprayers);
-		this.startingAngle = rand(random, 0f, 360f);
+		this.angleBetweenBullets = random.nextFloat(15f, 360f / numSubsprayers);
+		this.startingAngle = random.nextFloat(0f, 360f);
 		randSize = random.nextInt(5) + 2;
-		this.angVels = getRandFloatArr(random, randSize, -400f, 400f);
-		this.angTime = getRandFloatArr(random, randSize, 2f, 7f);
+		this.angVels = random.getRandFloatArr(randSize, -400f, 400f);
+		this.angTime = random.getRandFloatArr(randSize, 2f, 7f);
 	}
 	
 	private static float rand(RandomXS128 random, float lower, float higher)
