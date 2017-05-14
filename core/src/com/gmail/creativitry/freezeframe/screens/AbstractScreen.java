@@ -106,7 +106,7 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	@Override
 	public void show()
 	{
-		skin = getFreezeFrame().getAssetManager().get("ui/neon-ui.json");
+		skin = getFreezeFrame().getAssetManager().get(FreezeFrame.UI_SKIN);
 	}
 	
 	/**

@@ -16,6 +16,8 @@ import com.gmail.creativitry.freezeframe.screens.MainMenuScreen;
 
 public class FreezeFrame extends Game
 {
+	public static final String UI_SKIN = "ui/tracer-ui.json";
+	
 	private AssetManager assetManager;
 	
 	/**
@@ -26,7 +28,7 @@ public class FreezeFrame extends Game
 	{
 		assetManager = new AssetManager();
 		
-		assetManager.load("ui/neon-ui.json", Skin.class);
+		assetManager.load(UI_SKIN, Skin.class);
 		
 		setScreen(new MainMenuScreen(this));
 	}

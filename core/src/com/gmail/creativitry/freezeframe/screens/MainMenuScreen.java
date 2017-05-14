@@ -107,7 +107,7 @@ public class MainMenuScreen extends AbstractScreen
 		titleTable.center();
 		
 		//todo: replace with sprite of logo
-		Label title = new Label("FreezeFrame", getSkin());
+		Label title = new Label("FreezeFrame", getSkin(), "title");
 		titleTable.add(title).pad(10);
 		titleTable.row();
 		
@@ -126,6 +126,7 @@ public class MainMenuScreen extends AbstractScreen
 		table.left();
 		
 		startButton = new TextButton("Start", getSkin());
+		startButton.getLabel().setStyle(getSkin().get("title", Label.LabelStyle.class));
 		startButton.addListener(new ChangeListener()
 		{
 			@Override
