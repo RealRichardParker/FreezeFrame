@@ -152,6 +152,20 @@ public class RandomGenerator
 		return arr;
 	}
 	
+	/**
+	 * Generates a random number based on a normally distributed probability
+	 *
+	 * @param mean mean of the normal distribution
+	 * @param std  standard deviation of the normal distribution
+	 * @return randomly generated float
+	 */
+	public float nextNormal(float mean, float std)
+	{
+		double norm = random.nextGaussian();
+		
+		return (float) ((norm * std) + mean);
+	}
+	
 	@Override
 	public String toString()
 	{
