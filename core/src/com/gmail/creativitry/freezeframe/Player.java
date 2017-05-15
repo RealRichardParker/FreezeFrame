@@ -25,6 +25,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public static final int STARTING_HEALTH = 3;
 	public static final int RADIUS = 4;
 	public static final int HEALTH_MAX = 10;
+	private static final float ITEM_TIME = 10;
 	
 	private GameScreen gameScreen;
 	
@@ -37,7 +38,8 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private float radius;
 	private boolean isFocus;
 	private boolean timeMove;
-	private boolean magnet;
+	private float magnetTime;
+	private float shieldTime;
 	
 	public Player(GameScreen screen, float x, float y)
 	{
@@ -82,7 +84,6 @@ public class Player implements InputProcessor, Loadable, Renderable
 	
 	public void setFocus(boolean focus)
 	{
-	
 		isFocus = focus;
 	}
 	
@@ -112,11 +113,30 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 	}
 	
-	public boolean isMagnet()
+	public void addScore(float score)
 	{
-		return magnet;
+		gameScreen.addScore(score);
 	}
 	
+	public boolean isMagnet()
+	{
+		return magnetTime > 0;
+	}
+	
+	public void setMagnet()
+	{
+		magnetTime = ITEM_TIME;
+	}
+	
+	public boolean isShield()
+	{
+		return shieldTime > 0;
+	}
+	
+	public void setShield()
+	{
+		shieldTime = ITEM_TIME;
+	}
 	
 	/**
 	 * Renders this object
@@ -357,10 +377,5 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public boolean scrolled(int amount)
 	{
 		return false;
-	}
-	
-	public void addScore(float score)
-	{
-		gameScreen.addScore(score);
 	}
 }
