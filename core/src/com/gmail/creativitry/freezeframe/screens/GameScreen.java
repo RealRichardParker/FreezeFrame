@@ -216,7 +216,7 @@ public class GameScreen extends AbstractScreen
 	@Override
 	public void render(float delta)
 	{
-		if (delta > DELTA_THRESHOLD)
+		if (delta < DELTA_THRESHOLD)
 			super.render(delta);
 		
 		timer.setPosition(player.getPosition().x * SCREEN_WIDTH / GAME_WIDTH - timer.getImageWidth() / 2,
