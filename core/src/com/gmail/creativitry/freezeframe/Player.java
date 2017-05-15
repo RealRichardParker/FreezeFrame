@@ -24,6 +24,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private static final int SPRITE_HALF_SIZE = 16;
 	public static final int STARTING_HEALTH = 3;
 	public static final int RADIUS = 4;
+	public static final int HEALTH_MAX = 10;
 	
 	private GameScreen gameScreen;
 	
@@ -36,6 +37,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private float radius;
 	private boolean isFocus;
 	private boolean timeMove;
+	private boolean magnet;
 	
 	public Player(GameScreen screen, float x, float y)
 	{
@@ -89,6 +91,14 @@ public class Player implements InputProcessor, Loadable, Renderable
 		return velocityDir;
 	}
 	
+	public void incrementLife()
+	{
+		health++;
+		if (health > HEALTH_MAX)
+			health = HEALTH_MAX;
+		gameScreen.updateHealth(health);
+	}
+	
 	/**
 	 * Decrements the life of the Player
 	 */
@@ -100,6 +110,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 		{
 			gameScreen.gameOver();
 		}
+	}
+	
+	public boolean isMagnet()
+	{
+		return magnet;
 	}
 	
 	
@@ -342,5 +357,10 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public boolean scrolled(int amount)
 	{
 		return false;
+	}
+	
+	public void addScore(float score)
+	{
+		gameScreen.addScore(score);
 	}
 }

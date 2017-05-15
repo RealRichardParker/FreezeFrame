@@ -24,6 +24,7 @@ import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.database.ScoreData;
 import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
 import com.gmail.creativitry.freezeframe.moveable.bullet.BulletSprayer;
+import com.gmail.creativitry.freezeframe.moveable.item.ItemSpawner;
 import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 
 public class GameScreen extends AbstractScreen
@@ -53,7 +54,10 @@ public class GameScreen extends AbstractScreen
 	
 	private Player player;
 	private BulletSprayer bulletSprayer;
+	private ItemSpawner itemSpawner;
 	private MoveableManager moveableManager;
+	
+	private boolean alive;
 	
 	/**
 	 * Constructs a new game screen with the given game instance and the random number generator
@@ -78,6 +82,8 @@ public class GameScreen extends AbstractScreen
 		
 		timerVal = 1;
 		timerRate = STARTING_TIMER_RATE;
+		
+		alive = true;
 	}
 	
 	/**
@@ -165,45 +171,52 @@ public class GameScreen extends AbstractScreen
 	@Override
 	public void render(SpriteBatch batch, float delta)
 	{
-		batch.begin();
-		player.render(batch, delta);
-		
-		float multiplier = 1;
-		if (player.getVelocityDir().x == 0 && player.getVelocityDir().y == 0 && !player.isTimeMove())
+		if (alive)
 		{
-			multiplier = 0;
-			if (timerVal <= 0)
+			batch.begin();
+			player.render(batch, delta);
+			
+			float multiplier = 1;
+			if (player.getVelocityDir().x == 0 && player.getVelocityDir().y == 0 && !player.isTimeMove())
 			{
-				timerVal = 0;
-				multiplier = 1;
+				multiplier = 0;
+				if (timerVal <= 0)
+				{
+					timerVal = 0;
+					multiplier = 1;
+				}
+				else
+				{
+					timerVal -= delta * timerRate;
+				}
 			}
 			else
 			{
-				timerVal -= delta * timerRate;
+				if (timerVal >= 1)
+				{
+					timerVal = 1;
+				}
+				else
+				{
+					timerVal += delta * STARTING_TIMER_RATE;
+				}
 			}
+			
+			float scalar = delta * multiplier;
+			
+			timerRate += scalar * DIFFICULTY_MODIFIER;
+			
+			moveableManager.render(batch, scalar);
+			bulletSprayer.render(batch, scalar);
+			addScore(scalar * SCORE_INCREASE_TIME * scoreMultiplier);
+			scoreMultiplier = 1;
+			
+			batch.end();
 		}
 		else
 		{
-			if (timerVal >= 1)
-			{
-				timerVal = 1;
-			}
-			else
-			{
-				timerVal += delta * STARTING_TIMER_RATE;
-			}
+			getFreezeFrame().setScreen(new ScoreScreen(getFreezeFrame(), new ScoreData(random, score)));
 		}
-		
-		float scalar = delta * multiplier;
-		
-		timerRate += scalar * DIFFICULTY_MODIFIER;
-		
-		moveableManager.render(batch, scalar);
-		bulletSprayer.render(batch, scalar);
-		addScore(scalar * SCORE_INCREASE_TIME * scoreMultiplier);
-		scoreMultiplier = 1;
-		
-		batch.end();
 	}
 	
 	/**
@@ -232,6 +245,6 @@ public class GameScreen extends AbstractScreen
 	
 	public void gameOver()
 	{
-		getFreezeFrame().setScreen(new ScoreScreen(getFreezeFrame(), new ScoreData(random, score)));
+		alive = false;
 	}
 }

@@ -108,13 +108,13 @@ public abstract class AbstractMoveable
 	
 	/**
 	 * Determines if this object is colliding with the Player
-	 * @param position the position of the Player
-	 * @param radius the size of the player
+	 * @param player player to ceck collision with
 	 * @return true if this object is colliding with the Player; false otherwise
 	 */
-	public boolean isColliding(Vector2 position, float radius)
+	public boolean isColliding(Player player)
 	{
-		return !(Math.hypot(position.x - x, position.y - y) > radius + texture.getRadius());
+		Vector2 position = player.getPosition();
+		return !(Math.hypot(position.x - x, position.y - y) > player.getRadius() + texture.getRadius());
 	}
 	
 	/**

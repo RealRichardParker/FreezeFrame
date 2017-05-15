@@ -17,6 +17,7 @@ import com.gmail.creativitry.freezeframe.behaviors.Renderable;
 import com.gmail.creativitry.freezeframe.moveable.bullet.AbstractBullet;
 import com.gmail.creativitry.freezeframe.moveable.bullet.BulletTemplate;
 import com.gmail.creativitry.freezeframe.moveable.item.AbstractItem;
+import com.gmail.creativitry.freezeframe.moveable.item.CoinItem;
 import com.gmail.creativitry.freezeframe.screens.GameScreen;
 
 import java.util.Iterator;
@@ -25,7 +26,8 @@ public class MoveableManager implements Renderable
 {
 	private GameScreen gameScreen;
 	private ObjectMap<Class<? extends AbstractBullet>, Array<AbstractBullet>> pool;
-	private Array<AbstractMoveable> moveables;
+	private Array<AbstractBullet> bullets;
+	private Array<AbstractItem> items;
 	private Player player;
 	
 	public MoveableManager(GameScreen gameScreen, Player player)
@@ -33,7 +35,7 @@ public class MoveableManager implements Renderable
 		this.gameScreen = gameScreen;
 		this.player = player;
 		pool = new ObjectMap<>();
-		moveables = new Array<>();
+		bullets = new Array<>();
 	}
 	
 	public void addBullet(BulletTemplate template, float x, float y, float angle)
@@ -44,19 +46,19 @@ public class MoveableManager implements Renderable
 		{
 			AbstractBullet bullet = pool.get(clazz).removeIndex(pool.get(clazz).size - 1);
 			bullet.init(template, x, y, angle);
-			moveables.add(bullet);
+			bullets.add(bullet);
 		}
 		else
 		{
 			AbstractBullet bullet = template.spawnBullet();
 			bullet.init(template, x, y, angle);
-			moveables.add(bullet);
+			bullets.add(bullet);
 		}
 	}
 	
 	public void addItem(AbstractItem item)
 	{
-		moveables.add(item);
+		items.add(item);
 	}
 	
 	
@@ -70,14 +72,21 @@ public class MoveableManager implements Renderable
 	@Override
 	public void render(SpriteBatch batch, float delta)
 	{
-		Iterator<? extends AbstractMoveable> iter = moveables.iterator();
+		renderBullets(batch, delta);
+		
+		
+	}
+	
+	private void renderBullets(SpriteBatch batch, float delta)
+	{
+		Iterator<? extends AbstractBullet> iter = bullets.iterator();
 		
 		while (iter.hasNext())
 		{
 			AbstractMoveable moveable = iter.next();
 			moveable.update(delta);
 			
-			if (moveable.isColliding(player.getPosition(), player.getRadius()))
+			if (moveable.isColliding(player))
 			{
 				moveable.onCollision(player);
 				destroyMoveable(iter, moveable);
@@ -90,9 +99,39 @@ public class MoveableManager implements Renderable
 			{
 				moveable.render(batch);
 				
-				if (moveable instanceof AbstractBullet && ((AbstractBullet) moveable).isGrazing(player.getPosition(), player.getRadius()))
+				if (moveable instanceof AbstractBullet && ((AbstractBullet) moveable).isGrazing(player))
 				{
 					gameScreen.setGrazing();
+				}
+			}
+		}
+	}
+	
+	private void renderItems(SpriteBatch batch, float delta)
+	{
+		Iterator<? extends AbstractItem> iter = items.iterator();
+		
+		while (iter.hasNext())
+		{
+			AbstractItem item = iter.next();
+			item.update(delta);
+			
+			if (item.isColliding(player))
+			{
+				item.onCollision(player);
+				destroyMoveable(iter, item);
+			}
+			else if (item.decrementLife(delta))
+			{
+				destroyMoveable(iter, item);
+			}
+			else
+			{
+				item.render(batch);
+				
+				if (item instanceof CoinItem && player.isMagnet() && ((CoinItem) item).isNear(player))
+				{
+				
 				}
 			}
 		}

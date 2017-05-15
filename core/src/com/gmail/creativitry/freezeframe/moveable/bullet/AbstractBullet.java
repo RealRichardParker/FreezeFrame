@@ -36,8 +36,9 @@ public abstract class AbstractBullet extends AbstractMoveable
 	
 	public abstract AbstractBullet newInstance();
 	
-	public boolean isGrazing(Vector2 position, float radius)
+	public boolean isGrazing(Player player)
 	{
-		return !(Math.hypot(position.x - getX(), position.y - getY()) > radius + getTexture().getGrazeRadius());
+		Vector2 position = player.getPosition();
+		return !(Math.hypot(position.x - getX(), position.y - getY()) > player.getRadius() + getTexture().getGrazeRadius());
 	}
 }
