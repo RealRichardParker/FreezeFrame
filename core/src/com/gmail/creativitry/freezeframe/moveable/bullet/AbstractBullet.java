@@ -26,7 +26,13 @@ public abstract class AbstractBullet extends AbstractMoveable
 		player.decrementLife();
 	}
 	
-	public abstract void init(BulletTemplate template, float x, float y, float angle);
+	public void init(BulletTemplate template, float x, float y, float angle)
+	{
+		setX(x);
+		setY(y);
+		setTexture(template.getBullet().getTexture());
+		setLife(template.getBullet().getLife());
+	}
 	
 	public abstract AbstractBullet newInstance();
 	

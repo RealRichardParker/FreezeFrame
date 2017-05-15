@@ -12,13 +12,26 @@ public class UCMBullet extends AbstractPolarBullet
 {
 	private float tanVel;
 	
+	private float time;
+	
+	public float getTanVel()
+	{
+		return tanVel;
+	}
+	
+	public void setTanVel(float tanVel)
+	{
+		this.tanVel = tanVel;
+	}
+	
 	@Override
 	public void init(BulletTemplate template, float x, float y, float angle)
 	{
-		setX(x);
-		setY(y);
-		setAngle(angle);
-		setRadVel(template.getVel());
+		super.init(template, x, y, angle);
+		
+		tanVel = template.getBullet(this).getTanVel();
+		
+		time = 0;
 	}
 	
 	@Override
@@ -30,6 +43,9 @@ public class UCMBullet extends AbstractPolarBullet
 	@Override
 	public void updatePolar(float delta)
 	{
-		setAngle(getAngle() + tanVel * delta);
+		time += delta;
+		
+		if (delta != 0)
+			setAngle(getAngle() + tanVel * delta / time * 10);
 	}
 }

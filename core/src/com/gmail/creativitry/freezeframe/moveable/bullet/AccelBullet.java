@@ -15,13 +15,45 @@ public class AccelBullet extends AbstractPolarBullet
 	private float velMin;
 	private float velMax;
 	
+	public float getAccel()
+	{
+		return accel;
+	}
+	
+	public void setAccel(float accel)
+	{
+		this.accel = accel;
+	}
+	
+	public float getVelMin()
+	{
+		return velMin;
+	}
+	
+	public void setVelMin(float velMin)
+	{
+		this.velMin = velMin;
+	}
+	
+	public float getVelMax()
+	{
+		return velMax;
+	}
+	
+	public void setVelMax(float velMax)
+	{
+		this.velMax = velMax;
+	}
+	
 	@Override
 	public void init(BulletTemplate template, float x, float y, float angle)
 	{
-		setX(x);
-		setY(y);
-		setAngle(angle);
-		setRadVel(template.getVel());
+		super.init(template, x, y, angle);
+		
+		vel = template.getVel();
+		accel = template.getBullet(this).getAccel();
+		velMin = template.getBullet(this).getVelMin();
+		velMax = template.getBullet(this).getVelMax();
 	}
 	
 	@Override

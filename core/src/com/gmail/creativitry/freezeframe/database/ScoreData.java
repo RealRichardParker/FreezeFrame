@@ -8,7 +8,7 @@
  */
 package com.gmail.creativitry.freezeframe.database;
 
-import com.gmail.creativitry.freezeframe.RandomGenerator;
+import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 
 import java.io.Serializable;
 import java.net.InetAddress;

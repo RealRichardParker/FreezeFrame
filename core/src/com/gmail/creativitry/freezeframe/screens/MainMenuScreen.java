@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
 import com.gmail.creativitry.freezeframe.InputManager;
-import com.gmail.creativitry.freezeframe.RandomGenerator;
+import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 
 public class MainMenuScreen extends AbstractScreen
 {

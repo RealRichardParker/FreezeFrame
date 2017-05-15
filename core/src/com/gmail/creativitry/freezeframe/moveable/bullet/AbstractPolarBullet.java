@@ -15,6 +15,8 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 	private float angle;
 	private float radVel;
 	
+	private float distFromCenter;
+	
 	public float getAngle()
 	{
 		return angle;
@@ -39,6 +41,14 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 		this.radVel = radVel;
 	}
 	
+	@Override
+	public void init(BulletTemplate template, float x, float y, float angle)
+	{
+		super.init(template, x, y, angle);
+		setAngle(angle);
+		setRadVel(template.getVel());
+	}
+	
 	/**
 	 * Updates position and velocity every frame
 	 *
@@ -57,6 +67,6 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 	public void polarToXY()
 	{
 		setVelX(radVel * MathUtils.cosDeg(angle));
-		setVelX(radVel * MathUtils.sinDeg(angle));
+		setVelY(radVel * MathUtils.sinDeg(angle));
 	}
 }

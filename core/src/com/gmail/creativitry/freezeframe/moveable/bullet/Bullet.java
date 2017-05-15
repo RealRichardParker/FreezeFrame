@@ -15,12 +15,10 @@ public class Bullet extends AbstractBullet
 	@Override
 	public void init(BulletTemplate template, float x, float y, float angle)
 	{
-		setX(x);
-		setY(y);
+		super.init(template, x, y, angle);
+		
 		setVelX(MathUtils.cosDeg(angle) * template.getVel());
 		setVelY(MathUtils.sinDeg(angle) * template.getVel());
-		setTexture(template.getBullet().getTexture());
-		setLife(template.getBullet().getLife());
 	}
 	
 	@Override

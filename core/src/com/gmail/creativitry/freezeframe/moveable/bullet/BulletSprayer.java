@@ -11,10 +11,10 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.RandomXS128;
-import com.gmail.creativitry.freezeframe.RandomGenerator;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
 import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
+import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 
 public class BulletSprayer implements Loadable, Renderable
 {

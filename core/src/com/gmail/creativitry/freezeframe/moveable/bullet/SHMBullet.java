@@ -15,15 +15,39 @@ public class SHMBullet extends AbstractPolarBullet
 	private float period;
 	private float amplitude;
 	
+	private float startingAngle;
 	private float time;
+	
+	public float getPeriod()
+	{
+		return period;
+	}
+	
+	public void setPeriod(float period)
+	{
+		this.period = period;
+	}
+	
+	public float getAmplitude()
+	{
+		return amplitude;
+	}
+	
+	public void setAmplitude(float amplitude)
+	{
+		this.amplitude = amplitude;
+	}
 	
 	@Override
 	public void init(BulletTemplate template, float x, float y, float angle)
 	{
-		setX(x);
-		setY(y);
-		setAngle(angle);
-		setRadVel(template.getVel());
+		super.init(template, x, y, angle);
+		
+		period = template.getBullet(this).getPeriod();
+		amplitude = template.getBullet(this).getAmplitude();
+		
+		startingAngle = angle;
+		time = 0;
 	}
 	
 	@Override
@@ -43,6 +67,6 @@ public class SHMBullet extends AbstractPolarBullet
 		while (time >= period)
 			time -= period;
 		
-		setAngle(getAngle() + amplitude * MathUtils.cosDeg(MathUtils.PI2 / period));
+		setAngle(startingAngle + amplitude * MathUtils.cosDeg(MathUtils.PI2 / period * time));
 	}
 }

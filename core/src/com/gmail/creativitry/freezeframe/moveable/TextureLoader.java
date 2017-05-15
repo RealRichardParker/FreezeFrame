@@ -22,9 +22,10 @@ public class TextureLoader
 	{
 		Json json = new Json();
 		MoveableTexture texture = json.fromJson(MoveableTexture.class, Gdx.files.internal(path + ".json"));
-		assetManager.load(path + ".png", Texture.class);
-		assetManager.finishLoading();
-		texture.setTexture(assetManager.get(path + ".png", Texture.class));
+		final String imageName = path + ".png";
+		assetManager.load(imageName, Texture.class);
+		assetManager.finishLoadingAsset(imageName);
+		texture.setTexture(assetManager.get(imageName, Texture.class));
 		return texture;
 	}
 }

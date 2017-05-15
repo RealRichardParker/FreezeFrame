@@ -21,10 +21,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
 import com.gmail.creativitry.freezeframe.HealthBar;
 import com.gmail.creativitry.freezeframe.Player;
-import com.gmail.creativitry.freezeframe.RandomGenerator;
 import com.gmail.creativitry.freezeframe.database.ScoreData;
 import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
 import com.gmail.creativitry.freezeframe.moveable.bullet.BulletSprayer;
+import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 
 public class GameScreen extends AbstractScreen
 {

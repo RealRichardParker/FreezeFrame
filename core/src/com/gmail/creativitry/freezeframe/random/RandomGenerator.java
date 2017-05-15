@@ -6,7 +6,7 @@
  * Period: 3
  * Date: 5/13/2017
  */
-package com.gmail.creativitry.freezeframe;
+package com.gmail.creativitry.freezeframe.random;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.RandomXS128;
@@ -164,6 +164,11 @@ public class RandomGenerator
 		double norm = random.nextGaussian();
 		
 		return (float) ((norm * std) + mean);
+	}
+	
+	public float nextFloat(AbstractDistribution distribution)
+	{
+		return distribution.nextFloat(random);
 	}
 	
 	@Override
