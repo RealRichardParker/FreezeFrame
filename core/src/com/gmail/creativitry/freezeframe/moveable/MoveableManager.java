@@ -79,7 +79,7 @@ public class MoveableManager implements Renderable
 			
 			if (moveable.isColliding(player.getPosition(), player.getRadius()))
 			{
-				//moveable.onCollision(player);
+				moveable.onCollision(player);
 				destroyMoveable(iter, moveable);
 			}
 			else if (moveable.decrementLife(delta))

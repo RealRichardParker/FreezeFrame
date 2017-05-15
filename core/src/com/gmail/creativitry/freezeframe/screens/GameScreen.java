@@ -35,6 +35,7 @@ public class GameScreen extends AbstractScreen
 	public static final int SCORE_GRAZE = 5;
 	public static final float DIFFICULTY_MODIFIER = 0.002f;
 	public static final float STARTING_TIMER_RATE = 0.5f;
+	public static final int DELTA_THRESHOLD = 2;
 	
 	private RandomGenerator random;
 	
@@ -215,7 +216,8 @@ public class GameScreen extends AbstractScreen
 	@Override
 	public void render(float delta)
 	{
-		super.render(delta);
+		if (delta > DELTA_THRESHOLD)
+			super.render(delta);
 		
 		timer.setPosition(player.getPosition().x * SCREEN_WIDTH / GAME_WIDTH - timer.getImageWidth() / 2,
 			player.getPosition().y * SCREEN_HEIGHT / GAME_HEIGHT - timer.getImageHeight() / 2);
