@@ -111,4 +111,19 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 			", score=" + score +
 			'}';
 	}
+	
+	public String getName()
+	{
+		return name;
+	}
+	
+	public String getSeed()
+	{
+		return seed;
+	}
+	
+	public long getScore()
+	{
+		return score;
+	}
 }

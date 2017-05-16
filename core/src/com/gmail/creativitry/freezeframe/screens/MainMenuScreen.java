@@ -120,10 +120,7 @@ public class MainMenuScreen extends AbstractScreen
 		table.pad(100);
 		stack.add(table);
 		
-		//table.setDebug(true);
-		
-		table.bottom();
-		table.left();
+		table.bottom().left();
 		
 		startButton = new TextButton("Start", getSkin());
 		startButton.getLabel().setStyle(getSkin().get("title", Label.LabelStyle.class));

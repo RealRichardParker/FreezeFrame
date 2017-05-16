@@ -1,5 +1,5 @@
 /**
- * ScoreIO.java
+ * Scores.java
  * Description
  *
  * @author creativitRy
@@ -11,12 +11,12 @@ package com.gmail.creativitry.freezeframe.database;
 import java.io.*;
 import java.util.TreeSet;
 
-public class ScoreIO
+public class Scores
 {
 	private TreeSet<ScoreData> data;
 	private String fileName;
 	
-	public ScoreIO()
+	public Scores()
 	{
 		fileName = "scores.dat";
 	}
@@ -48,5 +48,10 @@ public class ScoreIO
 		{
 			e.printStackTrace();
 		}
+	}
+	
+	public TreeSet<ScoreData> getData()
+	{
+		return data;
 	}
 }

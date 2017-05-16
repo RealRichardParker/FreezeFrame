@@ -12,9 +12,10 @@ import com.badlogic.gdx.math.MathUtils;
 
 public abstract class AbstractPolarBullet extends AbstractBullet
 {
+	private static final float ANGLES_IN_CIRCLE = 360;
+	
 	private float angle;
 	private float radVel;
-	private float final ANGLES_IN_CIRCLE  = 360;
 	
 	private float distFromCenter;
 	
@@ -27,7 +28,7 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 	{
 		while (angle < 0)
 			angle += ANGLES_IN_CIRCLE;
-		while (angle >= 360)
+		while (angle >= ANGLES_IN_CIRCLE)
 			angle -= ANGLES_IN_CIRCLE;
 		this.angle = angle;
 	}
