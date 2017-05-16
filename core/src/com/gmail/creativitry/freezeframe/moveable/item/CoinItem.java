@@ -1,3 +1,11 @@
+/**
+ * CoinItem.java
+ * A coin item which increments points when picked up
+ *
+ * @author Gahwon Lee
+ *         Date: 5/15/2017.
+ */
+
 package com.gmail.creativitry.freezeframe.moveable.item;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -5,12 +13,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.moveable.MoveableTexture;
 
-/**
- * Description
- *
- * @author Gahwon Lee
- *         Date: 5/15/2017.
- */
 public class CoinItem extends AbstractItem
 {
 	

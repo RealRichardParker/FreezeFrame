@@ -1,6 +1,6 @@
 /**
  * Bullet.java
- * Description
+ * A bullet that moves with constant velocity
  *
  * @author creativitRy
  * Period: 3

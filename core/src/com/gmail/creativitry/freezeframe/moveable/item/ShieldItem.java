@@ -1,14 +1,17 @@
+/**
+ * ShieldItem.java
+ * Item that prevents losing of a life from a single bullet collision
+ *
+ * @author Gahwon Lee
+ *         Date: 5/15/2017.
+ */
+
+
 package com.gmail.creativitry.freezeframe.moveable.item;
 
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.moveable.MoveableTexture;
 
-/**
- * Description
- *
- * @author Gahwon Lee
- *         Date: 5/15/2017.
- */
 public class ShieldItem extends AbstractItem
 {
 	public ShieldItem(float x, float y, MoveableTexture texture)

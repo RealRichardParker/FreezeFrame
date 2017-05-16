@@ -1,6 +1,6 @@
 /**
  * BulletTemplate.java
- * Description
+ * Creates a pattern to spawn bullets in
  *
  * @author Tiger
  * Date: 5/9/2017

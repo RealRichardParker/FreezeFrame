@@ -1,6 +1,6 @@
 /**
  * AbstractItem.java
- * Description
+ * Describes an Item
  *
  * @author Tiger
  * Date: 5/10/2017

@@ -1,6 +1,6 @@
 /**
  * ScoreScreen.java
- * Description
+ * Displays a screen holding high scores
  *
  * @author creativitRy
  * Period: 3

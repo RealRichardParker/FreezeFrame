@@ -1,6 +1,6 @@
 /**
  * AbstractDistribution.java
- * Description
+ * Describes a distribution of numbers
  *
  * @author creativitRy
  * Period: 3

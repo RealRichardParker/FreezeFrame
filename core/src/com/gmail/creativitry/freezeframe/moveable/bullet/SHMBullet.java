@@ -1,6 +1,6 @@
 /**
  * SHMBullet.java
- * Description
+ * A bullet that oscillates in motion similar to simple harmonic motion
  *
  * @author creativitRy
  * Period: 3

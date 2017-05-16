@@ -1,6 +1,6 @@
 /**
  * AccelBullet.java
- * Description
+ * Describes a bullet that moves with non constant velocity
  *
  * @author creativitRy
  * Period: 3
