@@ -1,3 +1,11 @@
+/**
+ * ItemSpawner.java
+ * //TODO Description
+ *
+ * @author Gahwon Lee
+ *         Date: 5/15/2017.
+ */
+
 package com.gmail.creativitry.freezeframe.moveable.item;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -12,12 +20,6 @@ import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 import com.gmail.creativitry.freezeframe.random.UniformDistribution;
 import com.gmail.creativitry.freezeframe.screens.GameScreen;
 
-/**
- * Description
- *
- * @author Gahwon Lee
- *         Date: 5/15/2017.
- */
 public class ItemSpawner implements Loadable, Renderable
 {
 	private static final String[] ITEM_TEXTURES = {};

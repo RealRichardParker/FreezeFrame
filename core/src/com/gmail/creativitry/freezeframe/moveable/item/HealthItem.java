@@ -1,14 +1,16 @@
+/**
+ * HealthItem.java
+ * A Health item that increments the number of lives a player has when picked up
+ *
+ * @author Gahwon Lee
+ *         Date: 5/15/2017.
+ */
+
 package com.gmail.creativitry.freezeframe.moveable.item;
 
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.moveable.MoveableTexture;
 
-/**
- * Description
- *
- * @author Gahwon Lee
- *         Date: 5/15/2017.
- */
 public class HealthItem extends AbstractItem
 {
 	public HealthItem(float x, float y, MoveableTexture texture)

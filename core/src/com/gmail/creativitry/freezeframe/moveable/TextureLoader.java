@@ -1,6 +1,6 @@
 /**
  * TextureLoader.java
- * Description
+ * Loads Textures
  *
  * @author Tiger
  * Date: 5/9/2017

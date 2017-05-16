@@ -1,6 +1,6 @@
 /**
  * UCMBullet.java
- * Description
+ * A bullet that moves in circular motion
  *
  * @author creativitRy
  * Period: 3

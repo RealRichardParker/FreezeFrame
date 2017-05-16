@@ -1,14 +1,16 @@
+/**
+ * MagnetItem.java
+ * Item that increases player pickup range
+ * @author Gahwon Lee
+ *         Date: 5/15/2017.
+ */
+
 package com.gmail.creativitry.freezeframe.moveable.item;
 
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.moveable.MoveableTexture;
 
-/**
- * Description
- *
- * @author Gahwon Lee
- *         Date: 5/15/2017.
- */
+
 public class MagnetItem extends AbstractItem
 {
 	public MagnetItem(float x, float y, MoveableTexture texture)

@@ -1,6 +1,6 @@
 /**
- * BulletTexture.java
- * Description
+ * MoveableTexture.java
+ * Contains information for a Moveable's texture
  *
  * @author Tiger
  * Date: 5/9/2017

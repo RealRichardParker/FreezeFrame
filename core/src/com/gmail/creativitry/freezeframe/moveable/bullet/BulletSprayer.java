@@ -1,6 +1,6 @@
 /**
  * BulletSprayer.java
- * Description
+ * Spawns bullets in a pattern
  *
  * @author Tiger
  * Date: 5/4/2017.
