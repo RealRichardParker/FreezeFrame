@@ -13,6 +13,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -37,6 +38,8 @@ public class GameScreen extends AbstractScreen
 	public static final float DIFFICULTY_MODIFIER = 0.002f;
 	public static final float STARTING_TIMER_RATE = 0.5f;
 	public static final int DELTA_THRESHOLD = 2;
+	public static final int TILED = 3;
+	public static final int BACKGROUND_SPEED = 30;
 	
 	private RandomGenerator random;
 	
@@ -58,6 +61,11 @@ public class GameScreen extends AbstractScreen
 	private MoveableManager moveableManager;
 	
 	private boolean alive;
+	
+	private TextureRegion background;
+	private float backgroundX;
+	private float backgroundY;
+	
 	
 	/**
 	 * Constructs a new game screen with the given game instance and the random number generator
@@ -84,6 +92,7 @@ public class GameScreen extends AbstractScreen
 		timerRate = STARTING_TIMER_RATE;
 		
 		alive = true;
+		
 	}
 	
 	/**
@@ -98,10 +107,19 @@ public class GameScreen extends AbstractScreen
 		bulletSprayer.load(manager);
 		healthBar.load(manager);
 		
-		final String path = "timer.png";
-		manager.load(path, Texture.class);
-		manager.finishLoadingAsset(path);
-		timer = new Image(manager.get(path, Texture.class));
+		final String timerPath = "timer.png";
+		manager.load(timerPath, Texture.class);
+		manager.finishLoadingAsset(timerPath);
+		timer = new Image(manager.get(timerPath, Texture.class));
+		
+		final String backgroundPath = "space.png";
+		manager.load(backgroundPath, Texture.class);
+		manager.finishLoadingAsset(backgroundPath);
+		Texture backgroundTexture = manager.get(backgroundPath, Texture.class);
+		backgroundTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
+		background = new TextureRegion(backgroundTexture, backgroundTexture.getWidth() * TILED, backgroundTexture.getHeight() * TILED);
+		backgroundX = -backgroundTexture.getWidth() * 2;
+		backgroundY = -backgroundTexture.getHeight() * 2;
 	}
 	
 	/**
@@ -117,6 +135,7 @@ public class GameScreen extends AbstractScreen
 		healthBar.dispose(manager);
 		
 		manager.unload("timer.png");
+		manager.unload("space.png");
 	}
 	
 	/**
@@ -174,7 +193,6 @@ public class GameScreen extends AbstractScreen
 		if (alive)
 		{
 			batch.begin();
-			player.render(batch, delta);
 			
 			float multiplier = 1;
 			if (player.getVelocityDir().x == 0 && player.getVelocityDir().y == 0 && !player.isTimeMove())
@@ -204,6 +222,17 @@ public class GameScreen extends AbstractScreen
 			
 			float scalar = delta * multiplier;
 			
+			backgroundX -= BACKGROUND_SPEED * scalar;
+			while (backgroundX < -background.getTexture().getWidth() * 2)
+				backgroundX += background.getTexture().getWidth();
+			backgroundY -= BACKGROUND_SPEED * scalar;
+			while (backgroundY < -background.getTexture().getHeight() * 2)
+				backgroundY += background.getTexture().getHeight();
+			
+			batch.draw(background, backgroundX, backgroundY);
+			
+			player.render(batch, delta);
+			
 			timerRate += scalar * DIFFICULTY_MODIFIER;
 			
 			moveableManager.render(batch, scalar);
@@ -229,8 +258,7 @@ public class GameScreen extends AbstractScreen
 	@Override
 	public void render(float delta)
 	{
-		if (delta < DELTA_THRESHOLD)
-			super.render(delta);
+		super.render(Math.min(delta, DELTA_THRESHOLD));
 		
 		timer.setPosition(player.getPosition().x * SCREEN_WIDTH / GAME_WIDTH - timer.getImageWidth() / 2,
 			player.getPosition().y * SCREEN_HEIGHT / GAME_HEIGHT - timer.getImageHeight() / 2);
