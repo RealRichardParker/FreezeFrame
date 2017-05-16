@@ -14,7 +14,7 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 {
 	private float angle;
 	private float radVel;
-	private float final ANGLES_IN_CIRCLE  = 360;
+	private final float DEGREES_IN_CIRCLE = 360;
 	
 	private float distFromCenter;
 	
@@ -26,9 +26,9 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 	public void setAngle(float angle)
 	{
 		while (angle < 0)
-			angle += ANGLES_IN_CIRCLE;
+			angle += DEGREES_IN_CIRCLE;
 		while (angle >= 360)
-			angle -= ANGLES_IN_CIRCLE;
+			angle -= DEGREES_IN_CIRCLE;
 		this.angle = angle;
 	}
 	
