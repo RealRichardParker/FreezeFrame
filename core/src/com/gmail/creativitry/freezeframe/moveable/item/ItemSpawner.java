@@ -25,7 +25,7 @@ public class ItemSpawner implements Loadable, Renderable
 	private static final int THRESHOLD = 25;
 	private static final UniformDistribution X_POS = new UniformDistribution(10, GameScreen.GAME_WIDTH - 10);
 	private static final float Y_POS = GameScreen.GAME_HEIGHT + 10;
-	public static final float[] ITEM_CHANCES = {5, 1, 1, 3};
+	public static final float[] ITEM_CHANCES = {8, 1, 1, 3};
 	
 	private MoveableManager moveableManager;
 	private RandomGenerator random;

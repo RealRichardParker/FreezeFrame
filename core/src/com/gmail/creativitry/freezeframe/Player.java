@@ -11,7 +11,9 @@ package com.gmail.creativitry.freezeframe;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
@@ -21,7 +23,6 @@ public class Player implements InputProcessor, Loadable, Renderable
 {
 	private static final float SPEED = 200;
 	private static final float FOCUS_SPEED_MODIFIER = 0.5f;
-	private static final int SPRITE_HALF_SIZE = 16;
 	public static final int STARTING_HEALTH = 3;
 	public static final int RADIUS = 4;
 	public static final int HEALTH_MAX = 10;
@@ -30,6 +31,10 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private GameScreen gameScreen;
 	
 	private Texture texture;
+	private Texture focusTexture;
+	
+	private Animation<TextureRegion> magnetAnimation;
+	private Animation<TextureRegion> shieldAnimation;
 	
 	private Vector2 position;
 	private Vector2 velocityDir;
@@ -107,7 +112,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	{
 		health--;
 		gameScreen.updateHealth(health);
-		if(health == 0)
+		if (health == 0)
 		{
 			gameScreen.gameOver();
 		}
@@ -147,23 +152,29 @@ public class Player implements InputProcessor, Loadable, Renderable
 	@Override
 	public void render(SpriteBatch batch, float delta)
 	{
+		final int halfWidth = texture.getWidth() / 2;
+		final int halfHeight = texture.getHeight() / 2;
+		
 		float scalar = delta * SPEED;
 		if (isFocus)
 			scalar *= FOCUS_SPEED_MODIFIER;
 		
 		position.x += velocityDir.x * scalar;
-		if (position.x - SPRITE_HALF_SIZE < 0)
-			position.x = SPRITE_HALF_SIZE;
-		else if (position.x + SPRITE_HALF_SIZE > GameScreen.GAME_WIDTH)
-			position.x = GameScreen.GAME_WIDTH - SPRITE_HALF_SIZE;
+		if (position.x - halfWidth < 0)
+			position.x = halfWidth;
+		else if (position.x + halfWidth > GameScreen.GAME_WIDTH)
+			position.x = GameScreen.GAME_WIDTH - halfWidth;
 		
 		position.y += velocityDir.y * scalar;
-		if (position.y - SPRITE_HALF_SIZE < 0)
-			position.y = SPRITE_HALF_SIZE;
-		else if (position.y + SPRITE_HALF_SIZE > GameScreen.GAME_HEIGHT)
-			position.y = GameScreen.GAME_HEIGHT - SPRITE_HALF_SIZE;
+		if (position.y - halfHeight < 0)
+			position.y = halfHeight;
+		else if (position.y + halfHeight > GameScreen.GAME_HEIGHT)
+			position.y = GameScreen.GAME_HEIGHT - halfHeight;
 		
-		batch.draw(texture, position.x - SPRITE_HALF_SIZE, position.y - SPRITE_HALF_SIZE);
+		batch.draw(texture, position.x - halfWidth, position.y - halfHeight);
+		
+		if (isFocus)
+			batch.draw(focusTexture, position.x - focusTexture.getWidth() / 2, position.y - focusTexture.getHeight() / 2);
 	}
 	
 	/**
@@ -174,11 +185,29 @@ public class Player implements InputProcessor, Loadable, Renderable
 	@Override
 	public void load(AssetManager manager)
 	{
-		final String fileName = "player.png";
+		final String textureFile = "player.png";
+		manager.load(textureFile, Texture.class);
+		manager.finishLoadingAsset(textureFile);
+		texture = manager.get(textureFile);
 		
-		manager.load(fileName, Texture.class);
-		manager.finishLoadingAsset(fileName);
-		texture = manager.get(fileName);
+		final String focusFile = "focus.png";
+		manager.load(focusFile, Texture.class);
+		manager.finishLoadingAsset(focusFile);
+		focusTexture = manager.get(focusFile);
+		
+		/*final String magnetFile = "magnet.png";
+		manager.load(magnetFile, Texture.class);
+		manager.finishLoadingAsset(magnetFile);
+		Texture magnet = manager.get(magnetFile);
+		TextureRegion[][] magnetTexture = TextureRegion.split(magnet, magnet.getHeight(), magnet.getHeight());
+		magnetAnimation = new Animation<TextureRegion>(0.1f, magnetTexture[0]);
+		
+		final String shieldFile = "shield.png";
+		manager.load(shieldFile, Texture.class);
+		manager.finishLoadingAsset(shieldFile);
+		Texture shield = manager.get(shieldFile);
+		TextureRegion[][] shieldTexture = TextureRegion.split(shield, shield.getHeight(), shield.getHeight());
+		magnetAnimation = new Animation<TextureRegion>(0.1f, shieldTexture[0]);*/
 	}
 	
 	/**
@@ -190,6 +219,9 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public void dispose(AssetManager manager)
 	{
 		manager.unload("player.png");
+		manager.unload("focus.png");
+		/*manager.unload("magnet.png");
+		manager.unload("shield.png");*/
 	}
 	
 	/**

@@ -131,7 +131,7 @@ public class MoveableManager implements Renderable
 				
 				if (item instanceof CoinItem && player.isMagnet() && ((CoinItem) item).isNear(player))
 				{
-				
+					((CoinItem) item).getAttracted(player);
 				}
 			}
 		}

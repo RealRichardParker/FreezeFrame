@@ -12,12 +12,21 @@ import com.gmail.creativitry.freezeframe.moveable.MoveableTexture;
 
 public abstract class AbstractItem extends AbstractMoveable
 {
+	public static final int VELOCITY = 50;
+	private float startingVel;
+	
+	public float getStartingVel()
+	{
+		return startingVel;
+	}
+	
 	public AbstractItem(float x, float y, MoveableTexture texture)
 	{
 		setX(x);
 		setY(y);
+		startingVel = VELOCITY;
 		setVelX(0);
-		setVelY(-50);
+		setVelY(-startingVel);
 		setTexture(texture);
 		setLife(10);
 	}

@@ -1,5 +1,6 @@
 package com.gmail.creativitry.freezeframe.moveable.item;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.moveable.MoveableTexture;
@@ -24,6 +25,15 @@ public class CoinItem extends AbstractItem
 	{
 		Vector2 position = player.getPosition();
 		return !(Math.hypot(position.x - getX(), position.y - getY()) > player.getRadius() + getTexture().getGrazeRadius());
+	}
+	
+	public void getAttracted(Player player)
+	{
+		Vector2 position = player.getPosition();
+		float angle = MathUtils.atan2(position.y - getY(), position.x - getY());
+		
+		setVelX(getStartingVel() * MathUtils.cos(angle));
+		setVelY(getStartingVel() * MathUtils.sin(angle));
 	}
 	
 	/**
