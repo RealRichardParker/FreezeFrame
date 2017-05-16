@@ -154,6 +154,7 @@ public class ScoreScreen extends AbstractScreen
 				i++;
 			}
 		}
+		
 	}
 	
 	private void goBack()

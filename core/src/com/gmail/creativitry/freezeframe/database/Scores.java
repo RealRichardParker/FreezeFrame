@@ -43,6 +43,7 @@ public class Scores
 		{
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
 			out.writeObject(data);
+			
 		}
 		catch (IOException e)
 		{
