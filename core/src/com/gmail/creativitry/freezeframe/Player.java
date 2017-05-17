@@ -8,12 +8,14 @@
  */
 package com.gmail.creativitry.freezeframe;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
@@ -27,11 +29,13 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public static final int RADIUS = 4;
 	public static final int HEALTH_MAX = 10;
 	private static final float ITEM_TIME = 10;
+	public static final float DAMAGE_COOLDOWN = 0.5f;
 	
 	private GameScreen gameScreen;
 	
 	private Texture texture;
 	private Texture focusTexture;
+	private ShaderProgram damagedShader;
 	
 	private Animation<TextureRegion> magnetAnimation;
 	private Animation<TextureRegion> shieldAnimation;
@@ -45,6 +49,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private boolean timeMove;
 	private float magnetTime;
 	private float shieldTime;
+	private float damageCooldown;
 	
 	public Player(GameScreen screen, float x, float y)
 	{
@@ -55,6 +60,8 @@ public class Player implements InputProcessor, Loadable, Renderable
 		
 		health = STARTING_HEALTH;
 		radius = RADIUS;
+		
+		damagedShader = new ShaderProgram(Gdx.files.internal("shaders/Damaged.vert"), Gdx.files.internal("shaders/Damaged.frag"));
 	}
 	
 	public boolean isTimeMove()
@@ -110,17 +117,25 @@ public class Player implements InputProcessor, Loadable, Renderable
 	 */
 	public void damage()
 	{
+		if (damageCooldown > 0)
+			return;
 		if (isShield())
 		{
 			shieldTime = 0;
 			return;
 		}
 		health--;
+		damageCooldown = DAMAGE_COOLDOWN;
 		gameScreen.updateHealth(health);
 		if (health == 0)
 		{
 			gameScreen.gameOver();
 		}
+	}
+	
+	public boolean isDamaged()
+	{
+		return damageCooldown > 0;
 	}
 	
 	public void addScore(float score)
@@ -176,7 +191,24 @@ public class Player implements InputProcessor, Loadable, Renderable
 		else if (position.y + halfHeight > GameScreen.GAME_HEIGHT)
 			position.y = GameScreen.GAME_HEIGHT - halfHeight;
 		
+		if (damageCooldown > 0)
+		{
+			batch.end();
+			batch.begin();
+			damagedShader.begin();
+			batch.setShader(damagedShader);
+		}
+		
 		batch.draw(texture, position.x - halfWidth, position.y - halfHeight);
+		
+		if (damageCooldown > 0)
+		{
+			batch.flush();
+			damagedShader.end();
+			batch.setShader(null);
+			
+			damageCooldown -= delta;
+		}
 		
 		if (isFocus)
 			batch.draw(focusTexture, position.x - focusTexture.getWidth() / 2, position.y - focusTexture.getHeight() / 2);

@@ -242,7 +242,9 @@ public class GameScreen extends AbstractScreen
 			moveableManager.render(batch, scalar);
 			bulletSprayer.render(batch, scalar);
 			itemSpawner.render(batch, scalar);
-			addScore(scalar * SCORE_INCREASE_TIME * scoreMultiplier);
+			
+			if (!player.isDamaged())
+				addScore(scalar * SCORE_INCREASE_TIME * scoreMultiplier);
 			scoreMultiplier = 1;
 			
 			batch.end();

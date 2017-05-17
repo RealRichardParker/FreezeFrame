@@ -20,6 +20,9 @@ import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 
 public class BulletSprayer implements Loadable, Renderable
 {
+	private static final float DIFFICULTY_CURVE = 0.001f;
+	private static final float MIN_HOMING_FIRE_RATE = 0.1f;
+	
 	private MoveableManager moveableManager;
 	//position
 	private float x;
@@ -199,6 +202,9 @@ public class BulletSprayer implements Loadable, Renderable
 			
 			moveableManager.addBullet(homingTemplate, x, y, angle);
 		}
+		
+		if (fireRateHoming > MIN_HOMING_FIRE_RATE)
+			fireRateHoming -= DIFFICULTY_CURVE * delta;
 		
 	}
 }
