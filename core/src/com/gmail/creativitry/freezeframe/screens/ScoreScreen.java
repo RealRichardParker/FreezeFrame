@@ -132,7 +132,7 @@ public class ScoreScreen extends AbstractScreen
 		stack.add(scoreTable);
 		scoreTable.center();
 		
-		scoreTable.add(new Label("Final Score: ", getSkin())).pad(50);
+		scoreTable.add(new Label("Final Score: ", getSkin(), "sub-title")).pad(50);
 		scoreTable.add(new Label(scoreData.getName(), getSkin())).pad(50);
 		scoreTable.add(new Label(scoreData.getSeed(), getSkin())).pad(50);
 		scoreTable.add(new Label("" + scoreData.getScore(), getSkin())).pad(50);
@@ -145,7 +145,7 @@ public class ScoreScreen extends AbstractScreen
 			int i = 1;
 			for (ScoreData data : scores.getData())
 			{
-				scoreTable.add(new Label(i + ": ", getSkin())).pad(50);
+				scoreTable.add(new Label(i + ": ", getSkin(), "sub-title")).pad(50);
 				scoreTable.add(new Label(scoreData.getName(), getSkin())).pad(50);
 				scoreTable.add(new Label(scoreData.getSeed(), getSkin())).pad(50);
 				scoreTable.add(new Label("" + scoreData.getScore(), getSkin())).pad(50);
