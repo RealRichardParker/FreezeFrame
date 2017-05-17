@@ -11,6 +11,8 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.RandomXS128;
+import com.badlogic.gdx.math.Vector2;
+import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
 import com.gmail.creativitry.freezeframe.behaviors.Renderable;
 import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
@@ -46,6 +48,11 @@ public class BulletSprayer implements Loadable, Renderable
 	//how long for a given speed the BulletSprayer will rotate
 	private float[] angTime;
 	
+	private Player player;
+	private BulletTemplate homingTemplate;
+	//fire rate of homing bullet
+	private float fireRateHoming;
+	
 	//the BulletSprayer's time, will increment from 0 to fireRate and then reset to 0
 	private float currFireRateTime;
 	private int currFireRateIndex;
@@ -60,10 +67,13 @@ public class BulletSprayer implements Loadable, Renderable
 	//the current rotation
 	private float currRotation;
 	
+	//the current fire time of homing bullet
+	private float currFireRateHomingTime;
+	
 	
 	//TODO: things
 	
-	public BulletSprayer(MoveableManager moveableManager, RandomGenerator random, float x, float y)
+	public BulletSprayer(MoveableManager moveableManager, RandomGenerator random, float x, float y, Player player)
 	{
 		this.moveableManager = moveableManager;
 		this.x = x;
@@ -80,6 +90,8 @@ public class BulletSprayer implements Loadable, Renderable
 		randSize = random.nextInt(5) + 2;
 		this.angVels = random.getRandFloatArr(randSize, -400f, 400f);
 		this.angTime = random.getRandFloatArr(randSize, 2f, 7f);
+		
+		this.player = player;
 	}
 	
 	private static float rand(RandomXS128 random, float lower, float higher)
@@ -172,6 +184,15 @@ public class BulletSprayer implements Loadable, Renderable
 					currRotTimeIndex = 0;
 				
 			}
+		}
+		
+		currFireRateHomingTime += fireRateHoming;
+		while (currFireRateHomingTime <= fireRateHoming)
+		{
+			Vector2 position = player.getPosition();
+			float angle = MathUtils.atan2(position.y - x, position.x - y);
+			
+			moveableManager.addBullet(homingTemplate, x, y, angle);
 		}
 		
 	}

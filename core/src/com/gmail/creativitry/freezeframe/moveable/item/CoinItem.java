@@ -15,7 +15,6 @@ import com.gmail.creativitry.freezeframe.moveable.MoveableTexture;
 
 public class CoinItem extends AbstractItem
 {
-	
 	private static final float SCORE = 50f;
 	
 	public CoinItem(float x, float y, MoveableTexture texture)
@@ -32,10 +31,16 @@ public class CoinItem extends AbstractItem
 	public void getAttracted(Player player)
 	{
 		Vector2 position = player.getPosition();
-		float angle = MathUtils.atan2(position.y - getY(), position.x - getY());
+		float angle = MathUtils.atan2(position.y - getY(), position.x - getX());
 		
 		setVelX(getStartingVel() * MathUtils.cos(angle));
 		setVelY(getStartingVel() * MathUtils.sin(angle));
+	}
+	
+	public void stopGetAttracted()
+	{
+		setVelX(0);
+		setVelY(-getStartingVel());
 	}
 	
 	/**

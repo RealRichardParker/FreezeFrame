@@ -22,7 +22,6 @@ import com.gmail.creativitry.freezeframe.screens.GameScreen;
 
 public class ItemSpawner implements Loadable, Renderable
 {
-	private static final String[] ITEM_TEXTURES = {};
 	private static final UniformDistribution TIME = new UniformDistribution(3, 5);
 	private static final int THRESHOLD = 25;
 	private static final UniformDistribution X_POS = new UniformDistribution(10, GameScreen.GAME_WIDTH - 10);
@@ -57,12 +56,12 @@ public class ItemSpawner implements Loadable, Renderable
 	@Override
 	public void load(AssetManager manager)
 	{
-		StringBuilder sb = new StringBuilder("item/");
+		final String dir = "item/";
 		
-		coinTexture = TextureLoader.load(sb.append("coin").toString(), manager);
-		healthTexture = TextureLoader.load(sb.append("health").toString(), manager);
-		magnetTexture = TextureLoader.load(sb.append("magnet").toString(), manager);
-		shieldTexture = TextureLoader.load(sb.append("shield").toString(), manager);
+		coinTexture = TextureLoader.load(dir + "CoinItem", manager);
+		healthTexture = TextureLoader.load(dir + "HealthItem", manager);
+		magnetTexture = TextureLoader.load(dir + "MagnetItem", manager);
+		shieldTexture = TextureLoader.load(dir + "ShieldItem", manager);
 	}
 	
 	/**
