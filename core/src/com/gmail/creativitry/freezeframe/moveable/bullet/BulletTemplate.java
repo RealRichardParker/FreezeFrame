@@ -14,7 +14,7 @@ import com.gmail.creativitry.freezeframe.random.*;
 
 public class BulletTemplate implements Loadable
 {
-	private static final String[] BULLET_TEXTURES = {"Ball"};
+	private static final String[] BULLET_TEXTURES = {"Ball", "Beam", "Triangular"};
 	
 	private static final AbstractBullet[] BULLET_TYPES = {new Bullet(), new AccelBullet(), new UCMBullet(), new SHMBullet()};
 	private static final float[] TYPE_CHANCES = {5, 3, 3, 1};
@@ -28,6 +28,7 @@ public class BulletTemplate implements Loadable
 	
 	public static final UniformDistribution AMPLITUDE = new UniformDistribution(50, 100);
 	public static final LimitedNormalDistribution PERIOD = new LimitedNormalDistribution(0.001f, 0.00025f, 3);
+	public static final LimitedNormalDistribution HOMING_VELOCITY = new LimitedNormalDistribution(250, 20, 3);
 	
 	private StringBuilder path;
 	private AbstractBullet bullet;
@@ -35,7 +36,19 @@ public class BulletTemplate implements Loadable
 	
 	public BulletTemplate(RandomGenerator random)
 	{
-		bullet = random.choose(BULLET_TYPES, TYPE_CHANCES);
+		this(random, random.choose(BULLET_TYPES, TYPE_CHANCES));
+	}
+	
+	public BulletTemplate(RandomGenerator random, boolean isHoming)
+	{
+		this(random, new Bullet());
+		if (isHoming)
+			vel = random.nextFloat(HOMING_VELOCITY);
+	}
+	
+	public BulletTemplate(RandomGenerator random, AbstractBullet bulletType)
+	{
+		bullet = bulletType;
 		System.out.println(bullet);
 		if (bullet instanceof AccelBullet)
 		{

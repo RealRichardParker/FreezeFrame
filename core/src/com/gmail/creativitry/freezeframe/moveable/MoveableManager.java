@@ -90,7 +90,7 @@ public class MoveableManager implements Renderable
 			
 			if (moveable.isColliding(player))
 			{
-				//moveable.onCollision(player);
+				moveable.onCollision(player);
 				destroyMoveable(iter, moveable);
 			}
 			else if (moveable.decrementLife(delta))
@@ -99,7 +99,7 @@ public class MoveableManager implements Renderable
 			}
 			else
 			{
-				moveable.render(batch);
+				moveable.render(batch, moveable.getVelX(), moveable.getVelY());
 				
 				if (moveable instanceof AbstractBullet && ((AbstractBullet) moveable).isGrazing(player))
 				{
@@ -129,7 +129,7 @@ public class MoveableManager implements Renderable
 			}
 			else
 			{
-				item.render(batch);
+				item.render(batch, item.getVelX(), item.getVelY());
 				
 				if (item instanceof CoinItem)
 				{

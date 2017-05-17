@@ -92,6 +92,8 @@ public class BulletSprayer implements Loadable, Renderable
 		this.angTime = random.getRandFloatArr(randSize, 2f, 7f);
 		
 		this.player = player;
+		homingTemplate = new BulletTemplate(random, true);
+		fireRateHoming = random.nextFloat(.3f, .3f);
 	}
 	
 	private static float rand(RandomXS128 random, float lower, float higher)
@@ -120,6 +122,7 @@ public class BulletSprayer implements Loadable, Renderable
 	public void load(AssetManager manager)
 	{
 		bulletTemplate.load(manager);
+		homingTemplate.load(manager);
 	}
 	
 	/**
@@ -131,6 +134,7 @@ public class BulletSprayer implements Loadable, Renderable
 	public void dispose(AssetManager manager)
 	{
 		bulletTemplate.dispose(manager);
+		homingTemplate.dispose(manager);
 	}
 	
 	/**
@@ -186,11 +190,12 @@ public class BulletSprayer implements Loadable, Renderable
 			}
 		}
 		
-		currFireRateHomingTime += fireRateHoming;
-		while (currFireRateHomingTime <= fireRateHoming)
+		currFireRateHomingTime += delta;
+		while (currFireRateHomingTime >= fireRateHoming)
 		{
+			currFireRateHomingTime -= fireRateHoming;
 			Vector2 position = player.getPosition();
-			float angle = MathUtils.atan2(position.y - x, position.x - y);
+			float angle = MathUtils.atan2(position.y - y, position.x - x) * MathUtils.radiansToDegrees;
 			
 			moveableManager.addBullet(homingTemplate, x, y, angle);
 		}

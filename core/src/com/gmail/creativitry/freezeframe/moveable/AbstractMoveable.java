@@ -8,6 +8,7 @@
 package com.gmail.creativitry.freezeframe.moveable;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.gmail.creativitry.freezeframe.Player;
 
@@ -41,9 +42,23 @@ public abstract class AbstractMoveable
 		y += velY * delta;
 	}
 	
-	public void render(SpriteBatch batch)
+	private float lastAngle;
+	
+	public void render(SpriteBatch batch, float xVel, float yVel)
 	{
-		batch.draw(texture.getTexture(), x - texture.getHalfSize(), y - texture.getHalfSize());
+		/*float sprayerX = GameScreen.GAME_WIDTH / 2;
+		float sprayerY = GameScreen.GAME_HEIGHT - GameScreen.VERTICAL_PAD;
+		float angle = MathUtils.atan2(y - sprayerY, x - sprayerX) * MathUtils.radiansToDegrees;*/
+		float angle;
+		if (xVel == 0 && yVel == 0)
+			angle = lastAngle;
+		else
+		{
+			angle = MathUtils.atan2(yVel, xVel) * MathUtils.radiansToDegrees;
+			lastAngle = angle;
+		}
+		
+		texture.render(batch, x, y, angle);
 	}
 	
 	public float getX()
