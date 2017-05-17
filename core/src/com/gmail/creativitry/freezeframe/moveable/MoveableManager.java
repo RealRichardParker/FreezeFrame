@@ -36,6 +36,7 @@ public class MoveableManager implements Renderable
 		this.player = player;
 		pool = new ObjectMap<>();
 		bullets = new Array<>();
+		items = new Array<>();
 	}
 	
 	public void addBullet(BulletTemplate template, float x, float y, float angle)
@@ -58,6 +59,7 @@ public class MoveableManager implements Renderable
 	
 	public void addItem(AbstractItem item)
 	{
+		System.out.println("ITEM " + item);
 		items.add(item);
 	}
 	
@@ -73,7 +75,7 @@ public class MoveableManager implements Renderable
 	public void render(SpriteBatch batch, float delta)
 	{
 		renderBullets(batch, delta);
-		
+		renderItems(batch, delta);
 		
 	}
 	
@@ -88,7 +90,7 @@ public class MoveableManager implements Renderable
 			
 			if (moveable.isColliding(player))
 			{
-				moveable.onCollision(player);
+				//moveable.onCollision(player);
 				destroyMoveable(iter, moveable);
 			}
 			else if (moveable.decrementLife(delta))
@@ -129,9 +131,16 @@ public class MoveableManager implements Renderable
 			{
 				item.render(batch);
 				
-				if (item instanceof CoinItem && player.isMagnet() && ((CoinItem) item).isNear(player))
+				if (item instanceof CoinItem)
 				{
-					((CoinItem) item).getAttracted(player);
+					if (player.isMagnet() && ((CoinItem) item).isNear(player))
+					{
+						((CoinItem) item).getAttracted(player);
+					}
+					else
+					{
+						((CoinItem) item).stopGetAttracted();
+					}
 				}
 			}
 		}

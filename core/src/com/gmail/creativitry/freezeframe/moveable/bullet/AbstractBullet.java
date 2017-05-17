@@ -23,7 +23,7 @@ public abstract class AbstractBullet extends AbstractMoveable
 	@Override
 	public void onCollision(Player player)
 	{
-		player.decrementLife();
+		player.damage();
 	}
 	
 	public void init(BulletTemplate template, float x, float y, float angle)

@@ -108,8 +108,13 @@ public class Player implements InputProcessor, Loadable, Renderable
 	/**
 	 * Decrements the life of the Player
 	 */
-	public void decrementLife()
+	public void damage()
 	{
+		if (isShield())
+		{
+			shieldTime = 0;
+			return;
+		}
 		health--;
 		gameScreen.updateHealth(health);
 		if (health == 0)

@@ -19,7 +19,9 @@ import java.util.TreeSet;
 
 public class Scores
 {
-	public static final String FILE_PATH = "scores.dat";
+	//todo: at school
+	private static final FileHandle SCHOOL_FILE_PATH = Gdx.files.absolute("S:/Templates/CS/Gahwon/scores.dat");
+	private static final FileHandle FILE_PATH = Gdx.files.local("scores.dat");
 	private TreeSet<ScoreData> data;
 	
 	public Scores(ScoreData scoreData)
@@ -36,24 +38,31 @@ public class Scores
 	@SuppressWarnings("unchecked")
 	private void load()
 	{
-		FileHandle file = Gdx.files.local(FILE_PATH);
-		if (file.exists())
+		FileHandle fileHandle;
+		if (SCHOOL_FILE_PATH.exists())
 		{
-			try
-			{
-				ObjectInputStream in = new ObjectInputStream(file.read());
-				data = (TreeSet<ScoreData>) in.readObject();
-				in.close();
-			}
-			catch (IOException | ClassNotFoundException e)
-			{
-				e.printStackTrace();
-				
-				data = new TreeSet<>();
-			}
+			fileHandle = SCHOOL_FILE_PATH;
+		}
+		else if (FILE_PATH.exists())
+		{
+			fileHandle = FILE_PATH;
 		}
 		else
 		{
+			data = new TreeSet<>();
+			return;
+		}
+		
+		try
+		{
+			ObjectInputStream in = new ObjectInputStream(fileHandle.read());
+			data = (TreeSet<ScoreData>) in.readObject();
+			in.close();
+		}
+		catch (IOException | ClassNotFoundException e)
+		{
+			e.printStackTrace();
+			
 			data = new TreeSet<>();
 		}
 		
@@ -61,11 +70,19 @@ public class Scores
 	
 	private void save()
 	{
-		FileHandle file = Gdx.files.local(FILE_PATH);
+		FileHandle fileHandle;
+		if (SCHOOL_FILE_PATH.exists())
+		{
+			fileHandle = SCHOOL_FILE_PATH;
+		}
+		else
+		{
+			fileHandle = FILE_PATH;
+		}
 		
 		try
 		{
-			ObjectOutputStream out = new ObjectOutputStream(file.write(false));
+			ObjectOutputStream out = new ObjectOutputStream(fileHandle.write(false));
 			out.writeObject(data);
 			out.close();
 		}

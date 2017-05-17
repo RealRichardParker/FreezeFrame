@@ -36,7 +36,7 @@ public class GameScreen extends AbstractScreen
 	public static final int SCORE_INCREASE_TIME = 6;
 	public static final int SCORE_GRAZE = 5;
 	public static final float DIFFICULTY_MODIFIER = 0.002f;
-	public static final float STARTING_TIMER_RATE = 0.5f;
+	public static final float STARTING_TIMER_RATE = 0.2f;
 	public static final int DELTA_THRESHOLD = 2;
 	public static final int TILED = 3;
 	public static final int BACKGROUND_SPEED = 30;
@@ -81,7 +81,9 @@ public class GameScreen extends AbstractScreen
 		player = new Player(this, GAME_WIDTH / 2, VERTICAL_PAD);
 		addInputProcessor(player);
 		moveableManager = new MoveableManager(this, player);
-		bulletSprayer = new BulletSprayer(moveableManager, random, GAME_WIDTH / 2, GAME_HEIGHT - VERTICAL_PAD);
+		bulletSprayer = new BulletSprayer(moveableManager, random, GAME_WIDTH / 2, GAME_HEIGHT - VERTICAL_PAD, player);
+		itemSpawner = new ItemSpawner(moveableManager, random, player);
+		
 		healthBar = new HealthBar(Player.STARTING_HEALTH);
 		scoreMultiplier = 1;
 		
@@ -105,6 +107,7 @@ public class GameScreen extends AbstractScreen
 	{
 		player.load(manager);
 		bulletSprayer.load(manager);
+		itemSpawner.load(manager);
 		healthBar.load(manager);
 		
 		final String timerPath = "timer.png";
@@ -132,6 +135,7 @@ public class GameScreen extends AbstractScreen
 	{
 		player.dispose(manager);
 		bulletSprayer.dispose(manager);
+		itemSpawner.dispose(manager);
 		healthBar.dispose(manager);
 		
 		manager.unload("timer.png");
@@ -237,6 +241,7 @@ public class GameScreen extends AbstractScreen
 			
 			moveableManager.render(batch, scalar);
 			bulletSprayer.render(batch, scalar);
+			itemSpawner.render(batch, scalar);
 			addScore(scalar * SCORE_INCREASE_TIME * scoreMultiplier);
 			scoreMultiplier = 1;
 			
