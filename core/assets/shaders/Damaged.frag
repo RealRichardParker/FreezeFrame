@@ -10,7 +10,7 @@
  */
 
 #ifdef GL_ES
-    precision mediump float;
+	precision mediump float;
 #endif
 
 const float alphaMultiplier = 0.5;
@@ -22,8 +22,8 @@ uniform mat4 u_projTrans;
 
 void main()
 {
-        vec4 color = texture2D(u_texture, v_texCoords).rgba;
-        vec3 final = mix(vec3(1, 0, 0), color.rgb, 0.5 * color.a);
+	vec4 color = texture2D(u_texture, v_texCoords).rgba;
+	vec3 final = mix(vec3(1, 0, 0), color.rgb, 0.5 * color.a);
 
-        gl_FragColor = vec4(final, color.a);
+	gl_FragColor = vec4(final, color.a);
 }
