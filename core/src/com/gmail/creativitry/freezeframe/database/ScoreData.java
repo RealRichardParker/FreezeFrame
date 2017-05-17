@@ -13,17 +13,19 @@ import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 
 public class ScoreData implements Comparable<ScoreData>, Serializable
 {
-	private static final int PRIME = 31;
-	private Instant time;
+	private static final transient int PRIME = 31;
+	private LocalDateTime time;
 	private String name;
 	private String seed;
 	private long score;
 	
-	public ScoreData(Instant time, String name, String seed, long score)
+	public ScoreData(LocalDateTime time, String name, String seed, long score)
 	{
 		this.time = time;
 		this.name = name;
@@ -33,7 +35,7 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 	
 	public ScoreData(String name, RandomGenerator seed, float score)
 	{
-		this(Instant.now(), name, seed.getSeed(), (long) score);
+		this(LocalDateTime.now(), name, seed.getSeed(), (long) score);
 	}
 	
 	public ScoreData(RandomGenerator random, float score)
@@ -74,7 +76,7 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 			
 			return name.compareTo(o.name);
 		}
-		return Float.compare(score, o.score);
+		return Float.compare(o.score, score);
 	}
 	
 	@Override
@@ -125,5 +127,18 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 	public long getScore()
 	{
 		return score;
+	}
+	
+	public String getUrl()
+	{
+		return String.format("https://docs.google.com/forms/d/e/" +
+				"1FAIpQLScc0046kXez3XgQFkYFE-wCYqIqtbdRm5IYxJ2Hd4qzRH3NYA/viewform?usp" +
+				"=pp_url&entry.1757642521=%s&entry.614906427=%s&entry.1280865127=%d",
+			name, seed, score);
+	}
+	
+	public String getTime()
+	{
+		return time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
 	}
 }

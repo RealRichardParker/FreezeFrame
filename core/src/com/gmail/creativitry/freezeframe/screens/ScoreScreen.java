@@ -9,6 +9,7 @@
 package com.gmail.creativitry.freezeframe.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -28,6 +29,7 @@ import com.gmail.creativitry.freezeframe.database.Scores;
 public class ScoreScreen extends AbstractScreen
 {
 	
+	public static final int HIGHSCORES_AMOUNT = 10;
 	private ScoreData scoreData;
 	private Scores scores;
 	private boolean goBack;
@@ -43,6 +45,7 @@ public class ScoreScreen extends AbstractScreen
 		
 		System.out.println(scoreData);
 		this.scoreData = scoreData;
+		scores = new Scores(scoreData);
 		
 		goBack = false;
 		
@@ -132,29 +135,47 @@ public class ScoreScreen extends AbstractScreen
 		stack.add(scoreTable);
 		scoreTable.center();
 		
-		scoreTable.add(new Label("Final Score: ", getSkin(), "sub-title")).pad(50);
-		scoreTable.add(new Label(scoreData.getName(), getSkin())).pad(50);
-		scoreTable.add(new Label(scoreData.getSeed(), getSkin())).pad(50);
-		scoreTable.add(new Label("" + scoreData.getScore(), getSkin())).pad(50);
+		addData(scoreData, scoreTable, "Final Score");
+		scoreTable.row();
 		
+		TextButton submitButton = new TextButton("Add to the global leaderboard", getSkin());
+		submitButton.addListener(new ChangeListener()
+		{
+			@Override
+			public void changed(ChangeEvent event, Actor actor)
+			{
+				Gdx.net.openURI(scoreData.getUrl());
+			}
+		});
+		scoreTable.add(submitButton).padBottom(50);
 		scoreTable.row();
-		scoreTable.row();
+		
 		
 		if (scores != null && !scores.getData().isEmpty())
 		{
 			int i = 1;
 			for (ScoreData data : scores.getData())
 			{
-				scoreTable.add(new Label(i + ": ", getSkin(), "sub-title")).pad(50);
-				scoreTable.add(new Label(scoreData.getName(), getSkin())).pad(50);
-				scoreTable.add(new Label(scoreData.getSeed(), getSkin())).pad(50);
-				scoreTable.add(new Label("" + scoreData.getScore(), getSkin())).pad(50);
-				
-				scoreTable.row();
+				addData(data, scoreTable, i);
 				i++;
+				
+				if (i > HIGHSCORES_AMOUNT)
+					break;
 			}
 		}
 		
+	}
+	
+	private void addData(ScoreData data, Table scoreTable, Object description)
+	{
+		scoreTable.add(new Label(description + ": ", getSkin(), "sub-title")).padLeft(50).padRight(50 * 2);
+		
+		scoreTable.add(new Label(data.getTime(), getSkin())).padRight(50);
+		scoreTable.add(new Label(data.getName(), getSkin())).padRight(50);
+		scoreTable.add(new Label(data.getSeed(), getSkin())).padRight(50);
+		scoreTable.add(new Label("" + data.getScore(), getSkin())).padRight(50);
+		
+		scoreTable.row();
 	}
 	
 	private void goBack()

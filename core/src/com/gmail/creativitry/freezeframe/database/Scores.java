@@ -8,42 +8,66 @@
  */
 package com.gmail.creativitry.freezeframe.database;
 
-import java.io.*;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.gmail.creativitry.freezeframe.screens.ScoreScreen;
+
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.TreeSet;
 
 public class Scores
 {
+	public static final String FILE_PATH = "scores.dat";
 	private TreeSet<ScoreData> data;
-	private String fileName;
 	
-	public Scores()
+	public Scores(ScoreData scoreData)
 	{
-		fileName = "scores.dat";
+		load();
+		
+		data.add(scoreData);
+		while (data.size() > ScoreScreen.HIGHSCORES_AMOUNT)
+			data.pollLast();
+		
+		save();
 	}
 	
 	@SuppressWarnings("unchecked")
 	private void load()
 	{
-		try
+		FileHandle file = Gdx.files.local(FILE_PATH);
+		if (file.exists())
 		{
-			ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
-			data = (TreeSet<ScoreData>) in.readObject();
+			try
+			{
+				ObjectInputStream in = new ObjectInputStream(file.read());
+				data = (TreeSet<ScoreData>) in.readObject();
+				in.close();
+			}
+			catch (IOException | ClassNotFoundException e)
+			{
+				e.printStackTrace();
+				
+				data = new TreeSet<>();
+			}
 		}
-		catch (IOException | ClassNotFoundException e)
+		else
 		{
-			System.err.print(e);
-			
 			data = new TreeSet<>();
 		}
+		
 	}
 	
 	private void save()
 	{
+		FileHandle file = Gdx.files.local(FILE_PATH);
+		
 		try
 		{
-			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(fileName));
+			ObjectOutputStream out = new ObjectOutputStream(file.write(false));
 			out.writeObject(data);
-			
+			out.close();
 		}
 		catch (IOException e)
 		{
