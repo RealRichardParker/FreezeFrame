@@ -10,7 +10,7 @@
  */
 
 #ifdef GL_ES
-    precision mediump float;
+	precision mediump float;
 #endif
 
 const float alphaMultiplier = 0.5;
@@ -24,9 +24,9 @@ uniform float u_timerVal;
 
 void main()
 {
-        vec4 color = texture2D(u_texture, v_texCoords).rgba;
-        vec3 final = color.rgb;
-        float alpha = sign(color.a) * ((sign(color.a - (1 - u_timerVal)) + 1) / 2) * alphaMultiplier;
+	vec4 color = texture2D(u_texture, v_texCoords).rgba;
+	vec3 final = color.rgb;
+	float alpha = sign(color.a) * ((sign(color.a - (1 - u_timerVal)) + 1) / 2) * alphaMultiplier;
 
-        gl_FragColor = vec4(final, alpha);
+	gl_FragColor = vec4(final, alpha);
 }

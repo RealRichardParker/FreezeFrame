@@ -28,6 +28,12 @@ public class MainMenuScreen extends AbstractScreen
 {
 	public static final Color TOP_COLOR = Color.BLACK;
 	public static final Color BOTTOM_COLOR = Color.MAROON;
+	public static final String INSTRUCTIONS = "Instructions:\n" +
+		"WASD or arrow keys = Move\n" +
+		"Hold SHIFT = Move slower\n" +
+		"Don’t move = Freeze time\n" +
+		"Hold SPACEBAR = Unfreeze time\n" +
+		"Collect ITEMS for various effects";
 	
 	private ShapeRenderer renderer;
 	private TextButton startButton;
@@ -113,6 +119,9 @@ public class MainMenuScreen extends AbstractScreen
 		
 		Label names = new Label("Bryan Lee\tGahwon Lee\tTiger Zhang", getSkin());
 		titleTable.add(names).pad(10);
+		titleTable.row();
+		
+		titleTable.add(new Label(INSTRUCTIONS, getSkin())).pad(10);
 		stack.add(titleTable);
 		
 		Table table = new Table(getSkin());

@@ -22,8 +22,8 @@ varying vec2 v_texCoords;
 
 void main()
 {
-    v_color = a_color;
-    v_color.a = v_color.a * alphaConversion;
-    v_texCoords = a_texCoord0;
-    gl_Position = u_projTrans * a_position;
+	v_color = a_color;
+	v_color.a = v_color.a * alphaConversion;
+	v_texCoords = a_texCoord0;
+	gl_Position = u_projTrans * a_position;
 }

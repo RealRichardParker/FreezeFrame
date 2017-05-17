@@ -47,7 +47,7 @@ public class MoveableTexture
 	{
 		if (rotate)
 		{
-			batch.draw(texture, x - getHalfSize(), y - getHalfSize(), 0, 0,
+			batch.draw(texture, x - texture.getWidth() / 2, y - texture.getHeight() / 2, texture.getWidth() / 2, texture.getHeight() / 2,
 				texture.getWidth(), texture.getHeight(), 1, 1, angle, 0, 0,
 				texture.getWidth(), texture.getHeight(), false, false);
 		}
