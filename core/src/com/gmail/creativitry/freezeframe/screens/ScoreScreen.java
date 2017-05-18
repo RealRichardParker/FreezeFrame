@@ -8,10 +8,13 @@
  */
 package com.gmail.creativitry.freezeframe.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -30,8 +33,15 @@ public class ScoreScreen extends AbstractScreen
 {
 	
 	public static final int HIGHSCORES_AMOUNT = 10;
+	
 	private ScoreData scoreData;
 	private Scores scores;
+	
+	private TextureRegion screenshot;
+	private ShaderProgram screenShader;
+	private int width;
+	private int height;
+	
 	private boolean goBack;
 	
 	/**
@@ -39,13 +49,16 @@ public class ScoreScreen extends AbstractScreen
 	 *
 	 * @param freezeFrame game instance that shows this screen
 	 */
-	public ScoreScreen(FreezeFrame freezeFrame, ScoreData scoreData)
+	public ScoreScreen(FreezeFrame freezeFrame, ScoreData scoreData, TextureRegion screenshot)
 	{
 		super(freezeFrame, SCREEN_WIDTH, SCREEN_HEIGHT);
 		
 		System.out.println(scoreData);
 		this.scoreData = scoreData;
 		scores = new Scores(scoreData);
+		
+		screenShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"), Gdx.files.internal("shaders/Screenshot.frag"));
+		this.screenshot = screenshot;
 		
 		goBack = false;
 		
@@ -87,7 +100,7 @@ public class ScoreScreen extends AbstractScreen
 	@Override
 	public void dispose(AssetManager manager)
 	{
-	
+		screenshot.getTexture().dispose();
 	}
 	
 	/**
@@ -194,5 +207,32 @@ public class ScoreScreen extends AbstractScreen
 	{
 		if (goBack)
 			goBack();
+		else
+		{
+			batch.begin();
+			screenShader.begin();
+			screenShader.setUniformf("u_resolution", width, height);
+			batch.setShader(screenShader);
+			batch.draw(screenshot, 0, 0);
+			batch.flush();
+			screenShader.end();
+			batch.end();
+		}
+	}
+	
+	/**
+	 * Called when the {@link Application} is resized. This can happen at any point during a
+	 * non-paused state but will never happen before a call to create().
+	 *
+	 * @param width  the new width in pixels
+	 * @param height the new height in pixels
+	 */
+	@Override
+	public void resize(int width, int height)
+	{
+		super.resize(width, height);
+		
+		this.width = width;
+		this.height = height;
 	}
 }

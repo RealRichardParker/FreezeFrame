@@ -6,6 +6,7 @@
  * Period: 3
  * Date: 5/4/2017
  */
+
 package com.gmail.creativitry.freezeframe.behaviors;
 
 import com.badlogic.gdx.assets.AssetManager;

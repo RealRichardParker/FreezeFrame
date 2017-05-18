@@ -19,6 +19,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.gmail.creativitry.freezeframe.FreezeFrame;
 import com.gmail.creativitry.freezeframe.HealthBar;
 import com.gmail.creativitry.freezeframe.Player;
@@ -61,6 +62,7 @@ public class GameScreen extends AbstractScreen
 	private MoveableManager moveableManager;
 	
 	private boolean alive;
+	private TextureRegion screenshot;
 	
 	private TextureRegion background;
 	private float backgroundX;
@@ -88,7 +90,7 @@ public class GameScreen extends AbstractScreen
 		scoreMultiplier = 1;
 		
 		timerStage = new Stage(getUiStage().getViewport());
-		timerShader = new ShaderProgram(Gdx.files.internal("shaders/Timer.vert"), Gdx.files.internal("shaders/Timer.frag"));
+		timerShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"), Gdx.files.internal("shaders/Timer.frag"));
 		
 		timerVal = 1;
 		timerRate = STARTING_TIMER_RATE;
@@ -235,7 +237,7 @@ public class GameScreen extends AbstractScreen
 			
 			batch.draw(background, backgroundX, backgroundY);
 			
-			player.render(batch, delta);
+			player.render(batch, scalar);
 			
 			timerRate += scalar * DIFFICULTY_MODIFIER;
 			
@@ -251,7 +253,7 @@ public class GameScreen extends AbstractScreen
 		}
 		else
 		{
-			getFreezeFrame().setScreen(new ScoreScreen(getFreezeFrame(), new ScoreData(random, score)));
+			getFreezeFrame().setScreen(new ScoreScreen(getFreezeFrame(), new ScoreData(random, score), screenshot));
 		}
 	}
 	
@@ -276,10 +278,16 @@ public class GameScreen extends AbstractScreen
 		timerStage.getBatch().setShader(timerShader);
 		timerStage.draw();
 		timerShader.end();
+		
+		if (!alive)
+			screenshot = ScreenUtils.getFrameBufferTexture();
 	}
 	
 	public void gameOver()
 	{
 		alive = false;
+		
+		//In the case where the render method finishes and this method is called
+		screenshot = ScreenUtils.getFrameBufferTexture();
 	}
 }

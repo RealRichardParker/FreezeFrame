@@ -6,6 +6,7 @@
  * Period: 3
  * Date: 5/4/2017
  */
+
 package com.gmail.creativitry.freezeframe.behaviors;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -13,7 +14,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public interface Renderable
 {
 	/**
-	 * Renders this object
+	 * Renders or updates this object
 	 *
 	 * @param batch Batch to render to
 	 * @param delta time in seconds since last tick

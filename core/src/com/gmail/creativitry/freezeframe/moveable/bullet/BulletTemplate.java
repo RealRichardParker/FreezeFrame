@@ -14,8 +14,7 @@ import com.gmail.creativitry.freezeframe.random.*;
 
 public class BulletTemplate implements Loadable
 {
-	private static final String[] BULLET_TEXTURES = {"Ball", "Beam", "Triangular"};
-	private static final String[] HOMING_BULLET_TEXTURES = {"Fireball", "Spin"};
+	private static final String[] BULLET_TEXTURES = {"Ball", "Beam", "Triangular", "Fireball"};
 	
 	private static final AbstractBullet[] BULLET_TYPES = {new Bullet(), new AccelBullet(), new UCMBullet(), new SHMBullet()};
 	private static final float[] TYPE_CHANCES = {5, 3, 3, 1};
@@ -45,8 +44,6 @@ public class BulletTemplate implements Loadable
 		this(random, new Bullet());
 		if (isHoming)
 			vel = random.nextFloat(HOMING_VELOCITY);
-		path = new StringBuilder("bullet/");
-		path.append(random.choose(HOMING_BULLET_TEXTURES));
 	}
 	
 	public BulletTemplate(RandomGenerator random, AbstractBullet bulletType)
@@ -107,8 +104,8 @@ public class BulletTemplate implements Loadable
 	@Override
 	public void dispose(AssetManager manager)
 	{
-		//todo
-		//manager.unload(path.toString());
+		if (manager.isLoaded(path.toString()))
+			manager.unload(path.toString());
 	}
 	
 	public Class<? extends AbstractBullet> getBulletClass()
