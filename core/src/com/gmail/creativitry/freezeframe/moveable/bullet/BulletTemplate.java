@@ -1,10 +1,12 @@
 /**
  * BulletTemplate.java
- * Creates a pattern to spawn bullets in
+ * Creates a template for newly spawned bullets
  *
- * @author Tiger
+ * @author Gahwon Lee, Tiger Zhang
+ * Period: 3
  * Date: 5/9/2017
  */
+
 package com.gmail.creativitry.freezeframe.moveable.bullet;
 
 import com.badlogic.gdx.assets.AssetManager;
@@ -14,31 +16,52 @@ import com.gmail.creativitry.freezeframe.random.*;
 
 public class BulletTemplate implements Loadable
 {
-	private static final String[] BULLET_TEXTURES = {"Ball", "Beam", "Triangular", "Fireball"};
+	private static final String[] BULLET_TEXTURES =
+		{"Ball", "Beam", "Triangular", "Fireball"};
 	
-	private static final AbstractBullet[] BULLET_TYPES = {new Bullet(), new AccelBullet(), new UCMBullet(), new SHMBullet()};
-	private static final float[] TYPE_CHANCES = {5, 3, 3, 1};
-	public static final AbstractDistribution LIFE = new LimitedNormalDistribution(30, 1, 3);
-	public static final UniformDistribution VELOCITY = new UniformDistribution(100, 200);
+	private static final AbstractBullet[] BULLET_TYPES =
+		{new Bullet(), new AccelBullet(), new UCMBullet(), new SHMBullet()};
+	private static final float[] TYPE_CHANCES = {5, 3, 2, 2};
+	private static final AbstractDistribution LIFE =
+		new LimitedNormalDistribution(30, 1, 3);
+	private static final UniformDistribution VELOCITY =
+		new UniformDistribution(100, 200);
 	
-	public static final UniformDistribution ACCEL = new UniformDistribution(-10, -20);
-	public static final LimitedNormalDistribution LIMIT = new LimitedNormalDistribution(400, 50, 3);
+	private static final UniformDistribution ACCEL =
+		new UniformDistribution(-10, -20);
+	private static final LimitedNormalDistribution LIMIT =
+		new LimitedNormalDistribution(400, 50, 3);
 	
-	public static final ReflectedUniformDistribution TAN_VEL = new ReflectedUniformDistribution(10, 30);
+	private static final ReflectedUniformDistribution TAN_VEL =
+		new ReflectedUniformDistribution(10, 30);
 	
-	public static final UniformDistribution AMPLITUDE = new UniformDistribution(50, 100);
-	public static final LimitedNormalDistribution PERIOD = new LimitedNormalDistribution(0.001f, 0.00025f, 3);
-	public static final LimitedNormalDistribution HOMING_VELOCITY = new LimitedNormalDistribution(250, 20, 3);
+	private static final UniformDistribution AMPLITUDE =
+		new UniformDistribution(50, 100);
+	private static final LimitedNormalDistribution PERIOD =
+		new LimitedNormalDistribution(0.001f, 0.00025f, 3);
+	private static final LimitedNormalDistribution HOMING_VELOCITY =
+		new LimitedNormalDistribution(250, 20, 3);
 	
 	private StringBuilder path;
 	private AbstractBullet bullet;
 	private float vel;
 	
+	/**
+	 * Generates a new template with a random bullet type
+	 *
+	 * @param random random number generator
+	 */
 	public BulletTemplate(RandomGenerator random)
 	{
 		this(random, random.choose(BULLET_TYPES, TYPE_CHANCES));
 	}
 	
+	/**
+	 * Generates a new template with a regular bullet. Bullet gets a homing velocity if
+	 * it is homing
+	 * @param random random number generator
+	 * @param isHoming true if the bullet should initially follow the player
+	 */
 	public BulletTemplate(RandomGenerator random, boolean isHoming)
 	{
 		this(random, new Bullet());
@@ -46,7 +69,13 @@ public class BulletTemplate implements Loadable
 			vel = random.nextFloat(HOMING_VELOCITY);
 	}
 	
-	public BulletTemplate(RandomGenerator random, AbstractBullet bulletType)
+	/**
+	 * Generates a new template with the given bullet type
+	 *
+	 * @param random     random number generator
+	 * @param bulletType bullet type
+	 */
+	private BulletTemplate(RandomGenerator random, AbstractBullet bulletType)
 	{
 		bullet = bulletType;
 		System.out.println(bullet);
@@ -79,7 +108,10 @@ public class BulletTemplate implements Loadable
 		path.append(random.choose(BULLET_TEXTURES));
 	}
 	
-	
+	/**
+	 * Creates a new bullet. It doesn't have parameters set yet
+	 * @return new bullet
+	 */
 	public AbstractBullet spawnBullet()
 	{
 		return bullet.newInstance();
@@ -108,21 +140,39 @@ public class BulletTemplate implements Loadable
 			manager.unload(path.toString());
 	}
 	
+	/**
+	 * Gets the type of bullet
+	 * @return class of bullet being spawned
+	 */
 	public Class<? extends AbstractBullet> getBulletClass()
 	{
 		return bullet.getClass();
 	}
 	
+	/**
+	 * Gets the radial velocity of the bullet
+	 * @return radial velocity
+	 */
 	public float getVel()
 	{
 		return vel;
 	}
 	
+	/**
+	 * Gets the template bullet for its parameters
+	 * @return template bullet
+	 */
 	public AbstractBullet getBullet()
 	{
 		return bullet;
 	}
 	
+	/**
+	 * Gets the template bullet for its parameters
+	 * @param type template bullet's type
+	 * @param <T> type of template bullet
+	 * @return template bullet casted to its type
+	 */
 	@SuppressWarnings("unchecked")
 	public <T extends AbstractBullet> T getBullet(T type)
 	{
