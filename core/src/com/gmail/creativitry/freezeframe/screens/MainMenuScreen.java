@@ -13,6 +13,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -40,6 +41,7 @@ public class MainMenuScreen extends AbstractScreen
 	public static final int SEED_INPUT_WIDTH = 250;
 	
 	private ShapeRenderer renderer;
+	private Texture logoTexture;
 	private TextButton startButton;
 	private TextField seedText;
 	
@@ -84,7 +86,10 @@ public class MainMenuScreen extends AbstractScreen
 	@Override
 	public void load(AssetManager manager)
 	{
-	
+		final String fileName = "logo.png";
+		manager.load(fileName, Texture.class);
+		manager.finishLoadingAsset(fileName);
+		logoTexture = manager.get(fileName);
 	}
 	
 	/**
@@ -95,7 +100,7 @@ public class MainMenuScreen extends AbstractScreen
 	@Override
 	public void dispose(AssetManager manager)
 	{
-	
+		manager.unload("logo.png");
 	}
 	
 	/**
@@ -117,7 +122,7 @@ public class MainMenuScreen extends AbstractScreen
 		titleTable.center();
 		
 		//todo: replace with sprite of logo
-		Label title = new Label("FreezeFrame", getSkin(), "title");
+		Image title = new Image(logoTexture);
 		titleTable.add(title).pad(PAD);
 		titleTable.row();
 		
