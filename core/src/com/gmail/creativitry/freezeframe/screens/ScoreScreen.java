@@ -100,7 +100,7 @@ public class ScoreScreen extends AbstractScreen
 	@Override
 	public void dispose(AssetManager manager)
 	{
-	
+		screenshot.getTexture().dispose();
 	}
 	
 	/**

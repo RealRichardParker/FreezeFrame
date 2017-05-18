@@ -12,10 +12,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector2;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
@@ -31,6 +29,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	public static final int HEALTH_MAX = 10;
 	private static final float ITEM_TIME = 10;
 	public static final float DAMAGE_COOLDOWN = 0.5f;
+	private static final int HIDE_EXPLOSION = -1000;
 	
 	private GameScreen gameScreen;
 	
@@ -38,8 +37,8 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private Texture focusTexture;
 	private ShaderProgram damagedShader;
 	
-	private Animation<TextureRegion> magnetAnimation;
-	private Animation<TextureRegion> shieldAnimation;
+	private Texture magnetTexture;
+	private Texture shieldTexture;
 	
 	private Vector2 position;
 	private Vector2 velocityDir;
@@ -178,10 +177,12 @@ public class Player implements InputProcessor, Loadable, Renderable
 	@Override
 	public void render(SpriteBatch batch, float delta)
 	{
+		float normalDelta = Gdx.graphics.getDeltaTime();
+		
 		final int halfWidth = texture.getWidth() / 2;
 		final int halfHeight = texture.getHeight() / 2;
 		
-		float scalar = delta * SPEED;
+		float scalar = normalDelta * SPEED;
 		if (isFocus)
 			scalar *= FOCUS_SPEED_MODIFIER;
 		
@@ -213,14 +214,29 @@ public class Player implements InputProcessor, Loadable, Renderable
 			damagedShader.end();
 			batch.setShader(null);
 			
-			damageCooldown -= delta;
-			
+			damageCooldown -= normalDelta;
+		}
+		
+		if (!explosion.isComplete())
+		{
 			explosion.setPosition(position.x, position.y);
 			explosion.draw(batch, delta);
 		}
 		
 		if (isFocus)
 			batch.draw(focusTexture, position.x - focusTexture.getWidth() / 2, position.y - focusTexture.getHeight() / 2);
+		
+		if (shieldTime > 0)
+		{
+			batch.draw(shieldTexture, position.x - shieldTexture.getWidth() / 2, position.y - shieldTexture.getHeight() / 2);
+			shieldTime -= delta;
+		}
+		
+		if (magnetTime > 0)
+		{
+			batch.draw(magnetTexture, position.x - magnetTexture.getWidth() / 2, position.y - magnetTexture.getHeight() / 2);
+			magnetTime -= delta;
+		}
 	}
 	
 	/**
@@ -245,20 +261,17 @@ public class Player implements InputProcessor, Loadable, Renderable
 		manager.load(expFile, ParticleEffect.class);
 		manager.finishLoadingAsset(expFile);
 		explosion = manager.get(expFile);
+		explosion.setPosition(HIDE_EXPLOSION, HIDE_EXPLOSION);
 		
-		/*final String magnetFile = "magnet.png";
+		final String magnetFile = "effects/magnet.png";
 		manager.load(magnetFile, Texture.class);
 		manager.finishLoadingAsset(magnetFile);
-		Texture magnet = manager.get(magnetFile);
-		TextureRegion[][] magnetTexture = TextureRegion.split(magnet, magnet.getHeight(), magnet.getHeight());
-		magnetAnimation = new Animation<TextureRegion>(0.1f, magnetTexture[0]);
+		magnetTexture = manager.get(magnetFile);
 		
-		final String shieldFile = "shield.png";
+		final String shieldFile = "effects/shield.png";
 		manager.load(shieldFile, Texture.class);
 		manager.finishLoadingAsset(shieldFile);
-		Texture shield = manager.get(shieldFile);
-		TextureRegion[][] shieldTexture = TextureRegion.split(shield, shield.getHeight(), shield.getHeight());
-		magnetAnimation = new Animation<TextureRegion>(0.1f, shieldTexture[0]);*/
+		shieldTexture = manager.get(shieldFile);
 	}
 	
 	/**
@@ -272,8 +285,8 @@ public class Player implements InputProcessor, Loadable, Renderable
 		manager.unload("player.png");
 		manager.unload("focus.png");
 		manager.unload("effects/explosion.pe");
-		/*manager.unload("magnet.png");
-		manager.unload("shield.png");*/
+		manager.unload("effects/magnet.png");
+		manager.unload("effects/shield.png");
 	}
 	
 	/**

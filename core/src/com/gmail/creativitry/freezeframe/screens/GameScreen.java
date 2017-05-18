@@ -237,7 +237,7 @@ public class GameScreen extends AbstractScreen
 			
 			batch.draw(background, backgroundX, backgroundY);
 			
-			player.render(batch, delta);
+			player.render(batch, scalar);
 			
 			timerRate += scalar * DIFFICULTY_MODIFIER;
 			
