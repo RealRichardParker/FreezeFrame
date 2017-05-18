@@ -59,7 +59,7 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 	 * @param seed  seed of the random generator
 	 * @param score score the player scored
 	 */
-	private ScoreData(LocalDateTime time, String name, String seed, long score)
+	public ScoreData(LocalDateTime time, String name, String seed, long score)
 	{
 		this.time = time;
 		this.name = name;

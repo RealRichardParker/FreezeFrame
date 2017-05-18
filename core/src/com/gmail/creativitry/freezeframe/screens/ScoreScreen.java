@@ -167,7 +167,8 @@ public class ScoreScreen extends AbstractScreen
 			@Override
 			public void changed(ChangeEvent event, Actor actor)
 			{
-				Gdx.net.openURI(scoreData.getUrl());
+				scores.saveOnline(scoreData);
+				//Gdx.net.openURI(scoreData.getUrl());
 			}
 		});
 		scoreTable.add(submitButton).padBottom(PAD);
