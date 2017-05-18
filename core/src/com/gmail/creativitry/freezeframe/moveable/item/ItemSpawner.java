@@ -72,7 +72,10 @@ public class ItemSpawner implements Loadable, Renderable
 	@Override
 	public void dispose(AssetManager manager)
 	{
-		//todo
+		manager.unload("item/CoinItem.png");
+		manager.unload("item/HealthItem.png");
+		manager.unload("item/MagnetItem.png");
+		manager.unload("item/ShieldItem.png");
 	}
 	
 	/**

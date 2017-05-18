@@ -91,8 +91,6 @@ public class BulletSprayer implements Loadable, Renderable
 	private float currFireRateHomingTime;
 	
 	
-	//TODO: things
-	
 	public BulletSprayer(MoveableManager moveableManager, RandomGenerator random, float x, float y, Player player)
 	{
 		this.moveableManager = moveableManager;

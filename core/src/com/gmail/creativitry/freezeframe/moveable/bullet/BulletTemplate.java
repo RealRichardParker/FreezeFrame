@@ -104,8 +104,8 @@ public class BulletTemplate implements Loadable
 	@Override
 	public void dispose(AssetManager manager)
 	{
-		//todo
-		//manager.unload(path.toString());
+		if (manager.isLoaded(path.toString()))
+			manager.unload(path.toString());
 	}
 	
 	public Class<? extends AbstractBullet> getBulletClass()

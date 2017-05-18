@@ -1,8 +1,8 @@
 /**
  * Scores.java
- * Description
+ * Holds the top ten scores in a file
  *
- * @author creativitRy
+ * @author Gahwon Lee
  * Period: 3
  * Date: 5/13/2017
  */
