@@ -13,6 +13,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -44,6 +45,8 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private Vector2 velocityDir;
 	
 	private int health;
+	private ParticleEffect explosion;
+	
 	private float radius;
 	private boolean isFocus;
 	private boolean timeMove;
@@ -61,7 +64,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 		health = STARTING_HEALTH;
 		radius = RADIUS;
 		
-		damagedShader = new ShaderProgram(Gdx.files.internal("shaders/Damaged.vert"), Gdx.files.internal("shaders/Damaged.frag"));
+		damagedShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"), Gdx.files.internal("shaders/Damaged.frag"));
 	}
 	
 	public boolean isTimeMove()
@@ -124,9 +127,12 @@ public class Player implements InputProcessor, Loadable, Renderable
 			shieldTime = 0;
 			return;
 		}
+		
 		health--;
 		damageCooldown = DAMAGE_COOLDOWN;
 		gameScreen.updateHealth(health);
+		explosion.reset();
+		
 		if (health == 0)
 		{
 			gameScreen.gameOver();
@@ -208,6 +214,9 @@ public class Player implements InputProcessor, Loadable, Renderable
 			batch.setShader(null);
 			
 			damageCooldown -= delta;
+			
+			explosion.setPosition(position.x, position.y);
+			explosion.draw(batch, delta);
 		}
 		
 		if (isFocus)
@@ -231,6 +240,11 @@ public class Player implements InputProcessor, Loadable, Renderable
 		manager.load(focusFile, Texture.class);
 		manager.finishLoadingAsset(focusFile);
 		focusTexture = manager.get(focusFile);
+		
+		final String expFile = "effects/explosion.pe";
+		manager.load(expFile, ParticleEffect.class);
+		manager.finishLoadingAsset(expFile);
+		explosion = manager.get(expFile);
 		
 		/*final String magnetFile = "magnet.png";
 		manager.load(magnetFile, Texture.class);
@@ -257,6 +271,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	{
 		manager.unload("player.png");
 		manager.unload("focus.png");
+		manager.unload("effects/explosion.pe");
 		/*manager.unload("magnet.png");
 		manager.unload("shield.png");*/
 	}
