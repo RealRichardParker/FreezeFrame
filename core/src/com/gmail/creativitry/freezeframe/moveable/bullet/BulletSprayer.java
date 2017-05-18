@@ -1,16 +1,17 @@
 /**
  * BulletSprayer.java
- * Spawns bullets in a pattern
+ * Spawns bullets in a random pattern
  *
- * @author Tiger
- * Date: 5/4/2017.
+ * @author Gahwon Lee, Tiger Zhang
+ * Period: 3
+ * Date: 5/4/2017
  */
+
 package com.gmail.creativitry.freezeframe.moveable.bullet;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.RandomXS128;
 import com.badlogic.gdx.math.Vector2;
 import com.gmail.creativitry.freezeframe.Player;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
@@ -24,21 +25,29 @@ public class BulletSprayer implements Loadable, Renderable
 {
 	private static final float DIFFICULTY_CURVE = 0.001f;
 	private static final float MIN_HOMING_FIRE_RATE = 0.1f;
-	private static final UniformDistribution RADIUS_OFFSET = new UniformDistribution(-40f, 40f);
+	private static final UniformDistribution RADIUS_OFFSET =
+		new UniformDistribution(-40f, 40f);
 	private static final int MIN_VARIATION = 2;
 	private static final int MAX_VARIATION = 6;
-	private static final UniformDistribution FIRE_RATE = new UniformDistribution(.05f, .3f);
-	private static final UniformDistribution FIRE_TIME = new UniformDistribution(2f, 7f);
+	private static final UniformDistribution FIRE_RATE =
+		new UniformDistribution(.05f, .3f);
+	private static final UniformDistribution FIRE_TIME =
+		new UniformDistribution(2f, 7f);
 	private static final int MIN_BULLETS_PER_SUBSPRAYER = 1;
 	private static final int MAX_BULLETS_PER_SUBSPRAYER = 4;
 	private static final int MIN_SUBSPRAYERS = 3;
 	private static final int MAX_SUBSPRAYERS = 5;
 	private static final float ANGLES_IN_CIRCLE = 360f;
-	private static final UniformDistribution ANGLE_BETWEEN_BULLETS = new UniformDistribution(60, ANGLES_IN_CIRCLE);
-	private static final UniformDistribution STARTING_ANGLE = new UniformDistribution(0f, ANGLES_IN_CIRCLE);
-	private static final UniformDistribution ANGLE_VELOCITY = new UniformDistribution(-400f, 400f);
-	private static final UniformDistribution ANGLE_TIME = new UniformDistribution(2f, 7f);
-	private static final LimitedNormalDistribution FIRE_RATE_HOMING = new LimitedNormalDistribution(0.35f, 0.05f, 3);
+	private static final UniformDistribution ANGLE_BETWEEN_BULLETS =
+		new UniformDistribution(60, ANGLES_IN_CIRCLE);
+	private static final UniformDistribution STARTING_ANGLE =
+		new UniformDistribution(0f, ANGLES_IN_CIRCLE);
+	private static final UniformDistribution ANGLE_VELOCITY =
+		new UniformDistribution(-400f, 400f);
+	private static final UniformDistribution ANGLE_TIME =
+		new UniformDistribution(2f, 7f);
+	private static final LimitedNormalDistribution FIRE_RATE_HOMING =
+		new LimitedNormalDistribution(0.35f, 0.05f, 3);
 	
 	private MoveableManager moveableManager;
 	//position
@@ -90,8 +99,17 @@ public class BulletSprayer implements Loadable, Renderable
 	//the current fire time of homing bullet
 	private float currFireRateHomingTime;
 	
-	
-	public BulletSprayer(MoveableManager moveableManager, RandomGenerator random, float x, float y, Player player)
+	/**
+	 * Creates a random bullet sprayer with the given random generator
+	 *
+	 * @param moveableManager moveable manager to spawn bullets in
+	 * @param random          random number generator
+	 * @param x               x position
+	 * @param y               y position
+	 * @param player          player to target
+	 */
+	public BulletSprayer(MoveableManager moveableManager, RandomGenerator random,
+						 float x, float y, Player player)
 	{
 		this.moveableManager = moveableManager;
 		this.x = x;
@@ -101,8 +119,10 @@ public class BulletSprayer implements Loadable, Renderable
 		int randSize = random.nextInt(MAX_VARIATION - MIN_VARIATION + 1) + MIN_VARIATION;
 		this.fireRates = random.getRandFloatArr(randSize, FIRE_RATE);
 		this.fireTimes = random.getRandFloatArr(randSize, FIRE_TIME);
-		this.bulletsPerSubsprayer = random.nextInt(MAX_BULLETS_PER_SUBSPRAYER - MIN_BULLETS_PER_SUBSPRAYER + 1) + MIN_BULLETS_PER_SUBSPRAYER;
-		this.numSubsprayers = random.nextInt(MAX_SUBSPRAYERS - MIN_SUBSPRAYERS + 1) + MIN_SUBSPRAYERS;
+		this.bulletsPerSubsprayer = random.nextInt(MAX_BULLETS_PER_SUBSPRAYER
+			- MIN_BULLETS_PER_SUBSPRAYER + 1) + MIN_BULLETS_PER_SUBSPRAYER;
+		this.numSubsprayers = random.nextInt(MAX_SUBSPRAYERS - MIN_SUBSPRAYERS + 1)
+			+ MIN_SUBSPRAYERS;
 		this.angleBetweenBullets = random.nextFloat(ANGLE_BETWEEN_BULLETS) / numSubsprayers;
 		this.startingAngle = random.nextFloat(STARTING_ANGLE);
 		randSize = random.nextInt(MAX_VARIATION) + MIN_VARIATION;
@@ -114,23 +134,6 @@ public class BulletSprayer implements Loadable, Renderable
 		fireRateHoming = random.nextFloat(FIRE_RATE_HOMING);
 		
 		currRotation = startingAngle;
-	}
-	
-	private static float rand(RandomXS128 random, float lower, float higher)
-	{
-		return random.nextFloat() * (higher - lower) + lower;
-	}
-	
-	private static float[] getRandFloatArr(RandomXS128 random, int size, float lower, float higher)
-	{
-		float[] arr = new float[size];
-		
-		for (int i = 0; i < arr.length; i++)
-		{
-			arr[i] = rand(random, lower, higher);
-		}
-		
-		return arr;
 	}
 	
 	/**
@@ -158,7 +161,7 @@ public class BulletSprayer implements Loadable, Renderable
 	}
 	
 	/**
-	 * Renders this object
+	 * Updates this object every frame
 	 *
 	 * @param batch Batch to render to
 	 * @param delta time in seconds since last tick
@@ -175,7 +178,8 @@ public class BulletSprayer implements Loadable, Renderable
 				for (int bullet = 0; bullet < bulletsPerSubsprayer; bullet++)
 				{
 					float angle = (currRotation + (ANGLES_IN_CIRCLE / numSubsprayers) *
-						subsprayer + angleBetweenBullets * bullet + ANGLES_IN_CIRCLE) % ANGLES_IN_CIRCLE;
+						subsprayer + angleBetweenBullets * bullet + ANGLES_IN_CIRCLE) %
+						ANGLES_IN_CIRCLE;
 					float angleX = MathUtils.cosDeg(angle);
 					float angleY = MathUtils.sinDeg(angle);
 					
@@ -190,7 +194,7 @@ public class BulletSprayer implements Loadable, Renderable
 		{
 			currFireTime -= fireTimes[currFireRateIndex];
 			currFireRateIndex++;
-			if(currFireRateIndex >= fireTimes.length)
+			if (currFireRateIndex >= fireTimes.length)
 				currFireRateIndex = 0;
 		}
 		
@@ -200,11 +204,11 @@ public class BulletSprayer implements Loadable, Renderable
 			while (currRotation > ANGLES_IN_CIRCLE)
 				currRotation -= ANGLES_IN_CIRCLE;
 			currRotTime += delta;
-			while(currRotTime > angTime[currRotTimeIndex])
+			while (currRotTime > angTime[currRotTimeIndex])
 			{
 				currRotTime -= angTime[currRotTimeIndex];
 				currRotTimeIndex++;
-				if(currRotTimeIndex >= angTime.length)
+				if (currRotTimeIndex >= angTime.length)
 					currRotTimeIndex = 0;
 				
 			}
@@ -215,13 +219,13 @@ public class BulletSprayer implements Loadable, Renderable
 		{
 			currFireRateHomingTime -= fireRateHoming;
 			Vector2 position = player.getPosition();
-			float angle = MathUtils.atan2(position.y - y, position.x - x) * MathUtils.radiansToDegrees;
+			float angle = MathUtils.atan2(position.y - y, position.x - x) *
+				MathUtils.radiansToDegrees;
 			
 			moveableManager.addBullet(homingTemplate, x, y, angle);
 		}
 		
 		if (fireRateHoming > MIN_HOMING_FIRE_RATE)
 			fireRateHoming -= DIFFICULTY_CURVE * delta;
-		
 	}
 }

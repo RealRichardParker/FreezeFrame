@@ -6,6 +6,7 @@
  * Period: 3
  * Date: 5/4/2017
  */
+
 package com.gmail.creativitry.freezeframe.screens;
 
 import com.badlogic.gdx.*;
@@ -54,34 +55,41 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 		addInputProcessor(uiStage);
 	}
 	
+	/**
+	 * Gets the game instance
+	 *
+	 * @return FreezeFrame game instance
+	 */
 	protected FreezeFrame getFreezeFrame()
 	{
 		return freezeFrame;
 	}
 	
+	/**
+	 * Gets the stage to draw ui elements on
+	 * @return stage
+	 */
 	protected Stage getUiStage()
 	{
 		return uiStage;
 	}
 	
+	/**
+	 * Gets the skin to style ui elements with
+	 * @return skin
+	 */
 	protected Skin getSkin()
 	{
 		return skin;
 	}
 	
-	protected SpriteBatch getBatch()
-	{
-		return batch;
-	}
-	
+	/**
+	 * Gets the camera
+	 * @return camera
+	 */
 	protected OrthographicCamera getCamera()
 	{
 		return camera;
-	}
-	
-	protected Viewport getViewport()
-	{
-		return viewport;
 	}
 	
 	/**
@@ -94,11 +102,6 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 		inputs.addProcessor(inputProcessor);
 	}
 	
-	protected InputMultiplexer getInputs()
-	{
-		return inputs;
-	}
-	
 	/**
 	 * Called when this screen becomes the current screen for a {@link Game}.
 	 * Loads the skin for the ui
@@ -106,7 +109,7 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	@Override
 	public void show()
 	{
-		skin = getFreezeFrame().getAssetManager().get(FreezeFrame.UI_SKIN);
+		skin = freezeFrame.getAssetManager().get(FreezeFrame.UI_SKIN);
 	}
 	
 	/**
@@ -132,8 +135,8 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	}
 	
 	/**
-	 * Called when the {@link com.badlogic.gdx.Application} is resized. This can happen at any point during a
-	 * non-paused state but will never happen before a call to create().
+	 * Called when the {@link com.badlogic.gdx.Application} is resized. This can happen at
+	 * any point during a non-paused state but will never happen before a call to create().
 	 *
 	 * @param width  the new width in pixels
 	 * @param height the new height in pixels
@@ -146,8 +149,8 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	}
 	
 	/**
-	 * Called when the {@link Application} is paused, usually when it's not active or visible on screen. An Application is also
-	 * paused before it is destroyed.
+	 * Called when the {@link Application} is paused, usually when it's not active or
+	 * visible on screen. An Application is also paused before it is destroyed.
 	 */
 	@Override
 	public void pause()
@@ -155,7 +158,8 @@ public abstract class AbstractScreen implements Screen, Loadable, Renderable
 	}
 	
 	/**
-	 * Called when the {@link Application} is resumed from a paused state, usually when it regains focus.
+	 * Called when the {@link Application} is resumed from a paused state, usually when
+	 * it regains focus.
 	 */
 	@Override
 	public void resume()

@@ -6,6 +6,7 @@
  * Period: 3
  * Date: 5/13/2017
  */
+
 package com.gmail.creativitry.freezeframe.database;
 
 import com.badlogic.gdx.Gdx;
@@ -20,8 +21,15 @@ import java.util.TreeSet;
 public class Scores
 {
 	private static final FileHandle FILE_PATH = Gdx.files.local("scores.dat");
+	
 	private TreeSet<ScoreData> data;
 	
+	/**
+	 * Constructs new list of scores by loading the file, adding the new score,
+	 * and saving
+	 *
+	 * @param scoreData new score to add to the list
+	 */
 	public Scores(ScoreData scoreData)
 	{
 		load();
@@ -33,6 +41,9 @@ public class Scores
 		save();
 	}
 	
+	/**
+	 * Attempts to load from the file or generates a new highscore list
+	 */
 	@SuppressWarnings("unchecked")
 	private void load()
 	{
@@ -59,6 +70,9 @@ public class Scores
 		
 	}
 	
+	/**
+	 * Attempts to save the highscores to the file
+	 */
 	private void save()
 	{
 		
@@ -74,6 +88,11 @@ public class Scores
 		}
 	}
 	
+	/**
+	 * Gets the highscores
+	 *
+	 * @return highscores
+	 */
 	public TreeSet<ScoreData> getData()
 	{
 		return data;

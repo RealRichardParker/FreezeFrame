@@ -1,11 +1,13 @@
 /**
  * AbstractPolarBullet.java
- * Describes a bullet with circular movement
+ * A bullet that operates from polar coordinates, converting radius and angle
+ * into x and y
  *
  * @author Tiger Zhang
+ * Period: 3
  * Date: 5/4/2017
- * Period 3
  */
+
 package com.gmail.creativitry.freezeframe.moveable.bullet;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -19,11 +21,21 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 	
 	private float distFromCenter;
 	
+	/**
+	 * Gets the angle from the sprayer
+	 *
+	 * @return angle
+	 */
 	public float getAngle()
 	{
 		return angle;
 	}
 	
+	/**
+	 * Sets the angle from the sprayer
+	 *
+	 * @param angle new angle
+	 */
 	public void setAngle(float angle)
 	{
 		while (angle < 0)
@@ -33,16 +45,34 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 		this.angle = angle;
 	}
 	
+	/**
+	 * Gets the radial velocity
+	 *
+	 * @return radial velocity
+	 */
 	public float getRadVel()
 	{
 		return radVel;
 	}
 	
+	/**
+	 * Sets the radial velocity
+	 *
+	 * @param radVel new radial velocity
+	 */
 	public void setRadVel(float radVel)
 	{
 		this.radVel = radVel;
 	}
 	
+	/**
+	 * Initializes the newly created bullet with the given parameters
+	 *
+	 * @param template BulletTemplate to get parameters from
+	 * @param x        starting x position
+	 * @param y        starting y position
+	 * @param angle    angle to fire at
+	 */
 	@Override
 	public void init(BulletTemplate template, float x, float y, float angle)
 	{
@@ -52,9 +82,9 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 	}
 	
 	/**
-	 * Updates position and velocity every frame
+	 * Updates position and velocity every frame based on polar coordinates
 	 *
-	 * @param delta
+	 * @param delta time since this method was last called
 	 */
 	@Override
 	public void update(float delta)
@@ -64,8 +94,16 @@ public abstract class AbstractPolarBullet extends AbstractBullet
 		super.update(delta);
 	}
 	
+	/**
+	 * Updates angle and radial velocity every frame
+	 *
+	 * @param delta time since this method was last called
+	 */
 	public abstract void updatePolar(float delta);
 	
+	/**
+	 * Converts polar coordinates to rectangular coordinates
+	 */
 	public void polarToXY()
 	{
 		setVelX(radVel * MathUtils.cosDeg(angle));

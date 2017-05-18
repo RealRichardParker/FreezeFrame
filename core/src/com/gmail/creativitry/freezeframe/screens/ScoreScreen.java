@@ -6,6 +6,7 @@
  * Period: 3
  * Date: 5/13/2017
  */
+
 package com.gmail.creativitry.freezeframe.screens;
 
 import com.badlogic.gdx.Application;
@@ -16,7 +17,6 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -33,6 +33,8 @@ public class ScoreScreen extends AbstractScreen
 {
 	
 	public static final int HIGHSCORES_AMOUNT = 10;
+	public static final int PAD = 50;
+	public static final int LARGE_PAD = 100;
 	
 	private ScoreData scoreData;
 	private Scores scores;
@@ -57,7 +59,8 @@ public class ScoreScreen extends AbstractScreen
 		this.scoreData = scoreData;
 		scores = new Scores(scoreData);
 		
-		screenShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"), Gdx.files.internal("shaders/Screenshot.frag"));
+		screenShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"),
+			Gdx.files.internal("shaders/Screenshot.frag"));
 		this.screenshot = screenshot;
 		
 		goBack = false;
@@ -65,7 +68,7 @@ public class ScoreScreen extends AbstractScreen
 		getUiStage().addListener(new InputListener()
 		{
 			/**
-			 * Called when a key goes up. When true is returned, the event is {@link Event#handle() handled}.
+			 * Called when a key goes up. Marks to move to the main menu
 			 */
 			@Override
 			public boolean keyUp(InputEvent event, int keycode)
@@ -118,7 +121,7 @@ public class ScoreScreen extends AbstractScreen
 		
 		Table table = new Table(getSkin());
 		table.setFillParent(true);
-		table.pad(100);
+		table.pad(LARGE_PAD);
 		stack.add(table);
 		table.bottom().left();
 		
@@ -135,7 +138,7 @@ public class ScoreScreen extends AbstractScreen
 		
 		Table titleTable = new Table(getSkin());
 		titleTable.setFillParent(true);
-		titleTable.pad(100);
+		titleTable.pad(LARGE_PAD);
 		stack.add(titleTable);
 		titleTable.center().top();
 		
@@ -144,23 +147,30 @@ public class ScoreScreen extends AbstractScreen
 		
 		Table scoreTable = new Table(getSkin());
 		scoreTable.setFillParent(true);
-		scoreTable.pad(100 * 2);
+		scoreTable.pad(LARGE_PAD * 2);
 		stack.add(scoreTable);
 		scoreTable.center();
 		
 		addData(scoreData, scoreTable, "Final Score");
 		scoreTable.row();
 		
-		TextButton submitButton = new TextButton("Add to the global leaderboard", getSkin());
+		TextButton submitButton = new TextButton("Add to the global leaderboard",
+			getSkin());
 		submitButton.addListener(new ChangeListener()
 		{
+			/**
+			 * Called when the button is pressed. Opens the link.
+			 *
+			 * @param event unused
+			 * @param actor unused
+			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor)
 			{
 				Gdx.net.openURI(scoreData.getUrl());
 			}
 		});
-		scoreTable.add(submitButton).padBottom(50);
+		scoreTable.add(submitButton).padBottom(PAD);
 		scoreTable.row();
 		
 		
@@ -179,18 +189,28 @@ public class ScoreScreen extends AbstractScreen
 		
 	}
 	
+	/**
+	 * Adds the score data to the table
+	 * @param data data to add
+	 * @param scoreTable table to add to
+	 * @param description description to display at the left of the data
+	 */
 	private void addData(ScoreData data, Table scoreTable, Object description)
 	{
-		scoreTable.add(new Label(description + ": ", getSkin(), "sub-title")).padLeft(50).padRight(50 * 2);
+		scoreTable.add(new Label(description + ": ", getSkin(), "sub-title"))
+			.padLeft(PAD).padRight(PAD * 2);
 		
-		scoreTable.add(new Label(data.getTime(), getSkin())).padRight(50);
-		scoreTable.add(new Label(data.getName(), getSkin())).padRight(50);
-		scoreTable.add(new Label(data.getSeed(), getSkin())).padRight(50);
-		scoreTable.add(new Label("" + data.getScore(), getSkin())).padRight(50);
+		scoreTable.add(new Label(data.getTime(), getSkin())).padRight(PAD);
+		scoreTable.add(new Label(data.getName(), getSkin())).padRight(PAD);
+		scoreTable.add(new Label(data.getSeed(), getSkin())).padRight(PAD);
+		scoreTable.add(new Label("" + data.getScore(), getSkin())).padRight(PAD);
 		
 		scoreTable.row();
 	}
 	
+	/**
+	 * Moves back to the main menu screen
+	 */
 	private void goBack()
 	{
 		getFreezeFrame().setScreen(new MainMenuScreen(getFreezeFrame()));

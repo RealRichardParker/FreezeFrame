@@ -6,6 +6,7 @@
  * Period: 3
  * Date: 5/4/2017
  */
+
 package com.gmail.creativitry.freezeframe.screens;
 
 import com.badlogic.gdx.Game;
@@ -15,7 +16,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
@@ -28,12 +28,16 @@ public class MainMenuScreen extends AbstractScreen
 {
 	public static final Color TOP_COLOR = Color.BLACK;
 	public static final Color BOTTOM_COLOR = Color.MAROON;
-	public static final String INSTRUCTIONS = "Instructions:\n" +
+	public static final String INSTRUCTIONS =
+		"Instructions:\n" +
 		"WASD or arrow keys = Move\n" +
 		"Hold SHIFT = Move slower\n" +
 		"Don’t move = Freeze time\n" +
 		"Hold SPACEBAR = Unfreeze time\n" +
 		"Collect ITEMS for various effects";
+	public static final int PAD = 10;
+	public static final int LARGE_PAD = 100;
+	public static final int SEED_INPUT_WIDTH = 250;
 	
 	private ShapeRenderer renderer;
 	private TextButton startButton;
@@ -55,7 +59,7 @@ public class MainMenuScreen extends AbstractScreen
 		getUiStage().addListener(new InputListener()
 		{
 			/**
-			 *  Called when a key goes up. When true is returned, the event is {@link Event#handle() handled}.
+			 *  Called when a key goes up. Starts the game
 			 */
 			@Override
 			public boolean keyUp(InputEvent event, int keycode)
@@ -114,19 +118,19 @@ public class MainMenuScreen extends AbstractScreen
 		
 		//todo: replace with sprite of logo
 		Label title = new Label("FreezeFrame", getSkin(), "title");
-		titleTable.add(title).pad(10);
+		titleTable.add(title).pad(PAD);
 		titleTable.row();
 		
 		Label names = new Label("Bryan Lee\tGahwon Lee\tTiger Zhang", getSkin());
-		titleTable.add(names).pad(10);
+		titleTable.add(names).pad(PAD);
 		titleTable.row();
 		
-		titleTable.add(new Label(INSTRUCTIONS, getSkin())).pad(10);
+		titleTable.add(new Label(INSTRUCTIONS, getSkin())).pad(PAD);
 		stack.add(titleTable);
 		
 		Table table = new Table(getSkin());
 		table.setFillParent(true);
-		table.pad(100);
+		table.pad(LARGE_PAD);
 		stack.add(table);
 		
 		table.bottom().left();
@@ -135,6 +139,12 @@ public class MainMenuScreen extends AbstractScreen
 		startButton.getLabel().setStyle(getSkin().get("title", Label.LabelStyle.class));
 		startButton.addListener(new ChangeListener()
 		{
+			/**
+			 * Called when the button is pressed. Starts the game
+			 *
+			 * @param event unused
+			 * @param actor unused
+			 */
 			@Override
 			public void changed(ChangeEvent event, Actor actor)
 			{
@@ -145,7 +155,7 @@ public class MainMenuScreen extends AbstractScreen
 		
 		seedText = new TextField("", getSkin());
 		seedText.setMessageText("Random Pattern");
-		table.add(seedText).width(250);
+		table.add(seedText).width(SEED_INPUT_WIDTH);
 	}
 	
 	/**

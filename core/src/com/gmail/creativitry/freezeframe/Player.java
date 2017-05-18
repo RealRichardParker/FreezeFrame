@@ -2,10 +2,11 @@
  * Player.java
  * Move around the screen, control time, and dodge bullets
  *
- * @author Tiger Zhang, Gahwon Lee
+ * @author Gahwon Lee, Tiger Zhang
  * Period: 3
  * Date: 5/2/2017.
  */
+
 package com.gmail.creativitry.freezeframe;
 
 import com.badlogic.gdx.Gdx;
@@ -47,12 +48,19 @@ public class Player implements InputProcessor, Loadable, Renderable
 	private ParticleEffect explosion;
 	
 	private float radius;
-	private boolean isFocus;
+	private boolean focus;
 	private boolean timeMove;
 	private float magnetTime;
 	private float shieldTime;
 	private float damageCooldown;
 	
+	/**
+	 * Constructs a new player with the given parameters
+	 *
+	 * @param screen screen to add the player to
+	 * @param x      starting x position
+	 * @param y      starting y position
+	 */
 	public Player(GameScreen screen, float x, float y)
 	{
 		gameScreen = screen;
@@ -63,50 +71,54 @@ public class Player implements InputProcessor, Loadable, Renderable
 		health = STARTING_HEALTH;
 		radius = RADIUS;
 		
-		damagedShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"), Gdx.files.internal("shaders/Damaged.frag"));
+		damagedShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"),
+			Gdx.files.internal("shaders/Damaged.frag"));
 	}
 	
+	/**
+	 * Checks whether the time move button is pressed or not
+	 *
+	 * @return true if the button is pressed, false otherwise
+	 */
 	public boolean isTimeMove()
 	{
 		return timeMove;
 	}
 	
-	public int getHealth()
-	{
-		return health;
-	}
-	
+	/**
+	 * Gets the position
+	 *
+	 * @return position
+	 */
 	public Vector2 getPosition()
 	{
 		return position;
 	}
 	
+	/**
+	 * Gets the collision radius
+	 *
+	 * @return collision radius
+	 */
 	public float getRadius()
 	{
 		return radius;
 	}
 	
-	public void setHealth(int health)
-	{
-		this.health = health;
-	}
-	
-	public void setTimeMove(boolean timeMove)
-	{
-		this.timeMove = timeMove;
-	}
-	
-	public void setFocus(boolean focus)
-	{
-		isFocus = focus;
-	}
-	
+	/**
+	 * Gets the direction the player is headed to
+	 *
+	 * @return direction
+	 */
 	public Vector2 getVelocityDir()
 	{
 		return velocityDir;
 	}
 	
-	public void incrementLife()
+	/**
+	 * Increases the health of the player
+	 */
+	public void incrementHealth()
 	{
 		health++;
 		if (health > HEALTH_MAX)
@@ -115,7 +127,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 	}
 	
 	/**
-	 * Decrements the life of the Player
+	 * Decreases the health of the Player
 	 */
 	public void damage()
 	{
@@ -138,31 +150,57 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 	}
 	
+	/**
+	 * Checks whether the player is able to be damaged
+	 *
+	 * @return true if the player is not able to be damaged, false otherwise
+	 */
 	public boolean isDamaged()
 	{
 		return damageCooldown > 0;
 	}
 	
+	/**
+	 * Adds the given score to the current score
+	 *
+	 * @param score score to add
+	 */
 	public void addScore(float score)
 	{
 		gameScreen.addScore(score);
 	}
 	
+	/**
+	 * Checks whether the magnet is active
+	 *
+	 * @return true if the magnet is active, false otherwise
+	 */
 	public boolean isMagnet()
 	{
 		return magnetTime > 0;
 	}
 	
+	/**
+	 * Activates the magnet
+	 */
 	public void setMagnet()
 	{
 		magnetTime = ITEM_TIME;
 	}
 	
+	/**
+	 * Checks whether the shield is active
+	 *
+	 * @return true if the shield is active, false otherwise
+	 */
 	public boolean isShield()
 	{
 		return shieldTime > 0;
 	}
 	
+	/**
+	 * Activates the shield
+	 */
 	public void setShield()
 	{
 		shieldTime = ITEM_TIME;
@@ -183,7 +221,7 @@ public class Player implements InputProcessor, Loadable, Renderable
 		final int halfHeight = texture.getHeight() / 2;
 		
 		float scalar = normalDelta * SPEED;
-		if (isFocus)
+		if (focus)
 			scalar *= FOCUS_SPEED_MODIFIER;
 		
 		position.x += velocityDir.x * scalar;
@@ -223,18 +261,21 @@ public class Player implements InputProcessor, Loadable, Renderable
 			explosion.draw(batch, delta);
 		}
 		
-		if (isFocus)
-			batch.draw(focusTexture, position.x - focusTexture.getWidth() / 2, position.y - focusTexture.getHeight() / 2);
+		if (focus)
+			batch.draw(focusTexture, position.x - focusTexture.getWidth() / 2,
+				position.y - focusTexture.getHeight() / 2);
 		
 		if (shieldTime > 0)
 		{
-			batch.draw(shieldTexture, position.x - shieldTexture.getWidth() / 2, position.y - shieldTexture.getHeight() / 2);
+			batch.draw(shieldTexture, position.x - shieldTexture.getWidth() / 2,
+				position.y - shieldTexture.getHeight() / 2);
 			shieldTime -= delta;
 		}
 		
 		if (magnetTime > 0)
 		{
-			batch.draw(magnetTexture, position.x - magnetTexture.getWidth() / 2, position.y - magnetTexture.getHeight() / 2);
+			batch.draw(magnetTexture, position.x - magnetTexture.getWidth() / 2,
+				position.y - magnetTexture.getHeight() / 2);
 			magnetTime -= delta;
 		}
 	}
@@ -332,12 +373,12 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
 		{
-			setFocus(true);
+			focus = true;
 			return true;
 		}
 		else if (InputManager.keyUp(keycode, InputManager.MOVE_TIME))
 		{
-			setTimeMove(true);
+			timeMove = true;
 			return true;
 		}
 		return false;
@@ -386,12 +427,12 @@ public class Player implements InputProcessor, Loadable, Renderable
 		}
 		else if (InputManager.keyUp(keycode, InputManager.FOCUS))
 		{
-			setFocus(false);
+			focus = false;
 			return true;
 		}
 		else if (InputManager.keyUp(keycode, InputManager.MOVE_TIME))
 		{
-			setTimeMove(false);
+			timeMove = false;
 			return true;
 		}
 		return false;

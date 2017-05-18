@@ -1,11 +1,12 @@
 /**
  * RandomGenerator.java
- * Randomly
+ * Randomly generates numbers
  *
  * @author Gahwon Lee
  * Period: 3
  * Date: 5/13/2017
  */
+
 package com.gmail.creativitry.freezeframe.random;
 
 import com.badlogic.gdx.math.MathUtils;
@@ -15,25 +16,41 @@ import java.util.Arrays;
 
 public class RandomGenerator
 {
+	private static final int SHORTEST_SEED_SIZE = 5;
+	private static final int LONGEST_SEED_SIZE = 15;
+	
 	private String seed;
 	private RandomXS128 random;
 	
+	/**
+	 * Constructs a new generator with the given seed
+	 *
+	 * @param seed seed to feed the random generator
+	 */
 	public RandomGenerator(String seed)
 	{
 		this.seed = seed;
 		random = new RandomXS128(seed.hashCode());
 	}
 	
+	/**
+	 * Constructs a new generator with a random seed
+	 */
 	public RandomGenerator()
 	{
 		this(getRandomSeed());
 	}
 	
+	/**
+	 * Generates a random string seed that is readable by humans
+	 *
+	 * @return random seed
+	 */
 	private static String getRandomSeed()
 	{
 		StringBuilder str = new StringBuilder();
 		
-		int randSize = MathUtils.random(5, 15);
+		int randSize = MathUtils.random(SHORTEST_SEED_SIZE, LONGEST_SEED_SIZE);
 		for (int i = 0; i < randSize; i++)
 		{
 			str.append(getRandomChar());
@@ -42,6 +59,11 @@ public class RandomGenerator
 		return str.toString();
 	}
 	
+	/**
+	 * Generates a random character that is either an alphabet or a number
+	 *
+	 * @return random character
+	 */
 	private static char getRandomChar()
 	{
 		int charType = MathUtils.random(2);
@@ -59,16 +81,33 @@ public class RandomGenerator
 		return '0';
 	}
 	
+	/**
+	 * Gets the seed of the random generator
+	 *
+	 * @return seed
+	 */
 	public String getSeed()
 	{
 		return seed;
 	}
 	
+	/**
+	 * Gets the internal random generator
+	 *
+	 * @return random generator
+	 */
 	public RandomXS128 getRandom()
 	{
 		return random;
 	}
 	
+	/**
+	 * From a list of values, one is randomly chosen
+	 *
+	 * @param values  values to choose from
+	 * @param chances the probability the respective value has for being chosen
+	 * @return chosen value
+	 */
 	@SuppressWarnings("Duplicates")
 	public float choose(float[] values, float[] chances)
 	{
@@ -87,6 +126,13 @@ public class RandomGenerator
 		return values[index];
 	}
 	
+	/**
+	 * From a list of values, one is randomly chosen
+	 *
+	 * @param values  values to choose from
+	 * @param chances the probability the respective value has for being chosen
+	 * @return chosen value
+	 */
 	@SuppressWarnings("Duplicates")
 	public int choose(int[] values, float[] chances)
 	{
@@ -105,6 +151,13 @@ public class RandomGenerator
 		return values[index];
 	}
 	
+	/**
+	 * From a list of values, one is randomly chosen
+	 *
+	 * @param values  values to choose from
+	 * @param chances the probability the respective value has for being chosen
+	 * @return chosen value
+	 */
 	@SuppressWarnings("Duplicates")
 	public <T> T choose(T[] values, float[] chances)
 	{
@@ -123,6 +176,13 @@ public class RandomGenerator
 		return values[index];
 	}
 	
+	/**
+	 * From a list of values, one is randomly chosen.
+	 * All values have the same probability of getting chosen
+	 *
+	 * @param values values to choose from
+	 * @return chosen value
+	 */
 	public <T> T choose(T[] values)
 	{
 		float[] chances = new float[values.length];
@@ -130,21 +190,25 @@ public class RandomGenerator
 		return choose(values, chances);
 	}
 	
-	public float nextFloat(float lower, float higher)
-	{
-		return random.nextFloat() * (higher - lower) + lower;
-	}
-	
+	/**
+	 * Returns a pseudo-random, uniformly distributed int value between 0 (inclusive) and
+	 * the specified value (exclusive), drawn from this random number generator's sequence.
+	 *
+	 * @param n the positive bound on the random number to be returned.
+	 * @return the next pseudo-random int value between 0 (inclusive) and n (exclusive).
+	 */
 	public int nextInt(int n)
 	{
 		return random.nextInt(n);
 	}
 	
-	public float[] getRandFloatArr(int size, float lower, float higher)
-	{
-		return getRandFloatArr(size, new UniformDistribution(lower, higher));
-	}
-	
+	/**
+	 * Generates a random array of the given size with each index containing a random
+	 * number generated following the distribution
+	 * @param size size of the array
+	 * @param distribution distribution of probabilities
+	 * @return random generated float array
+	 */
 	public float[] getRandFloatArr(int size, AbstractDistribution distribution)
 	{
 		float[] arr = new float[size];
@@ -158,24 +222,19 @@ public class RandomGenerator
 	}
 	
 	/**
-	 * Generates a random number based on a normally distributed probability
-	 *
-	 * @param mean mean of the normal distribution
-	 * @param std  standard deviation of the normal distribution
-	 * @return randomly generated float
+	 * Generates a random number from the distribution
+	 * @param distribution distribution of probabilities
+	 * @return randomly generated number
 	 */
-	public float nextNormal(float mean, float std)
-	{
-		double norm = random.nextGaussian();
-		
-		return (float) ((norm * std) + mean);
-	}
-	
 	public float nextFloat(AbstractDistribution distribution)
 	{
 		return distribution.nextFloat(random);
 	}
 	
+	/**
+	 * Gets the string version of this, containing the seed
+	 * @return formatted string
+	 */
 	@Override
 	public String toString()
 	{

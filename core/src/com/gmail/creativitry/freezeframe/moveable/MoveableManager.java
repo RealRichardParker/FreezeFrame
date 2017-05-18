@@ -3,7 +3,7 @@
  * Manages all the AbstractMoveable objects on the GameScreen. Updates and
  * renders items and bullets and detects collisions
  *
- * @author Tiger Zhang
+ * @author Gahwon Lee, Tiger Zhang
  * Period: 3
  * Date: 5/5/2017
  */
@@ -30,6 +30,12 @@ public class MoveableManager implements Renderable
 	private Array<AbstractItem> items;
 	private Player player;
 	
+	/**
+	 * Constructs a new moveable manager with the given parameters
+	 *
+	 * @param gameScreen game screen that the manager belongs in
+	 * @param player     player to target
+	 */
 	public MoveableManager(GameScreen gameScreen, Player player)
 	{
 		this.gameScreen = gameScreen;
@@ -39,6 +45,13 @@ public class MoveableManager implements Renderable
 		items = new Array<>();
 	}
 	
+	/**
+	 * Adds a new bullet to the screen. The bullet can be reused from the object pool
+	 * @param template template to get the parameters from
+	 * @param x starting x position
+	 * @param y starting y position
+	 * @param angle angle from the sprayer
+	 */
 	public void addBullet(BulletTemplate template, float x, float y, float angle)
 	{
 		Class<? extends AbstractBullet> clazz = template.getBulletClass();
@@ -57,15 +70,18 @@ public class MoveableManager implements Renderable
 		}
 	}
 	
+	/**
+	 * Adds a new item to the screen
+	 * @param item item to add
+	 */
 	public void addItem(AbstractItem item)
 	{
-		System.out.println("ITEM " + item);
 		items.add(item);
 	}
 	
 	
 	/**
-	 * Renders, updates and checks collisions for all AbstractMoveable objects on the
+	 * Renders, updates, and checks collisions for all AbstractMoveable objects on the
 	 * GameScreen
 	 *
 	 * @param batch Batch to render to
@@ -76,9 +92,14 @@ public class MoveableManager implements Renderable
 	{
 		renderBullets(batch, delta);
 		renderItems(batch, delta);
-		
 	}
 	
+	/**
+	 * Renders, updates, and checks collisions for all bullets on the GameScreen
+	 *
+	 * @param batch Batch to render to
+	 * @param delta time in seconds since last tick
+	 */
 	private void renderBullets(SpriteBatch batch, float delta)
 	{
 		Iterator<? extends AbstractBullet> iter = bullets.iterator();
@@ -99,9 +120,10 @@ public class MoveableManager implements Renderable
 			}
 			else
 			{
-				moveable.render(batch, moveable.getVelX(), moveable.getVelY());
+				moveable.render(batch);
 				
-				if (moveable instanceof AbstractBullet && ((AbstractBullet) moveable).isGrazing(player))
+				if (moveable instanceof AbstractBullet &&
+					((AbstractBullet) moveable).isGrazing(player))
 				{
 					gameScreen.setGrazing();
 				}
@@ -109,6 +131,12 @@ public class MoveableManager implements Renderable
 		}
 	}
 	
+	/**
+	 * Renders, updates, and checks collisions for all items on the GameScreen
+	 *
+	 * @param batch Batch to render to
+	 * @param delta time in seconds since last tick
+	 */
 	private void renderItems(SpriteBatch batch, float delta)
 	{
 		Iterator<? extends AbstractItem> iter = items.iterator();
@@ -129,7 +157,7 @@ public class MoveableManager implements Renderable
 			}
 			else
 			{
-				item.render(batch, item.getVelX(), item.getVelY());
+				item.render(batch);
 				
 				if (item instanceof CoinItem)
 				{
@@ -146,7 +174,14 @@ public class MoveableManager implements Renderable
 		}
 	}
 	
-	private void destroyMoveable(Iterator<? extends AbstractMoveable> iter, AbstractMoveable moveable)
+	/**
+	 * Removes a moveable from the screen
+	 *
+	 * @param iter     iterator to remove the moveable from
+	 * @param moveable moveable to remove
+	 */
+	private void destroyMoveable(Iterator<? extends AbstractMoveable> iter,
+								 AbstractMoveable moveable)
 	{
 		iter.remove();
 		if (moveable instanceof AbstractBullet)

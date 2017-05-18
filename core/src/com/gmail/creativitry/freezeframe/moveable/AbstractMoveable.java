@@ -1,10 +1,12 @@
 /**
  * AbstractMoveable.java
  * Describes an object that moves and can collide with the Player
- * @author Tiger Zhang, Gahwon Lee
+ *
+ * @author Gahwon Lee, Tiger Zhang
  * Period: 3
- * Date: 5/2/2017.
+ * Date: 5/2/2017
  */
+
 package com.gmail.creativitry.freezeframe.moveable;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -20,6 +22,8 @@ public abstract class AbstractMoveable
 	private float velX;
 	private MoveableTexture texture;
 	private float life;
+	
+	private float lastAngle;
 	
 	/**
 	 * Decrements life
@@ -42,80 +46,130 @@ public abstract class AbstractMoveable
 		y += velY * delta;
 	}
 	
-	private float lastAngle;
-	
-	public void render(SpriteBatch batch, float xVel, float yVel)
+	/**
+	 * Renders the texture of this moveable
+	 *
+	 * @param batch batch to render to
+	 */
+	public void render(SpriteBatch batch)
 	{
-		/*float sprayerX = GameScreen.GAME_WIDTH / 2;
-		float sprayerY = GameScreen.GAME_HEIGHT - GameScreen.VERTICAL_PAD;
-		float angle = MathUtils.atan2(y - sprayerY, x - sprayerX) * MathUtils.radiansToDegrees;*/
 		float angle;
-		if (xVel == 0 && yVel == 0)
+		if (velX == 0 && velY == 0)
 			angle = lastAngle;
 		else
 		{
-			angle = MathUtils.atan2(yVel, xVel) * MathUtils.radiansToDegrees;
+			angle = MathUtils.atan2(velY, velX) * MathUtils.radiansToDegrees;
 			lastAngle = angle;
 		}
 		
 		texture.render(batch, x, y, angle);
 	}
 	
+	/**
+	 * Gets the x position
+	 * @return x position
+	 */
 	public float getX()
 	{
 		return x;
 	}
 	
+	/**
+	 * Sets the x position
+	 * @param x new x position
+	 */
 	public void setX(float x)
 	{
 		this.x = x;
 	}
 	
+	/**
+	 * Gets the x position
+	 * @return x position
+	 */
 	public float getY()
 	{
 		return y;
 	}
 	
+	/**
+	 * Sets the y position
+	 * @param y new y position
+	 */
 	public void setY(float y)
 	{
 		this.y = y;
 	}
 	
-	public float getVelY()
-	{
-		return velY;
-	}
-	
-	public void setVelY(float velY)
-	{
-		this.velY = velY;
-	}
-	
+	/**
+	 * Gets the x velocity
+	 * @return x velocity
+	 */
 	public float getVelX()
 	{
 		return velX;
 	}
 	
+	/**
+	 * Sets the x velocity
+	 * @param velX new x velocity
+	 */
 	public void setVelX(float velX)
 	{
 		this.velX = velX;
 	}
 	
+	/**
+	 * Gets the x velocity
+	 *
+	 * @return x velocity
+	 */
+	public float getVelY()
+	{
+		return velY;
+	}
+	
+	/**
+	 * Sets the y velocity
+	 *
+	 * @param velY new y velocity
+	 */
+	public void setVelY(float velY)
+	{
+		this.velY = velY;
+	}
+	
+	/**
+	 * Gets the remaining time of life of the moveable
+	 * @return life
+	 */
 	public float getLife()
 	{
 		return life;
 	}
 	
+	/**
+	 * Sets the remaining time of life of the moveable
+	 * @param life new life
+	 */
 	public void setLife(float life)
 	{
 		this.life = life;
 	}
 	
+	/**
+	 * Gets the texture, radius, and graze radius
+	 * @return texture
+	 */
 	public MoveableTexture getTexture()
 	{
 		return texture;
 	}
 	
+	/**
+	 * Sets the texture, radius, and graze radius
+	 * @param texture new texture
+	 */
 	public void setTexture(MoveableTexture texture)
 	{
 		this.texture = texture;
@@ -129,7 +183,8 @@ public abstract class AbstractMoveable
 	public boolean isColliding(Player player)
 	{
 		Vector2 position = player.getPosition();
-		return !(Math.hypot(position.x - x, position.y - y) > player.getRadius() + texture.getRadius());
+		return !(Math.hypot(position.x - x, position.y - y) >
+			player.getRadius() + texture.getRadius());
 	}
 	
 	/**
