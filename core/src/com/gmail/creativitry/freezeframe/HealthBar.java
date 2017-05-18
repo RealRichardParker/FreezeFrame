@@ -1,18 +1,18 @@
 /**
  * HealthBar.java
- * //TODO
+ * Displays the health of the player
  *
- * @author creativitRy
+ * @author Gahwon Lee
  * Period: 3
  * Date: 5/13/2017
  */
+
 package com.gmail.creativitry.freezeframe;
 
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.gmail.creativitry.freezeframe.behaviors.Loadable;
 
@@ -23,6 +23,11 @@ public class HealthBar extends Actor implements Loadable
 	
 	private int health;
 	
+	/**
+	 * Constructs a new healthbar with the given health
+	 *
+	 * @param health starting health to display
+	 */
 	public HealthBar(int health)
 	{
 		this.health = health;
@@ -60,6 +65,10 @@ public class HealthBar extends Actor implements Loadable
 		manager.unload("heart.png");
 	}
 	
+	/**
+	 * Sets the new health to display
+	 * @param health new health
+	 */
 	public void setHealth(int health)
 	{
 		this.health = health;
@@ -67,16 +76,10 @@ public class HealthBar extends Actor implements Loadable
 	}
 	
 	/**
-	 * Draws the actor. The batch is configured to draw in the parent's coordinate system.
-	 * {@link Batch#draw(TextureRegion, float, float, float, float, float, float, float, float, float)
-	 * This draw method} is convenient to draw a rotated and scaled TextureRegion. {@link Batch#begin()} has already been called on
-	 * the batch. If {@link Batch#end()} is called to draw without the batch then {@link Batch#begin()} must be called before the
-	 * method returns.
-	 * <p>
-	 * The default implementation does nothing.
+	 * Draws the healthbar to the screen
 	 *
-	 * @param batch
-	 * @param parentAlpha Should be multiplied with the actor's alpha, allowing a parent's alpha to affect all children.
+	 * @param batch batch to render to
+	 * @param parentAlpha unused
 	 */
 	@Override
 	public void draw(Batch batch, float parentAlpha)

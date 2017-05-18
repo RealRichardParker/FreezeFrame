@@ -1,11 +1,12 @@
 /**
  * GameScreen.java
- * Let the player play the game
+ * Lets the player play the game
  *
  * @author Gahwon Lee
  * Period: 3
  * Date: 5/4/2017
  */
+
 package com.gmail.creativitry.freezeframe.screens;
 
 import com.badlogic.gdx.Game;
@@ -70,7 +71,8 @@ public class GameScreen extends AbstractScreen
 	
 	
 	/**
-	 * Constructs a new game screen with the given game instance and the random number generator
+	 * Constructs a new game screen with the given game instance and the random
+	 * number generator
 	 *
 	 * @param freezeFrame game instance that shows this screen
 	 * @param random      random number generator
@@ -83,14 +85,16 @@ public class GameScreen extends AbstractScreen
 		player = new Player(this, GAME_WIDTH / 2, VERTICAL_PAD);
 		addInputProcessor(player);
 		moveableManager = new MoveableManager(this, player);
-		bulletSprayer = new BulletSprayer(moveableManager, random, GAME_WIDTH / 2, GAME_HEIGHT - VERTICAL_PAD, player);
+		bulletSprayer = new BulletSprayer(moveableManager, random, GAME_WIDTH / 2,
+			GAME_HEIGHT - VERTICAL_PAD, player);
 		itemSpawner = new ItemSpawner(moveableManager, random, player);
 		
 		healthBar = new HealthBar(Player.STARTING_HEALTH);
 		scoreMultiplier = 1;
 		
 		timerStage = new Stage(getUiStage().getViewport());
-		timerShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"), Gdx.files.internal("shaders/Timer.frag"));
+		timerShader = new ShaderProgram(Gdx.files.internal("shaders/VertexShader.vert"),
+			Gdx.files.internal("shaders/Timer.frag"));
 		
 		timerVal = 1;
 		timerRate = STARTING_TIMER_RATE;
@@ -122,7 +126,8 @@ public class GameScreen extends AbstractScreen
 		manager.finishLoadingAsset(backgroundPath);
 		Texture backgroundTexture = manager.get(backgroundPath, Texture.class);
 		backgroundTexture.setWrap(Texture.TextureWrap.Repeat, Texture.TextureWrap.Repeat);
-		background = new TextureRegion(backgroundTexture, backgroundTexture.getWidth() * TILED, backgroundTexture.getHeight() * TILED);
+		background = new TextureRegion(backgroundTexture,
+			backgroundTexture.getWidth() * TILED, backgroundTexture.getHeight() * TILED);
 		backgroundX = -backgroundTexture.getWidth() * 2;
 		backgroundY = -backgroundTexture.getHeight() * 2;
 	}
@@ -169,6 +174,11 @@ public class GameScreen extends AbstractScreen
 		timerStage.addActor(timer);
 	}
 	
+	/**
+	 * Adds the given score to the current score
+	 *
+	 * @param score score to add
+	 */
 	public void addScore(float score)
 	{
 		this.score += score;
@@ -176,11 +186,19 @@ public class GameScreen extends AbstractScreen
 		scoreLabel.setText(String.format("%.0f", this.score));
 	}
 	
+	/**
+	 * Makes the score increase faster
+	 */
 	public void setGrazing()
 	{
 		scoreMultiplier = SCORE_GRAZE;
 	}
 	
+	/**
+	 * Updates the healthbar
+	 *
+	 * @param newHealth new health to display
+	 */
 	public void updateHealth(int newHealth)
 	{
 		healthBar.setHealth(newHealth);
@@ -201,7 +219,8 @@ public class GameScreen extends AbstractScreen
 			batch.begin();
 			
 			float multiplier = 1;
-			if (player.getVelocityDir().x == 0 && player.getVelocityDir().y == 0 && !player.isTimeMove())
+			if (player.getVelocityDir().x == 0 && player.getVelocityDir().y == 0
+				&& !player.isTimeMove())
 			{
 				multiplier = 0;
 				if (timerVal <= 0)
@@ -253,7 +272,8 @@ public class GameScreen extends AbstractScreen
 		}
 		else
 		{
-			getFreezeFrame().setScreen(new ScoreScreen(getFreezeFrame(), new ScoreData(random, score), screenshot));
+			getFreezeFrame().setScreen(new ScoreScreen(getFreezeFrame(),
+				new ScoreData(random, score), screenshot));
 		}
 	}
 	
@@ -269,8 +289,9 @@ public class GameScreen extends AbstractScreen
 	{
 		super.render(Math.min(delta, DELTA_THRESHOLD));
 		
-		timer.setPosition(player.getPosition().x * SCREEN_WIDTH / GAME_WIDTH - timer.getImageWidth() / 2,
-			player.getPosition().y * SCREEN_HEIGHT / GAME_HEIGHT - timer.getImageHeight() / 2);
+		timer.setPosition(player.getPosition().x * SCREEN_WIDTH / GAME_WIDTH -
+			timer.getImageWidth() / 2, player.getPosition().y * SCREEN_HEIGHT /
+			GAME_HEIGHT - timer.getImageHeight() / 2);
 		timerStage.act();
 		
 		timerShader.begin();
@@ -283,6 +304,9 @@ public class GameScreen extends AbstractScreen
 			screenshot = ScreenUtils.getFrameBufferTexture();
 	}
 	
+	/**
+	 * Marks to move on to the score screen
+	 */
 	public void gameOver()
 	{
 		alive = false;

@@ -1,5 +1,6 @@
 /**
- * The FreezeFrame.java class loads the skin and switches between screens of the game
+ * FreezeFrame.java
+ * The game instance that loads the skin and switches between screens of the game
  *
  * @author Gahwon Lee
  * Period: 3
