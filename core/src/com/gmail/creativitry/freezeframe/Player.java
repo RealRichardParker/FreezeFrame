@@ -71,11 +71,6 @@ public class Player implements InputProcessor, Loadable, Renderable
 		return timeMove;
 	}
 	
-	public int getHealth()
-	{
-		return health;
-	}
-	
 	public Vector2 getPosition()
 	{
 		return position;
@@ -106,7 +101,12 @@ public class Player implements InputProcessor, Loadable, Renderable
 		return velocityDir;
 	}
 	
-	public void incrementLife()
+	public int getHealth()
+	{
+		return health;
+	}
+	
+	public void incrementHealth()
 	{
 		health++;
 		if (health > HEALTH_MAX)

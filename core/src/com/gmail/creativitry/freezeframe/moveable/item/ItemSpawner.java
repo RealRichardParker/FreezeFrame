@@ -1,9 +1,10 @@
 /**
  * ItemSpawner.java
- * //TODO Description
+ * Spawns an item every once in a while
  *
  * @author Gahwon Lee
- *         Date: 5/15/2017.
+ * Period: 3
+ * Date: 5/15/2017
  */
 
 package com.gmail.creativitry.freezeframe.moveable.item;
@@ -22,9 +23,10 @@ import com.gmail.creativitry.freezeframe.screens.GameScreen;
 
 public class ItemSpawner implements Loadable, Renderable
 {
-	private static final UniformDistribution TIME = new UniformDistribution(3, 5);
-	private static final int THRESHOLD = 25;
-	private static final UniformDistribution X_POS = new UniformDistribution(10, GameScreen.GAME_WIDTH - 10);
+	private static final UniformDistribution TIME =
+		new UniformDistribution(3, 5);
+	private static final UniformDistribution X_POS =
+		new UniformDistribution(10, GameScreen.GAME_WIDTH - 10);
 	private static final float Y_POS = GameScreen.GAME_HEIGHT + 10;
 	public static final float[] ITEM_CHANCES = {8, 1, 1, 3};
 	
@@ -39,7 +41,15 @@ public class ItemSpawner implements Loadable, Renderable
 	private MoveableTexture magnetTexture;
 	private MoveableTexture shieldTexture;
 	
-	public ItemSpawner(MoveableManager moveableManager, RandomGenerator random, Player player)
+	/**
+	 * Constructs a new item spawner with the given parameters
+	 *
+	 * @param moveableManager MoveableManager to spawn items in
+	 * @param random          random number generator
+	 * @param player          player to give item effects to
+	 */
+	public ItemSpawner(MoveableManager moveableManager, RandomGenerator random,
+					   Player player)
 	{
 		this.moveableManager = moveableManager;
 		this.random = random;
@@ -102,52 +112,46 @@ public class ItemSpawner implements Loadable, Renderable
 		}
 	}
 	
+	/**
+	 * Spawns a random item
+	 *
+	 * @return randomly spawned item
+	 */
 	private AbstractItem spawnRandom()
 	{
-		for (int i = 0; i < THRESHOLD; i++)
+		ItemEnum itemChooser = random.choose(ItemEnum.values(), ITEM_CHANCES);
+		
+		switch (itemChooser)
 		{
-			ItemEnum itemChooser = random.choose(ItemEnum.values(), ITEM_CHANCES);
-			
-			switch (itemChooser)
+			case CoinItem:
 			{
-				case CoinItem:
-				{
-					return new CoinItem(random.nextFloat(X_POS), Y_POS, coinTexture);
-				}
-				case HealthItem:
-				{
-					if (player.getHealth() < Player.HEALTH_MAX)
-					{
-						return new HealthItem(random.nextFloat(X_POS), Y_POS, healthTexture);
-					}
-					break;
-				}
-				case MagnetItem:
-				{
-					if (!player.isMagnet())
-					{
-						return new MagnetItem(random.nextFloat(X_POS), Y_POS, magnetTexture);
-					}
-					break;
-				}
-				case ShieldItem:
-				{
-					if (!player.isShield())
-					{
-						return new ShieldItem(random.nextFloat(X_POS), Y_POS, shieldTexture);
-					}
-					break;
-				}
-				default:
-				{
-					throw new IllegalArgumentException("Unknown item");
-				}
+				return new CoinItem(random.nextFloat(X_POS), Y_POS, coinTexture);
+			}
+			case HealthItem:
+			{
+				return new HealthItem(random.nextFloat(X_POS), Y_POS, healthTexture);
+				
+			}
+			case MagnetItem:
+			{
+				return new MagnetItem(random.nextFloat(X_POS), Y_POS, magnetTexture);
+				
+			}
+			case ShieldItem:
+			{
+				return new ShieldItem(random.nextFloat(X_POS), Y_POS, shieldTexture);
 			}
 		}
-		
-		return null;
+		throw new IllegalArgumentException("Unknown item");
 	}
 	
+	/**
+	 * All the spawnable items
+	 *
+	 * @author Gahwon Lee
+	 * Period: 3
+	 * Date: 5/15/2017
+	 */
 	private enum ItemEnum
 	{
 		CoinItem,
