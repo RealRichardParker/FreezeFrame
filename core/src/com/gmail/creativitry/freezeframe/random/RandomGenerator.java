@@ -142,11 +142,16 @@ public class RandomGenerator
 	
 	public float[] getRandFloatArr(int size, float lower, float higher)
 	{
+		return getRandFloatArr(size, new UniformDistribution(lower, higher));
+	}
+	
+	public float[] getRandFloatArr(int size, AbstractDistribution distribution)
+	{
 		float[] arr = new float[size];
 		
 		for (int i = 0; i < arr.length; i++)
 		{
-			arr[i] = nextFloat(lower, higher);
+			arr[i] = nextFloat(distribution);
 		}
 		
 		return arr;

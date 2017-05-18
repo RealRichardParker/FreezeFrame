@@ -14,7 +14,7 @@ import com.gmail.creativitry.freezeframe.random.*;
 
 public class BulletTemplate implements Loadable
 {
-	private static final String[] BULLET_TEXTURES = {"Fireball"};
+	private static final String[] BULLET_TEXTURES = {"Ball", "Beam", "Triangular", "Fireball"};
 	
 	private static final AbstractBullet[] BULLET_TYPES = {new Bullet(), new AccelBullet(), new UCMBullet(), new SHMBullet()};
 	private static final float[] TYPE_CHANCES = {5, 3, 3, 1};
