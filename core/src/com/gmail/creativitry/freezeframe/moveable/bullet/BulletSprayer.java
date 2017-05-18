@@ -24,21 +24,21 @@ public class BulletSprayer implements Loadable, Renderable
 {
 	private static final float DIFFICULTY_CURVE = 0.001f;
 	private static final float MIN_HOMING_FIRE_RATE = 0.1f;
-	public static final UniformDistribution RADIUS_OFFSET = new UniformDistribution(-40f, 40f);
-	public static final int MIN_VARIATION = 2;
-	public static final int MAX_VARIATION = 6;
-	public static final UniformDistribution FIRE_RATE = new UniformDistribution(.05f, .3f);
-	public static final UniformDistribution FIRE_TIME = new UniformDistribution(2f, 7f);
-	public static final int MIN_BULLETS_PER_SUBSPRAYER = 1;
-	public static final int MAX_BULLETS_PER_SUBSPRAYER = 4;
-	public static final int MIN_SUBSPRAYERS = 3;
-	public static final int MAX_SUBSPRAYERS = 5;
-	public static final float ANGLES_IN_CIRCLE = 360f;
-	public static final UniformDistribution ANGLE_BETWEEN_BULLETS = new UniformDistribution(60, ANGLES_IN_CIRCLE);
-	public static final UniformDistribution STARTING_ANGLE = new UniformDistribution(0f, ANGLES_IN_CIRCLE);
-	public static final UniformDistribution ANGLE_VELOCITY = new UniformDistribution(-400f, 400f);
-	public static final UniformDistribution ANGLE_TIME = new UniformDistribution(2f, 7f);
-	public static final LimitedNormalDistribution FIRE_RATE_HOMING = new LimitedNormalDistribution(0.35f, 0.05f, 3);
+	private static final UniformDistribution RADIUS_OFFSET = new UniformDistribution(-40f, 40f);
+	private static final int MIN_VARIATION = 2;
+	private static final int MAX_VARIATION = 6;
+	private static final UniformDistribution FIRE_RATE = new UniformDistribution(.05f, .3f);
+	private static final UniformDistribution FIRE_TIME = new UniformDistribution(2f, 7f);
+	private static final int MIN_BULLETS_PER_SUBSPRAYER = 1;
+	private static final int MAX_BULLETS_PER_SUBSPRAYER = 4;
+	private static final int MIN_SUBSPRAYERS = 3;
+	private static final int MAX_SUBSPRAYERS = 5;
+	private static final float ANGLES_IN_CIRCLE = 360f;
+	private static final UniformDistribution ANGLE_BETWEEN_BULLETS = new UniformDistribution(60, ANGLES_IN_CIRCLE);
+	private static final UniformDistribution STARTING_ANGLE = new UniformDistribution(0f, ANGLES_IN_CIRCLE);
+	private static final UniformDistribution ANGLE_VELOCITY = new UniformDistribution(-400f, 400f);
+	private static final UniformDistribution ANGLE_TIME = new UniformDistribution(2f, 7f);
+	private static final LimitedNormalDistribution FIRE_RATE_HOMING = new LimitedNormalDistribution(0.35f, 0.05f, 3);
 	
 	private MoveableManager moveableManager;
 	//position
@@ -114,6 +114,8 @@ public class BulletSprayer implements Loadable, Renderable
 		this.player = player;
 		homingTemplate = new BulletTemplate(random, true);
 		fireRateHoming = random.nextFloat(FIRE_RATE_HOMING);
+		
+		currRotation = startingAngle;
 	}
 	
 	private static float rand(RandomXS128 random, float lower, float higher)

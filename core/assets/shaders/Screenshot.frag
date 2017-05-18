@@ -1,18 +1,19 @@
 //FRAGMENT SHADER
 
 /**
- * Timer.frag
- * Renders the timer where the alpha channel defines how full the timer is
+ * Screenshot.frag
+ * Renders the screenshot with vignette, sepia, and black fade
  *
  * @author Gahwon Lee
  * Period: 3
- * Date: 5/13/2017
+ * Date: 5/17/2017
  */
 
 #ifdef GL_ES
 	precision mediump float;
 #endif
 
+const vec2 VIGNETTE_POSITION = vec2(0.5);
 const float RADIUS = 0.6;
 const float SOFTNESS = 0.45;
 const vec3 GRAY = vec3(0.299, 0.587, 0.114);
@@ -32,7 +33,7 @@ void main()
 	vec4 color = texture2D(u_texture, v_texCoords).rgba;
 
 	//vignette
-	vec2 position = (gl_FragCoord.xy / u_resolution.xy) - vec2(1.0 / 2.0);
+	vec2 position = (gl_FragCoord.xy / u_resolution.xy) - VIGNETTE_POSITION;
 	float vignette = smoothstep(RADIUS, RADIUS - SOFTNESS, length(position));
 	color.rgb = color.rgb * vignette;
 
