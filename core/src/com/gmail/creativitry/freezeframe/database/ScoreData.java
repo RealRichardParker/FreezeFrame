@@ -2,7 +2,7 @@
  * ScoreData.java
  * Represents a playthrough of a player. Contains the score, seed, name, and time.
  *
- * @author Gahwon Lee
+ * @author Gahwon Lee, Tiger Zhang
  * Period: 3
  * Date: 5/13/2017
  */
