@@ -13,6 +13,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Json;
+import com.gmail.creativitry.freezeframe.moveable.bullet.BulletTemplate;
+import com.gmail.creativitry.freezeframe.moveable.item.ItemSpawner;
 
 public class TextureLoader
 {

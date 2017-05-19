@@ -17,13 +17,16 @@ import java.net.UnknownHostException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class ScoreData implements Comparable<ScoreData>, Serializable
 {
 	private static final transient int PRIME = 31;
 	private static final long serialVersionUID = 1328017632264793788L;
 	
-	private LocalDateTime time;
+	private GregorianCalendar time;
 	private String name;
 	private String seed;
 	private long score;
@@ -48,7 +51,7 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 	 */
 	public ScoreData(String name, RandomGenerator seed, float score)
 	{
-		this(LocalDateTime.now(), name, seed.getSeed(), (long) score);
+		this(new GregorianCalendar(), name, seed.getSeed(), (long) score);
 	}
 	
 	/**
@@ -59,7 +62,7 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 	 * @param seed  seed of the random generator
 	 * @param score score the player scored
 	 */
-	private ScoreData(LocalDateTime time, String name, String seed, long score)
+	private ScoreData(GregorianCalendar time, String name, String seed, long score)
 	{
 		this.time = time;
 		this.name = name;
@@ -201,6 +204,10 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 	 */
 	public String getTime()
 	{
-		return time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
+		//return null;
+		/* formate is mm/dd/yy hh:mm AM/PM
+		 */
+		return time.getTime().toString();
+		//return time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
 	}
 }
