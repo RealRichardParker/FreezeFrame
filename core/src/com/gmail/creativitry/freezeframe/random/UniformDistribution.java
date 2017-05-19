@@ -2,7 +2,7 @@
  * UniformDistribution.java
  * Uniformly distributed probability
  *
- * @author creativitRy
+ * @author Gahwon Lee
  * Period: 3
  * Date: 5/14/2017
  */
