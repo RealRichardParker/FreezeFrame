@@ -17,7 +17,7 @@ import com.gmail.creativitry.freezeframe.random.*;
 public class BulletTemplate implements Loadable
 {
 	private static final String[] BULLET_TEXTURES =
-		{"Ball", "Beam", "Triangular", "Fireball"};
+		{"Ball", "Beam", "Triangular", "Fireball", "Spin"};
 	
 	private static final AbstractBullet[] BULLET_TYPES =
 		{new Bullet(), new AccelBullet(), new UCMBullet(), new SHMBullet()};
@@ -25,7 +25,7 @@ public class BulletTemplate implements Loadable
 	private static final AbstractDistribution LIFE =
 		new LimitedNormalDistribution(30, 1, 3);
 	private static final UniformDistribution VELOCITY =
-		new UniformDistribution(100, 200);
+		new UniformDistribution(100, 250);
 	
 	private static final UniformDistribution ACCEL =
 		new UniformDistribution(-10, -20);

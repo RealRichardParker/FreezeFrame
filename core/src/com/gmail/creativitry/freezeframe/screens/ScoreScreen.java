@@ -55,7 +55,6 @@ public class ScoreScreen extends AbstractScreen
 	{
 		super(freezeFrame, SCREEN_WIDTH, SCREEN_HEIGHT);
 		
-		System.out.println(scoreData);
 		this.scoreData = scoreData;
 		scores = new Scores(scoreData);
 		

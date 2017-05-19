@@ -19,6 +19,7 @@ import com.gmail.creativitry.freezeframe.behaviors.Renderable;
 import com.gmail.creativitry.freezeframe.moveable.MoveableManager;
 import com.gmail.creativitry.freezeframe.random.LimitedNormalDistribution;
 import com.gmail.creativitry.freezeframe.random.RandomGenerator;
+import com.gmail.creativitry.freezeframe.random.ReflectedUniformDistribution;
 import com.gmail.creativitry.freezeframe.random.UniformDistribution;
 
 public class BulletSprayer implements Loadable, Renderable
@@ -28,9 +29,9 @@ public class BulletSprayer implements Loadable, Renderable
 	private static final UniformDistribution RADIUS_OFFSET =
 		new UniformDistribution(-40f, 40f);
 	private static final int MIN_VARIATION = 2;
-	private static final int MAX_VARIATION = 6;
+	private static final int MAX_VARIATION = 7;
 	private static final UniformDistribution FIRE_RATE =
-		new UniformDistribution(.05f, .3f);
+		new UniformDistribution(.1f, .3f);
 	private static final UniformDistribution FIRE_TIME =
 		new UniformDistribution(2f, 7f);
 	private static final int MIN_BULLETS_PER_SUBSPRAYER = 1;
@@ -43,7 +44,7 @@ public class BulletSprayer implements Loadable, Renderable
 	private static final UniformDistribution STARTING_ANGLE =
 		new UniformDistribution(0f, ANGLES_IN_CIRCLE);
 	private static final UniformDistribution ANGLE_VELOCITY =
-		new UniformDistribution(-400f, 400f);
+		new ReflectedUniformDistribution(100f, 400f);
 	private static final UniformDistribution ANGLE_TIME =
 		new UniformDistribution(2f, 7f);
 	private static final LimitedNormalDistribution FIRE_RATE_HOMING =

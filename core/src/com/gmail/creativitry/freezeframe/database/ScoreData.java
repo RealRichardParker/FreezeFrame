@@ -14,11 +14,6 @@ import com.gmail.creativitry.freezeframe.random.RandomGenerator;
 import java.io.Serializable;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class ScoreData implements Comparable<ScoreData>, Serializable
@@ -204,10 +199,6 @@ public class ScoreData implements Comparable<ScoreData>, Serializable
 	 */
 	public String getTime()
 	{
-		//return null;
-		/* formate is mm/dd/yy hh:mm AM/PM
-		 */
 		return time.getTime().toString();
-		//return time.format(DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT));
 	}
 }
