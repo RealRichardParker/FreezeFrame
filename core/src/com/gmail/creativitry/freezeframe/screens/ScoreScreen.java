@@ -2,7 +2,7 @@
  * ScoreScreen.java
  * Displays a screen holding high scores
  *
- * @author creativitRy
+ * @author Gahwon Lee
  * Period: 3
  * Date: 5/13/2017
  */
