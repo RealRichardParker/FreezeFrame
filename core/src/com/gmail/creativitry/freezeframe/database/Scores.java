@@ -19,6 +19,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeSet;
@@ -129,7 +130,7 @@ public class Scores
 			sb.append(URLEncoder.encode(param.getValue(), "UTF-8"));
 		}
 		System.out.println(sb);
-		return /*sb.toString()*/"name=GahwonLee&seed=4N1jwodfO2LD853&score=16".getBytes(StandardCharsets.UTF_8);
+		return sb.toString()/*"name=GahwonLee&seed=4N1jwodfO2LD853&score=16"*/.getBytes(StandardCharsets.UTF_8);
 	}
 	
 	public void saveOnline(ScoreData scoreData)
@@ -144,11 +145,18 @@ public class Scores
 			
 			conn = (HttpURLConnection) url.openConnection();
 			conn.setDoOutput(true);
+			conn.setDoInput(true);
 			conn.setRequestMethod("POST");
-			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoed");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 			conn.setRequestProperty("charset", "utf-8");
 			conn.setUseCaches(false);
 			conn.getOutputStream().write(postData);
+			conn.getOutputStream().flush();
+			
+			byte[] buffer = new byte[8192];
+			int read = conn.getInputStream().read(buffer);
+			if (read != -1)
+				System.out.println(new String(Arrays.copyOf(buffer, read)));
 		}
 		catch (IOException e)
 		{
