@@ -2,7 +2,7 @@
  * ReflectedUniformDistribution.java
  * Uniformly distributed probability that is reflected across the y axis
  *
- * @author creativitRy
+ * @author Gahwon Lee
  * Period: 3
  * Date: 5/14/2017
  */
